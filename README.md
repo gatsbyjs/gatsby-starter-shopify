@@ -1,48 +1,30 @@
 <p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
+  <a href="https://www.gatsbyjs.com">
     <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
   </a>
 </p>
 <h1 align="center">
-  Gatsby minimal starter
+  Gatsby Starter Shopify
 </h1>
 
-## 🚀 Quick start
+## Overview
 
-1.  **Create a Gatsby site.**
+TODO
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
+## Quick start
 
-    ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
-    ```
+TODO
 
-2.  **Start developing.**
+## Learn more
 
-    Navigate into your new site’s directory and start it up.
+- [Documentation](https://www.gatsbyjs.com/docs/)
 
-    ```shell
-    cd my-gatsby-site/
-    npm run develop
-    ```
+- [Tutorials](https://www.gatsbyjs.com/tutorial/)
 
-3.  **Open the code and start customizing!**
+- [Guides](https://www.gatsbyjs.com/tutorial/)
 
-    Your site is now running at http://localhost:8000!
+- [API Reference](https://www.gatsbyjs.com/docs/api-reference/)
 
-    Edit `src/pages/index.js` to see your site update in real-time!
+- [Plugin Library](https://www.gatsbyjs.com/plugins/)
 
-4.  **Learn more**
-
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Tutorials](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Guides](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+- [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/)
