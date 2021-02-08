@@ -14,13 +14,15 @@ import {
 import { FiArrowRight as ArrowIcon } from 'react-icons/fi'
 import Layout from '../components/layout'
 import Spacer from '../components/spacer'
+import { ChakraHelpersContext } from '../context/chakra-helpers-context'
 
 const IndexPage = () => {
   const bgGradient = useColorModeValue(
-    `linear(to-b, white, gray.100)`,
-    `linear(to-b, gray.900, gray.700)`
+    `linear(to-b, gradientTop, gradientBottom)`,
+    `linear(to-b, dark.gradientTop, dark.gradientBottom)`
   )
-  const headingColor = useColorModeValue(`black`, `white`)
+  const { primaryColorScheme } = React.useContext(ChakraHelpersContext)
+  const headingColor = useColorModeValue(`headingColor`, `dark.headingColor`)
   const fullWidthColor = useColorModeValue(`gray.700`, `gray.300`)
   const fullWidthBg = useColorModeValue(`gray.100`, `black`)
 
@@ -45,7 +47,7 @@ const IndexPage = () => {
               <Button
                 as={GatsbyLink}
                 to="/products/"
-                colorScheme="blue"
+                colorScheme={primaryColorScheme}
                 rightIcon={<ArrowIcon />}
               >
                 See all products

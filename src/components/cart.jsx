@@ -19,6 +19,7 @@ import { StoreContext } from '../context/store-context'
 import LineItem from './line-item'
 import Spacer from './spacer'
 import formatPrice from '../utils/format-price'
+import { ChakraHelpersContext } from '../context/chakra-helpers-context'
 
 const TableHeading = ({ children, ...rest }) => (
   <Box fontSize="18px" fontWeight="medium" {...rest}>
@@ -39,9 +40,10 @@ const CalcText = ({ children, ...rest }) => (
 
 const Cart = ({ isOpen, onClose, btnRef }) => {
   const { checkout, loading } = React.useContext(StoreContext)
+  const { primaryColorScheme } = React.useContext(ChakraHelpersContext)
   const emptyCart = checkout.lineItems.length === 0
+  const priceColor = useColorModeValue(`primary`, `dark.primary`)
   const isDemoStore = process.env.GATSBY_DEMO_STORE
-  const priceColor = useColorModeValue(`blue.500`, `blue.300`)
 
   const handleCheckout = () => {
     window.open(checkout.webUrl)
@@ -53,7 +55,7 @@ const Cart = ({ isOpen, onClose, btnRef }) => {
       placement="right"
       onClose={onClose}
       finalFocusRef={btnRef}
-      size="md"
+      size="lg"
     >
       <DrawerOverlay>
         <DrawerContent>
@@ -111,7 +113,7 @@ const Cart = ({ isOpen, onClose, btnRef }) => {
                   {isDemoStore ? (
                     <Button
                       gridColumn="span 2/span 2"
-                      colorScheme="blue"
+                      colorScheme={primaryColorScheme}
                       disabled={true}
                     >
                       Demo Store - Checkout Disabled
@@ -119,7 +121,7 @@ const Cart = ({ isOpen, onClose, btnRef }) => {
                   ) : (
                     <Button
                       gridColumn="span 2/span 2"
-                      colorScheme="blue"
+                      colorScheme={primaryColorScheme}
                       onClick={handleCheckout}
                       disabled={loading}
                       rightIcon={<ArrowIcon />}

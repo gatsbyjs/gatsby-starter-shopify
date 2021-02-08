@@ -94,14 +94,14 @@ const Product = ({ data: { product, suggestions } }) => {
   )
 
   const bgGradient = useColorModeValue(
-    `linear(to-b, white, gray.100)`,
-    `linear(to-b, gray.900, gray.700)`
+    `linear(to-b, gradientTop, gradientBottom)`,
+    `linear(to-b, dark.gradientTop, dark.gradientBottom)`
   )
   const bgInput = useColorModeValue(`white`, `gray.800`)
   const bgImage = useColorModeValue(`gray.100`, `gray.700`)
   const bgScrollbar = useColorModeValue(`gray.300`, `gray.800`)
   const bgScrollThumb = useColorModeValue(`gray.600`, `gray.400`)
-  const priceColor = useColorModeValue(`blue.500`, `blue.300`)
+  const priceColor = useColorModeValue(`primary`, `dark.primary`)
   const headingColor = useColorModeValue(`black`, `white`)
   const hasVariants = variants.length > 1
   const hasImages = images.length > 0

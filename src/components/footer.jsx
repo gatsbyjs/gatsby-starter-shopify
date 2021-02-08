@@ -21,7 +21,10 @@ const Footer = () => {
         >
           <span>Theme:</span> <ThemeToggle />
         </Stack>
-        <Link justifySelf={['center', 'center', 'flex-end']} href="#">
+        <Link
+          justifySelf={['center', 'center', 'flex-end']}
+          href="https://github.com/gatsbyjs/gatsby-starter-shopify"
+        >
           Source Code
         </Link>
       </Grid>

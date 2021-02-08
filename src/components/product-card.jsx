@@ -4,6 +4,7 @@ import { Heading, Box, useColorModeValue, Grid, Tag } from '@chakra-ui/react'
 import { GatsbyImage } from 'gatsby-plugin-image'
 import Link from './link'
 import formatPrice from '../utils/format-price'
+import { ChakraHelpersContext } from '../context/chakra-helpers-context'
 
 const ProductCard = ({ product }) => {
   const {
@@ -13,9 +14,13 @@ const ProductCard = ({ product }) => {
     images: [firstImage],
   } = product
 
-  const bg = useColorModeValue(`gray.100`, `gray.700`)
-  const linkHoverColor = useColorModeValue(`blue.600`, `blue.400`)
-  const linkColor = useColorModeValue(`black`, `white`)
+  const { primaryColorScheme } = React.useContext(ChakraHelpersContext)
+  const bg = useColorModeValue(`cardBg`, `dark.cardBg`)
+  const linkHoverColor = useColorModeValue(
+    `cardLinkHover`,
+    `dark.cardLinkHover`
+  )
+  const linkColor = useColorModeValue(`cardLink`, `dark.cardLink`)
 
   const price = formatPrice(
     priceRangeV2.minVariantPrice.currencyCode,
@@ -52,7 +57,7 @@ const ProductCard = ({ product }) => {
           alignSelf="flex-start"
           justifySelf="flex-end"
           size="lg"
-          colorScheme="blue"
+          colorScheme={primaryColorScheme}
         >
           {price}
         </Tag>

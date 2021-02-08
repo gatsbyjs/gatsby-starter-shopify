@@ -5,7 +5,7 @@ const defaultId = `skip-to-content`
 
 const SkipNavLink = ({ children = `Skip to content`, contentId, ...props }) => {
   const id = contentId || defaultId
-  const background = useColorModeValue(`white`, `gray.900`)
+  const background = useColorModeValue(`bg`, `dark.bg`)
 
   return (
     <chakra.a

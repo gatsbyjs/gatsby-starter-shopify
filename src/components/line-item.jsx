@@ -8,6 +8,7 @@ import {
   NumberDecrementStepper,
   NumberInput,
   CloseButton,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import debounce from 'lodash.debounce'
 import { StoreContext } from '../context/store-context'
@@ -21,6 +22,8 @@ const LineItem = ({ item }) => {
     loading,
   } = React.useContext(StoreContext)
   const [quantity, setQuantity] = React.useState(item.quantity)
+  const titleColor = useColorModeValue(`headingColor`, `dark.headingColor`)
+  const bgImage = useColorModeValue(`gray.100`, `gray.500`)
 
   const variantImage = item.variant.image
   const price = formatPrice(
@@ -63,11 +66,17 @@ const LineItem = ({ item }) => {
   return (
     <>
       <Stack direction="row" spacing={6}>
-        <Box minWidth="50px" width="50px">
+        <Box
+          minWidth="65px"
+          width="65px"
+          bg={bgImage}
+          p={1}
+          alignSelf="flex-start"
+        >
           {image}
         </Box>
         <Stack direction="column" spacing={2}>
-          <Box fontSize="18px" fontWeight="medium">
+          <Box fontSize="18px" fontWeight="medium" color={titleColor}>
             {item.title}
           </Box>
           <Box>
