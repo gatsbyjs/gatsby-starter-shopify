@@ -4,7 +4,7 @@ module.exports = {
   siteMetadata: {
     siteTitle: 'gatsby-starter-shopify',
     siteTitleDefault: 'gatsby-starter-shopify by @GatsbyJS',
-    siteUrl: 'https://gatsby-starter-shopify.gatsbyjs.io',
+    siteUrl: 'https://gatsbystartershopify.gatsbyjs.io',
     hrefLang: 'en',
     siteDescription:
       'A Gatsby starter using the latest Shopify plugin showcasing a store with product overview, individual product pages, and a cart.',
