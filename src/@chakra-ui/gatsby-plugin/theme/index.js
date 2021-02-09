@@ -1,6 +1,11 @@
 import { extendTheme } from '@chakra-ui/react'
 import { createBreakpoints } from '@chakra-ui/theme-tools'
 
+/**
+ * This file is set up as per recommendation of
+ * https://chakra-ui.com/docs/theming/customize-theme
+ */
+
 // Global styles
 import styles from './styles'
 

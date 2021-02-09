@@ -5,7 +5,7 @@ const defaultColors = theme.colors
 const colors = {
   color: defaultColors.gray['800'],
   bg: defaultColors.white,
-  primaryColorScheme: 'blue',
+  primaryColorScheme: 'blue', // Used for all "colorScheme" props on components. Not defined in "dark" as components handle dark mode by themselves.
   primary: defaultColors.blue['500'],
   gradientTop: defaultColors.white,
   gradientBottom: defaultColors.gray['100'],

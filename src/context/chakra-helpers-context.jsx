@@ -8,6 +8,11 @@ const defaultValues = {
 
 export const ChakraHelpersContext = React.createContext(defaultValues)
 
+/**
+ * The purpose of this provider is to expose tokens as variables that Chakra UI doesn't understand at the moment
+ * So right now you can't use <Button colorScheme="primaryColorScheme" /> as it doesn't resolve "primaryColorScheme" to "blue"
+ * With this central place for such tokens it's only called once and stored in this provider
+ */
 export const ChakraHelpersProvider = ({ children }) => {
   const [primaryColorScheme] = useToken('colors', ['primaryColorScheme'])
 

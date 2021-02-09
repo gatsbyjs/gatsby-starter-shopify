@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Stack, useColorModeValue } from '@chakra-ui/react'
 import Link from './link'
 
+// In theory this could also be defined inside "gatsby-config.js" and then queried via GraphQL
 const navigationLinks = [
   {
     name: 'All products',
