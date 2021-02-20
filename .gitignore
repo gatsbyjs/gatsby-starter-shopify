@@ -6,3 +6,4 @@ public
 .DS_Store
 .env
 *.log
+yarn.lock
