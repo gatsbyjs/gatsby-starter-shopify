@@ -184,7 +184,7 @@ const Product = ({ data: { product, suggestions } }) => {
                     </>
                   )}
                   <AddToCart
-                    type="submit"
+                    type="button"
                     variantId={productVariant.storefrontId}
                     quantity={quantity}
                     available={available}

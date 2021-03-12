@@ -8,3 +8,4 @@ public
 *.log
 yarn.lock
 gatsby-node.old.js
+package-lock.json
