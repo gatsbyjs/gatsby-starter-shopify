@@ -110,7 +110,7 @@ const Cart = ({ isOpen, onClose, btnRef }) => {
                     )}
                   </Box>
                   <Spacer as={GridItem} colSpan="2" axis="vertical" size={6} />
-                  {isDemoStore ? (
+                  {isDemoStore === true ? (
                     <Button
                       gridColumn="span 2/span 2"
                       colorScheme={primaryColorScheme}
