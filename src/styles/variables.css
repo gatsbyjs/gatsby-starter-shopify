@@ -1,0 +1,10 @@
+:root {
+  --primary-color-80: #f06200;
+  --black-fade-40: #979797;
+  --black-fade-10: #e2e2e2;
+  --black-fade-5: #eeeeee;
+  --border-radius: 8px;
+  --size-sm: 4px;
+  --size-md: 8px;
+  --size-lg: 16px;
+}

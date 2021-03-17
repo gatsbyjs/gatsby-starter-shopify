@@ -51,9 +51,10 @@ const Product = ({ data: { product, suggestions } }) => {
   const checkAvailablity = React.useCallback(
     (productId) => {
       client.product.fetch(productId).then((fetchedProduct) => {
-        const result = fetchedProduct.variants.filter(
-          (variant) => variant.id === productVariant.storefrontId
-        )
+        const result =
+          fetchedProduct.variants.filter(
+            (variant) => variant.id === productVariant.storefrontId
+          ) ?? []
 
         if (result.length > 0) {
           setAvailable(result[0].available)

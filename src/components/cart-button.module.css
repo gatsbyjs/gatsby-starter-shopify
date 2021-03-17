@@ -1,0 +1,25 @@
+.cartButtonContainerStyle {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  align-self: center;
+  height: fit-content;
+}
+
+.badgeStyle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color-80);
+  box-shadow: 0 0 0 2px white;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  height: 16px;
+  width: 16px;
+}
