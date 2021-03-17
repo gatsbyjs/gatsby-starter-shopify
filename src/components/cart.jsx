@@ -43,7 +43,7 @@ const Cart = ({ isOpen, onClose, btnRef }) => {
   const { primaryColorScheme } = React.useContext(ChakraHelpersContext)
   const emptyCart = checkout.lineItems.length === 0
   const priceColor = useColorModeValue(`primary`, `dark.primary`)
-  const isDemoStore = process.env.GATSBY_DEMO_STORE
+  const isDemoStore = process.env.GATSBY_DEMO_STORE === `true`
 
   const handleCheckout = () => {
     window.open(checkout.webUrl)
