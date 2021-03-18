@@ -1,17 +1,17 @@
 import * as React from 'react'
 import { addToCart } from './add-to-cart.module.css'
 import { StoreContext } from '../context/store-context'
-import { ChakraHelpersContext } from '../context/chakra-helpers-context'
 
 const AddToCart = ({ variantId, quantity, available, ...props }) => {
   const { addVariantToCart, loading } = React.useContext(StoreContext)
-  const { primaryColorScheme } = React.useContext(ChakraHelpersContext)
 
   return (
     <button
       type="submit"
       className={addToCart}
-      onClick={() => addVariantToCart(variantId, quantity)}
+      onClick={() =>
+        console.log('addnig') || addVariantToCart(variantId, quantity)
+      }
       disabled={!available || loading}
       {...props}
     >

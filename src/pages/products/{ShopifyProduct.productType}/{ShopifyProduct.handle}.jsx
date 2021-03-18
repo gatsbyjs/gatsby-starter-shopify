@@ -11,7 +11,7 @@ import {
   infodiv,
   priceingdiv,
   priceValue,
-} from '../../products/product-page.module.css'
+} from './product-page.module.css'
 import {
   Stack,
   useColorModeValue,
@@ -57,7 +57,7 @@ const Product = ({ data: { product, suggestions } }) => {
     (productId) => {
       client.product.fetch(productId).then((fetchedProduct) => {
         const result =
-          fetchedProduct.variants.filter(
+          fetchedProduct?.variants.filter(
             (variant) => variant.id === productVariant.storefrontId
           ) ?? []
 
@@ -135,9 +135,7 @@ const Product = ({ data: { product, suggestions } }) => {
                                 ? image.altText
                                 : `Product Image of ${title} #${index + 1}`
                             }
-                            image={
-                              image.localFile.childImageSharp.gatsbyImageData
-                            }
+                            image={image.gatsbyImageData}
                           />
                         </li>
                       ))}
@@ -164,7 +162,7 @@ const Product = ({ data: { product, suggestions } }) => {
                 <h2 className={priceValue}>
                   <span>{price} </span> incl. 7% VAT plus shipping
                 </h2>
-                <form as="form" noValidate direction="row" flexWrap="wrap">
+                <form noValidate>
                   <fieldset>
                     <label htmlFor="quantity"></label>
                     <NumberInput

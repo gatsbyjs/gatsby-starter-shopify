@@ -1,10 +1,15 @@
 import * as React from 'react'
 import { graphql } from 'gatsby'
-import { Heading, Box, useColorModeValue, Grid, Tag } from '@chakra-ui/react'
 import { GatsbyImage } from 'gatsby-plugin-image'
 import Link from './link'
 import formatPrice from '../utils/format-price'
-import { ChakraHelpersContext } from '../context/chakra-helpers-context'
+import {
+  productCardStyle,
+  productHeadingStyle,
+  productImageStyle,
+  productDetailsStyle,
+  productVendorStyle,
+} from './product-card.module.css'
 
 const ProductCard = ({ product }) => {
   const {
@@ -12,15 +17,8 @@ const ProductCard = ({ product }) => {
     priceRangeV2,
     slug,
     images: [firstImage],
+    vendor,
   } = product
-
-  const { primaryColorScheme } = React.useContext(ChakraHelpersContext)
-  const bg = useColorModeValue(`cardBg`, `dark.cardBg`)
-  const linkHoverColor = useColorModeValue(
-    `cardLinkHover`,
-    `dark.cardLinkHover`
-  )
-  const linkColor = useColorModeValue(`cardLink`, `dark.cardLink`)
 
   const price = formatPrice(
     priceRangeV2.minVariantPrice.currencyCode,
@@ -29,36 +27,20 @@ const ProductCard = ({ product }) => {
 
   return (
     <Link
+      className={productCardStyle}
       to={slug}
       aria-label={`View ${title} product page`}
-      _hover={{ textDecoration: 'none', h2: { color: linkHoverColor } }}
-      _focus={{
-        boxShadow: 'none',
-        "[data-name='product-image-box']": { boxShadow: 'outline' },
-        h2: { color: linkHoverColor },
-      }}
     >
-      <Box bg={bg} p={6} data-name="product-image-box">
+      <div className={productImageStyle} data-name="product-image-box">
         <GatsbyImage alt="" image={firstImage.gatsbyImageData} />
-      </Box>
-      <Grid templateColumns="auto auto" gap={6} mt={6}>
-        <Heading
-          as="h2"
-          fontSize="24px"
-          color={linkColor}
-          transition="color 0.25s ease-in-out"
-        >
+      </div>
+      <div className={productDetailsStyle}>
+        <div className={productVendorStyle}>{vendor}</div>
+        <h2 as="h2" className={productHeadingStyle}>
           {title}
-        </Heading>
-        <Tag
-          alignSelf="flex-start"
-          justifySelf="flex-end"
-          size="lg"
-          colorScheme={primaryColorScheme}
-        >
-          {price}
-        </Tag>
-      </Grid>
+        </h2>
+        <div>{price}</div>
+      </div>
     </Link>
   )
 }
@@ -80,5 +62,6 @@ export const query = graphql`
         currencyCode
       }
     }
+    vendor
   }
 `

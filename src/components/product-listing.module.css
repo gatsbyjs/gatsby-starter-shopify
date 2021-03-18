@@ -1,6 +1,4 @@
-.container{
-    display: grid;
-    grid-template-columns: 1fr repeat(2,1fr);
-    column-gap: 15px;
-    row-gap: 12px;
+.listingContainerStyle {
+  display: flex;
+  gap: 16px;
 }
