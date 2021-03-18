@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Button } from '@chakra-ui/react'
+import { addToCart } from './add-to-cart.module.css'
 import { StoreContext } from '../context/store-context'
 import { ChakraHelpersContext } from '../context/chakra-helpers-context'
 
@@ -8,14 +8,15 @@ const AddToCart = ({ variantId, quantity, available, ...props }) => {
   const { primaryColorScheme } = React.useContext(ChakraHelpersContext)
 
   return (
-    <Button
-      colorScheme={primaryColorScheme}
+    <button
+      type="submit"
+      className={addToCart}
       onClick={() => addVariantToCart(variantId, quantity)}
       disabled={!available || loading}
       {...props}
     >
       {available ? 'Add to Cart' : 'Out of Stock'}
-    </Button>
+    </button>
   )
 }
 
