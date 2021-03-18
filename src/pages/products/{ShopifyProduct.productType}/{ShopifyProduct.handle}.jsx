@@ -23,7 +23,7 @@ import {
   Select,
 } from '@chakra-ui/react'
 import isEqual from 'lodash.isequal'
-import { GatsbyImage } from 'gatsby-plugin-image'
+import { GatsbyImage, getSrc } from 'gatsby-plugin-image'
 import Layout from '../../../components/layout'
 import { StoreContext } from '../../../context/store-context'
 import AddToCart from '../../../components/add-to-cart'
@@ -111,7 +111,7 @@ const Product = ({ data: { product, suggestions } }) => {
       <SEO
         title={title}
         description={description}
-        image={firstImage.localFile.publicURL}
+        image={getSrc(firstImage.gatsbyImageData)}
       />
       <main>
         <div className={container}>
@@ -249,17 +249,7 @@ export const query = graphql`
       storefrontId
       images {
         altText
-        localFile {
-          publicURL
-          childImageSharp {
-            gatsbyImageData(
-              formats: [AUTO, WEBP, AVIF]
-              quality: 90
-              layout: CONSTRAINED
-              width: 640
-            )
-          }
-        }
+        gatsbyImageData(layout: CONSTRAINED, width: 640)
       }
       variants {
         availableForSale

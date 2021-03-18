@@ -39,10 +39,7 @@ const ProductCard = ({ product }) => {
       }}
     >
       <Box bg={bg} p={6} data-name="product-image-box">
-        <GatsbyImage
-          alt=""
-          image={firstImage.localFile.childImageSharp.gatsbyImageData}
-        />
+        <GatsbyImage alt="" image={firstImage.gatsbyImageData} />
       </Box>
       <Grid templateColumns="auto auto" gap={6} mt={6}>
         <Heading
@@ -75,16 +72,7 @@ export const query = graphql`
       filePath: "/products/{ShopifyProduct.productType}/{ShopifyProduct.handle}"
     )
     images {
-      localFile {
-        childImageSharp {
-          gatsbyImageData(
-            aspectRatio: 1
-            formats: [AUTO, WEBP, AVIF]
-            quality: 90
-            width: 640
-          )
-        }
-      }
+      gatsbyImageData(aspectRatio: 1, width: 640)
     }
     priceRangeV2 {
       minVariantPrice {
