@@ -10,9 +10,9 @@ import { StoreContext } from '../context/store-context'
 import Logo from '../icons/logo'
 import Spacer from './spacer'
 import Cart from './cart'
-import Search from './search'
 import Navigation from './navigation'
 import CartButton from './cart-button'
+import { CgSearch } from 'react-icons/cg'
 
 const Header = () => {
   const { isOpen, onClose, onOpen, checkout } = React.useContext(StoreContext)
@@ -36,7 +36,9 @@ const Header = () => {
             <Navigation />
           </div>
           <div className={headerSectionStyle}>
-            <Search />
+            <Link to="/search">
+              <CgSearch size={24} title="Search" />
+            </Link>
             <CartButton quantity={quantity} onOpen={onOpen} btnRef={btnRef} />
           </div>
         </header>
