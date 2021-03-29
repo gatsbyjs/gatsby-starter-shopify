@@ -45,7 +45,8 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
-    "shopify-buy": "^2.11.0"
+    "shopify-buy": "^2.11.0",
+    "urql": "^2.0.1"
   },
   "devDependencies": {
     "husky": "^4.3.8",

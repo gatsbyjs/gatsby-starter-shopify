@@ -1,0 +1,34 @@
+.main {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: min-content 1fr;
+  grid-template-areas:
+    'filters search'
+    'filters results';
+}
+
+.filters {
+  grid-area: filters;
+}
+
+.results {
+  grid-area: results;
+}
+
+.results ul {
+  flex-direction: column;
+}
+
+.search {
+  grid-area: search;
+  display: flex;
+  height: min-content;
+}
+
+.search input {
+  display: block;
+  flex: 1;
+  background-color: var(--black-fade-10);
+  border-radius: var(--border-radius);
+  height: 2.5em;
+}
