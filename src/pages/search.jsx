@@ -1,4 +1,6 @@
 import * as React from 'react'
+import { useLocation } from '@reach/router'
+import queryString from 'query-string'
 import { graphql, useStaticQuery } from 'gatsby'
 import Layout from '../components/layout'
 import { CheckFilter } from '../components/check-filter'
@@ -17,6 +19,9 @@ const SearchPage = () => {
       }
     }
   `)
+  // get query params from URL if they exist, to populate default state
+  const location = useLocation()
+  const queryParams = queryString.parse(location.search)
 
   const [selectedTags, setSelectedTags] = React.useState(tags)
   const [selectedVendors, setSelectedVendors] = React.useState(vendors)
@@ -24,7 +29,7 @@ const SearchPage = () => {
     productTypes
   )
 
-  const [searchTerm, setSearchTerm] = React.useState('')
+  const [searchTerm, setSearchTerm] = React.useState(queryParams.s)
 
   const [{ data, fetching, ...props }] = useProductSearch(
     {
@@ -38,7 +43,16 @@ const SearchPage = () => {
     },
     `RELEVANCE`
   )
-  console.log(props)
+
+  const onSearch = (searchTerm) => {
+    setSearchTerm(searchTerm)
+    window.history.replaceState(
+      {},
+      null,
+      `search?${queryString.stringify({ s: searchTerm })}`
+    )
+  }
+
   return (
     <Layout>
       <div className={main}>
@@ -46,7 +60,7 @@ const SearchPage = () => {
           <input
             type="search"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.currentTarget.value)}
+            onChange={(e) => onSearch(e.currentTarget.value)}
             placeholder="Search..."
           />
         </div>
