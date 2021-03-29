@@ -19,14 +19,9 @@ const Products = ({ data: { products } }) => {
 
 export default Products
 
-// To display all products here, remove the "filter" on the query
-
 export const query = graphql`
   {
-    products: allShopifyProduct(
-      filter: { productType: { in: ["Shirt", "Stickers"] } }
-      sort: { fields: publishedAt, order: ASC }
-    ) {
+    products: allShopifyProduct(sort: { fields: publishedAt, order: ASC }) {
       nodes {
         ...ProductCard
       }

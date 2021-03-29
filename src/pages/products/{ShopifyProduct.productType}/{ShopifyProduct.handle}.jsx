@@ -1,11 +1,18 @@
 import * as React from 'react'
 import { graphql } from 'gatsby'
 import {
-  Container,
-  Grid,
-  Heading,
-  Text,
-  Box,
+  productBox,
+  container,
+  header,
+  productImageWrapper,
+  productImage,
+  scrollForMore,
+  noImagePreview,
+  infodiv,
+  priceingdiv,
+  priceValue,
+} from './product-page.module.css'
+import {
   Stack,
   useColorModeValue,
   NumberInput,
@@ -14,15 +21,13 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Select,
-  Flex,
 } from '@chakra-ui/react'
 import isEqual from 'lodash.isequal'
-import { GatsbyImage } from 'gatsby-plugin-image'
+import { GatsbyImage, getSrc } from 'gatsby-plugin-image'
 import Layout from '../../../components/layout'
 import { StoreContext } from '../../../context/store-context'
 import AddToCart from '../../../components/add-to-cart'
 import formatPrice from '../../../utils/format-price'
-import ProductListing from '../../../components/product-listing'
 import SEO from '../../../components/seo'
 
 const Product = ({ data: { product, suggestions } }) => {
@@ -51,9 +56,10 @@ const Product = ({ data: { product, suggestions } }) => {
   const checkAvailablity = React.useCallback(
     (productId) => {
       client.product.fetch(productId).then((fetchedProduct) => {
-        const result = fetchedProduct.variants.filter(
-          (variant) => variant.id === productVariant.storefrontId
-        )
+        const result =
+          fetchedProduct?.variants.filter(
+            (variant) => variant.id === productVariant.storefrontId
+          ) ?? []
 
         if (result.length > 0) {
           setAvailable(result[0].available)
@@ -93,16 +99,9 @@ const Product = ({ data: { product, suggestions } }) => {
     variant.price
   )
 
-  const bgGradient = useColorModeValue(
-    `linear(to-b, gradientTop, gradientBottom)`,
-    `linear(to-b, dark.gradientTop, dark.gradientBottom)`
-  )
   const bgInput = useColorModeValue(`white`, `gray.800`)
-  const bgImage = useColorModeValue(`gray.100`, `gray.700`)
-  const bgScrollbar = useColorModeValue(`gray.300`, `gray.800`)
-  const bgScrollThumb = useColorModeValue(`gray.600`, `gray.400`)
   const priceColor = useColorModeValue(`primary`, `dark.primary`)
-  const headingColor = useColorModeValue(`black`, `white`)
+
   const hasVariants = variants.length > 1
   const hasImages = images.length > 0
   const hasMultipleImages = images.length > 1
@@ -112,36 +111,60 @@ const Product = ({ data: { product, suggestions } }) => {
       <SEO
         title={title}
         description={description}
-        image={firstImage.localFile.publicURL}
+        image={getSrc(firstImage.gatsbyImageData)}
       />
-      <Box bgGradient={bgGradient}>
-        <Container py={[16, 20, 28]}>
-          <Grid
-            templateColumns={['1fr', null, 'repeat(2, 1fr)']}
-            gap={[12, 20]}
-            sx={{
-              '[data-name="product-image-wrapper"]': { order: [1, null, 2] },
-            }}
-          >
-            <Stack spacing={[8, 16]} order={[2, null, 1]}>
+      <main>
+        <div className={container}>
+          <div className={productBox}>
+            {hasImages && (
+              <div className={productImageWrapper}>
+                <div
+                  role="group"
+                  aria-label="gallery"
+                  aria-describedby="instructions"
+                  className={productImage}
+                >
+                  {hasImages ? (
+                    <ul>
+                      {images.map((image, index) => (
+                        <li key={`product-image-${index}`}>
+                          <GatsbyImage
+                            objectFit="contain"
+                            alt={
+                              image.altText
+                                ? image.altText
+                                : `Product Image of ${title} #${index + 1}`
+                            }
+                            image={image.gatsbyImageData}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <span className={noImagePreview}>No Preview image</span>
+                  )}
+                </div>
+                {hasMultipleImages && (
+                  <div className={scrollForMore}>
+                    <span aria-hidden="true">←</span> scroll for more{' '}
+                    <span aria-hidden="true">→</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className={infodiv}>
               <Stack spacing={4}>
-                <Heading as="h1" color={headingColor}>
-                  {title}
-                </Heading>
-                <Text>{description}</Text>
+                <h1 className={header}>{title}</h1>
+                <p>{description}</p>
               </Stack>
-              <Stack spacing={0}>
-                <Heading as="h2" color={priceColor}>
-                  {price}
-                </Heading>
-                <Flex as="form" noValidate direction="row" flexWrap="wrap">
-                  <Stack
-                    as="fieldset"
-                    mr={6}
-                    mt={4}
-                    sx={{ input: { px: 2, py: 2 } }}
-                  >
-                    <label htmlFor="quantity">Quantity</label>
+              <div className={priceingdiv}>
+                <h2 className={priceValue}>
+                  <span>{price} </span> incl. 7% VAT plus shipping
+                </h2>
+                <form noValidate>
+                  <fieldset>
+                    <label htmlFor="quantity"></label>
                     <NumberInput
                       onChange={(_, value) => setQuantity(value)}
                       value={quantity}
@@ -157,13 +180,13 @@ const Product = ({ data: { product, suggestions } }) => {
                         <NumberDecrementStepper />
                       </NumberInputStepper>
                     </NumberInput>
-                  </Stack>
+                  </fieldset>
                   {hasVariants && (
                     <>
                       {options.map(({ id, name, values }, index) => (
                         <React.Fragment key={id}>
                           <Stack as="fieldset" mt={4} mr={6}>
-                            <label htmlFor="variant">{name}</label>
+                            <label htmlFor="variant"></label>
                             <Select
                               variant="filled"
                               bg={bgInput}
@@ -171,7 +194,7 @@ const Product = ({ data: { product, suggestions } }) => {
                                 handleOptionChange(index, event)
                               }
                             >
-                              <option value="">{`Choose ${name}`}</option>
+                              <option value="">{`Select ${name}`}</option>
                               {values.map((value) => (
                                 <option value={value} key={`${name}-${value}`}>
                                   {value}
@@ -184,105 +207,22 @@ const Product = ({ data: { product, suggestions } }) => {
                     </>
                   )}
                   <AddToCart
-                    type="submit"
                     variantId={productVariant.storefrontId}
                     quantity={quantity}
                     available={available}
-                    alignSelf="flex-end"
-                    mt={4}
                   />
-                </Flex>
-              </Stack>
-            </Stack>
-            {hasImages && (
-              <Box data-name="product-image-wrapper" position="relative">
-                <Box
-                  role="group"
-                  aria-label="gallery"
-                  aria-describedby="instructions"
-                  overflowX={hasMultipleImages ? 'scroll' : 'auto'}
-                  tabIndex="0"
-                  bg={bgImage}
-                  mb={2}
-                  _focus={{ outline: 'none', boxShadow: 'outline' }}
-                  sx={{
-                    WebkitOverflowScrolling: 'touch',
-                    '::-webkit-scrollbar': { height: '0.875rem' },
-                    '::-webkit-scrollbar-track': {
-                      backgroundColor: bgScrollbar,
-                    },
-                    '::-webkit-scrollbar-thumb': {
-                      backgroundColor: bgScrollThumb,
-                    },
-                    '&:hover + #instructions, &:focus + #instructions': {
-                      display: 'block',
-                    },
-                  }}
-                >
-                  {hasImages ? (
-                    <Flex as="ul">
-                      {images.map((image, index) => (
-                        <Box
-                          as="li"
-                          flex="0 0 100%"
-                          display="flex"
-                          whiteSpace="nowrap"
-                          key={`product-image-${index}`}
-                          p={6}
-                        >
-                          <GatsbyImage
-                            objectFit="contain"
-                            alt={
-                              image.altText
-                                ? image.altText
-                                : `Product Image of ${title} #${index + 1}`
-                            }
-                            image={
-                              image.localFile.childImageSharp.gatsbyImageData
-                            }
-                          />
-                        </Box>
-                      ))}
-                    </Flex>
-                  ) : (
-                    <Box
-                      minHeight="300px"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontSize="18px"
-                      fontWeight="medium"
-                    >
-                      No Preview image
-                    </Box>
-                  )}
-                </Box>
-                {hasMultipleImages && (
-                  <Box
-                    id="instructions"
-                    textAlign="center"
-                    mt={1}
-                    fontSize="18px"
-                    display="none"
-                    position="absolute"
-                    left="50%"
-                    transform="translate3d(-50%, 0px, 0px)"
-                  >
-                    <span aria-hidden="true">←</span> scroll for more{' '}
-                    <span aria-hidden="true">→</span>
-                  </Box>
-                )}
-              </Box>
-            )}
-          </Grid>
-        </Container>
-      </Box>
-      <Container my={[20, 28]}>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      {/* <Container my={[20, 28]}>
         <Heading as="h2" mb={8} fontSize="3xl" color={headingColor}>
           More Products
         </Heading>
         <ProductListing products={suggestions} />
-      </Container>
+      </Container> */}
     </Layout>
   )
 }
@@ -307,17 +247,7 @@ export const query = graphql`
       storefrontId
       images {
         altText
-        localFile {
-          publicURL
-          childImageSharp {
-            gatsbyImageData(
-              formats: [AUTO, WEBP, AVIF]
-              quality: 90
-              layout: CONSTRAINED
-              width: 640
-            )
-          }
-        }
+        gatsbyImageData(layout: CONSTRAINED, width: 640)
       }
       variants {
         availableForSale

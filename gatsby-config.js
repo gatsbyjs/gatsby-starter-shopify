@@ -21,7 +21,6 @@ module.exports = {
         apiKey: process.env.SHOPIFY_ADMIN_API_KEY,
         password: process.env.SHOPIFY_ADMIN_PASSWORD,
         storeUrl: process.env.GATSBY_SHOPIFY_STORE_URL,
-        downloadImages: true,
       },
     },
     {

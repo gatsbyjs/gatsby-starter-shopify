@@ -1,49 +1,44 @@
+import { graphql, useStaticQuery } from 'gatsby'
 import * as React from 'react'
-import { Stack, useColorModeValue } from '@chakra-ui/react'
 import Link from './link'
-
+import { navStyle } from './navigation.module.css'
+import slugify from '@sindresorhus/slugify'
 // In theory this could also be defined inside "gatsby-config.js" and then queried via GraphQL
-const navigationLinks = [
-  {
-    name: 'All products',
-    slug: '/products/',
-    pActive: false,
-  },
-  {
-    name: 'Shirts',
-    slug: '/products/shirt/',
-    pActive: true,
-  },
-  {
-    name: 'Stickers',
-    slug: '/products/stickers/',
-    pActive: true,
-  },
-]
 
 const Navigation = () => {
-  const linkColor = useColorModeValue(`headingColor`, `dark.headingColor`)
+  const {
+    allShopifyProduct: { productTypes },
+  } = useStaticQuery(graphql`
+    query {
+      allShopifyProduct {
+        productTypes: distinct(field: productType)
+      }
+    }
+  `)
 
   return (
-    <Stack
+    <div
+      className={navStyle}
       as="nav"
       direction={['column', 'row']}
       fontSize="lg"
       alignItems="center"
-      sx={{ 'a.active': { fontWeight: `medium`, color: linkColor } }}
+      sx={{ 'a.active': { fontWeight: `medium` } }}
     >
-      {navigationLinks.map((n) => (
+      <Link p={2} to="/products/" activeClassName="active">
+        All Products
+      </Link>
+      {productTypes.map((name) => (
         <Link
-          key={n.slug}
+          key={name}
           p={2}
-          to={n.slug}
+          to={`/products/${slugify(name)}`}
           activeClassName="active"
-          partiallyActive={n.pActive}
         >
-          {n.name}
+          {name}
         </Link>
       ))}
-    </Stack>
+    </div>
   )
 }
 

@@ -1,0 +1,4 @@
+.listingContainerStyle {
+  display: flex;
+  gap: 16px;
+}

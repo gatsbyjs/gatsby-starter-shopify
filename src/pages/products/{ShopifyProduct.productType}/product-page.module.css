@@ -1,0 +1,92 @@
+.productBox{
+    display: grid;
+    grid-template-columns: repeat(2 ,1fr) ;
+    column-gap: 64px;
+}
+
+.container{
+    padding-top: 16px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+}
+
+.header{
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.productImageWrapper{
+    position: relative;
+}
+
+.productImage{
+    background-color: var(--black-fade-5);
+    margin-bottom: 2px;
+    overflow-x: scroll;
+}
+
+.productImage:focus{
+    outline:none;
+    box-shadow:darkblue;
+}
+
+ul {
+    display: flex;
+    /* flex: 0 0 100%; */
+    /* padding: 6px; */
+}
+
+li {
+    display: flex;
+    flex: 0 0 100%;
+    padding: 6px;
+    white-space: nowrap;
+}
+
+.scrollForMore {
+    text-align: center;
+    margin-top: 1rem;
+    display: none;
+    font-size: 18px;
+    transform: translate3d(-50%, 0px, 0px);
+    left: 50%;
+    position: absolute;
+}
+
+.noImagePreview{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    font-size: 18px;
+
+}
+
+.infodiv{
+    display: flex;
+    flex-direction: column;
+}
+
+.priceingdiv{
+    display: flex;
+    flex-direction: column;
+    padding-top: 4rem;
+}
+
+
+.priceValue > span {
+font-size: 30px;
+line-height: 1.2;
+color: var( --primary-color-80);
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+form >fieldset {
+    margin-right: 6px;
+    margin-top: 24px;
+
+}

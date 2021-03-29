@@ -1,0 +1,12 @@
+.filterStyle {
+  display: flex;
+}
+
+.filterStyle label {
+  cursor: pointer;
+}
+
+.filterStyle summary {
+  font-weight: bold;
+  text-transform: uppercase;
+}

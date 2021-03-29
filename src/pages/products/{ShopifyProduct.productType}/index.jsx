@@ -13,9 +13,9 @@ const ProductTypeIndex = ({
     <Layout>
       <SEO title={`Category: ${productType}`} />
       <VisuallyHidden as="h1">{productType}</VisuallyHidden>
-      <Container py={20}>
+      <div>
         <ProductListing products={products} />
-      </Container>
+      </div>
     </Layout>
   )
 }

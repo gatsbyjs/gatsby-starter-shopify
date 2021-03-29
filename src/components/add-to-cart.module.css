@@ -1,0 +1,10 @@
+.addToCart{
+    display: flex;
+    flex-direction: row;
+    color: var( --black-fade-5);
+    background-color: var( --primary-color-80);
+    align-self: flex-end;
+    /* margin-top: 50px; */
+    padding: 10px;
+    border-radius: 9px;
+}
