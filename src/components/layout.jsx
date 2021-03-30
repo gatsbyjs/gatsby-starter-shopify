@@ -1,18 +1,16 @@
 import * as React from 'react'
-import { SkipNavContent, SkipNavLink } from './skip-nav'
+// import { SkipNavContent, SkipNavLink } from './skip-nav'
 import Header from './header'
 import Footer from './footer'
 import SEO from './seo'
-import { ChakraHelpersProvider } from '../context/chakra-helpers-context'
+// import { ChakraHelpersProvider } from '../context/chakra-helpers-context'
 
 const Layout = ({ children }) => (
-  <ChakraHelpersProvider>
-    <SEO />
-    <SkipNavLink />
+  <div>
     <Header />
-    <SkipNavContent>{children}</SkipNavContent>
+    {children}
     <Footer />
-  </ChakraHelpersProvider>
+  </div>
 )
 
 export default Layout
