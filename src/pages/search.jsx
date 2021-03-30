@@ -23,15 +23,22 @@ const SearchPage = () => {
   const location = useLocation()
   const queryParams = queryString.parse(location.search)
 
-  const [selectedTags, setSelectedTags] = React.useState(tags)
-  const [selectedVendors, setSelectedVendors] = React.useState(vendors)
+  const initialTags = queryParams.Tag ? [...queryParams?.Tag?.split(',')] : tags
+  const [selectedTags, setSelectedTags] = React.useState(initialTags)
+  const initialVendors = queryParams.Brand
+    ? [...queryParams?.Brand?.split(',')]
+    : vendors
+  const [selectedVendors, setSelectedVendors] = React.useState(initialVendors)
+  const initialProductTypes = queryParams.Type
+    ? [...queryParams?.Type?.split(',')]
+    : productTypes
   const [selectedProductTypes, setSelectedProductTypes] = React.useState(
-    productTypes
+    initialProductTypes
   )
 
   const [searchTerm, setSearchTerm] = React.useState(queryParams.s)
 
-  const [{ data, fetching, ...props }] = useProductSearch(
+  const [{ data, fetching }] = useProductSearch(
     {
       term: searchTerm,
       selectedTags,
@@ -44,14 +51,38 @@ const SearchPage = () => {
     `RELEVANCE`
   )
 
-  const onSearch = (searchTerm) => {
-    setSearchTerm(searchTerm)
+  const createUrlString = React.useCallback(
+    (searchTerm, newItems = [], filterName = undefined) => {
+      // only add filters to the url when not all options are selected
+      const shouldFilterType =
+        productTypes.length !== selectedProductTypes.length
+      const shouldFilterBrand = vendors.length !== selectedVendors.length
+      const shouldFilterTags = tags.length !== selectedTags.length
+
+      return `search?${queryString.stringify({
+        s: searchTerm,
+        Type: shouldFilterType ? selectedProductTypes : undefined,
+        Brands: shouldFilterBrand ? selectedVendors : undefined,
+        Tags: shouldFilterTags ? selectedTags : undefined,
+        [filterName]: newItems.length
+          ? newItems.filter(Boolean).join(',')
+          : undefined,
+      })}`
+    }
+  )
+
+  const onSearch = React.useCallback((newSearchTerm) => {
+    setSearchTerm(newSearchTerm)
+    window.history.replaceState({}, null, createUrlString(newSearchTerm))
+  })
+
+  const onFilter = React.useCallback((newItems, filterName) => {
     window.history.replaceState(
       {},
       null,
-      `search?${queryString.stringify({ s: searchTerm })}`
+      createUrlString(searchTerm, newItems, filterName)
     )
-  }
+  })
 
   return (
     <Layout>
@@ -72,12 +103,14 @@ const SearchPage = () => {
             items={productTypes}
             selectedItems={selectedProductTypes}
             setSelectedItems={setSelectedProductTypes}
+            onFilter={onFilter}
           />
           <CheckFilter
             name="Brands"
             items={vendors}
             selectedItems={selectedVendors}
             setSelectedItems={setSelectedVendors}
+            onFilter={onFilter}
           />
           <CheckFilter
             open={false}
@@ -85,6 +118,7 @@ const SearchPage = () => {
             items={tags}
             selectedItems={selectedTags}
             setSelectedItems={setSelectedTags}
+            onFilter={onFilter}
           />
         </section>
         <section className={results}>

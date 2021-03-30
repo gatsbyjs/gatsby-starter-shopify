@@ -6,23 +6,27 @@ export function CheckFilter({
   selectedItems = [],
   setSelectedItems,
   open = true,
+  onFilter,
 }) {
-  const toggleItem = React.useCallback(
-    ({ currentTarget: input }) => {
-      if (input.checked) {
-        setSelectedItems((items) => [...items, input.value])
-      } else {
-        setSelectedItems((items) => {
-          const idx = items.indexOf(input.value)
-          if (idx === -1) {
-            return
-          }
-          return [...items.slice(0, idx), ...items.slice(idx + 1)]
-        })
-      }
-    },
-    [setSelectedItems]
-  )
+  const toggleItem = ({ currentTarget: input }) => {
+    if (input.checked) {
+      setSelectedItems((items) => {
+        const newItems = [...items, input.value]
+        onFilter(newItems, name)
+        return newItems
+      })
+    } else {
+      setSelectedItems((items) => {
+        const idx = items.indexOf(input.value)
+        if (idx === -1) {
+          return
+        }
+        const newItems = [...items.slice(0, idx), ...items.slice(idx + 1)]
+        onFilter(newItems, name)
+        return newItems
+      })
+    }
+  }
 
   return (
     <details open={open} className={filterStyle}>
