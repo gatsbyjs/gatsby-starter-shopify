@@ -17,14 +17,7 @@ const Navigation = () => {
   `)
 
   return (
-    <div
-      className={navStyle}
-      as="nav"
-      direction={['column', 'row']}
-      fontSize="lg"
-      alignItems="center"
-      sx={{ 'a.active': { fontWeight: `medium` } }}
-    >
+    <div className={navStyle}>
       <Link p={2} to="/products/" activeClassName="active">
         All Products
       </Link>

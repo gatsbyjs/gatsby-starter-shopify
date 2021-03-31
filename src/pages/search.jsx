@@ -4,8 +4,17 @@ import queryString from 'query-string'
 import { graphql, useStaticQuery } from 'gatsby'
 import Layout from '../components/layout'
 import { CheckFilter } from '../components/check-filter'
+import ProductCard from '../components/product-card'
+
 import { useProductSearch } from '../utils/hooks'
-import { main, search, results, filters } from './search-page.module.css'
+import {
+  main,
+  search,
+  results,
+  filters,
+  productList,
+  productListItem,
+} from './search-page.module.css'
 
 const SearchPage = () => {
   const {
@@ -51,39 +60,41 @@ const SearchPage = () => {
     `RELEVANCE`
   )
 
-  const createUrlString = React.useCallback(
-    (searchTerm, newItems = [], filterName = undefined) => {
-      // only add filters to the url when not all options are selected
-      const shouldFilterType =
-        productTypes.length !== selectedProductTypes.length
-      const shouldFilterBrand = vendors.length !== selectedVendors.length
-      const shouldFilterTags = tags.length !== selectedTags.length
+  const createUrlString = (
+    searchTerm,
+    newItems = [],
+    filterName = undefined
+  ) => {
+    // only add filters to the url when not all options are selected
+    const shouldFilterType = productTypes.length !== selectedProductTypes.length
+    const shouldFilterBrand = vendors.length !== selectedVendors.length
+    const shouldFilterTags = tags.length !== selectedTags.length
 
-      return `search?${queryString.stringify({
-        s: searchTerm,
-        Type: shouldFilterType ? selectedProductTypes : undefined,
-        Brands: shouldFilterBrand ? selectedVendors : undefined,
-        Tags: shouldFilterTags ? selectedTags : undefined,
-        [filterName]: newItems.length
-          ? newItems.filter(Boolean).join(',')
-          : undefined,
-      })}`
-    }
-  )
+    return `search?${queryString.stringify({
+      s: searchTerm,
+      Type: shouldFilterType ? selectedProductTypes : undefined,
+      Brands: shouldFilterBrand ? selectedVendors : undefined,
+      Tags: shouldFilterTags ? selectedTags : undefined,
+      [filterName]: newItems.length
+        ? newItems.filter(Boolean).join(',')
+        : undefined,
+    })}`
+  }
 
-  const onSearch = React.useCallback((newSearchTerm) => {
+  const onSearch = (newSearchTerm) => {
     setSearchTerm(newSearchTerm)
     window.history.replaceState({}, null, createUrlString(newSearchTerm))
-  })
+  }
 
-  const onFilter = React.useCallback((newItems, filterName) => {
+  const onFilter = (newItems, filterName) => {
     window.history.replaceState(
       {},
       null,
       createUrlString(searchTerm, newItems, filterName)
     )
-  })
+  }
 
+  console.log(data)
   return (
     <Layout>
       <div className={main}>
@@ -122,9 +133,21 @@ const SearchPage = () => {
           />
         </section>
         <section className={results}>
-          <ul>
+          <ul className={productList}>
             {data?.products?.edges?.map(({ node }) => (
-              <li>{node.title}</li>
+              <li className={productListItem}>
+                <ProductCard
+                  product={{
+                    title: node.title,
+                    priceRangeV2: node.priceRangeV2,
+                    slug: `${node.slug}`,
+                    images: [],
+                    storefrontImages: node.images,
+                    vendor: node.vendor,
+                  }}
+                  key={node.id}
+                />
+              </li>
             ))}
           </ul>
         </section>

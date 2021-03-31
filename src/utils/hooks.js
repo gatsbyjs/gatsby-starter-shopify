@@ -8,6 +8,18 @@ query ($query: String!, $sortKey: ProductSortKeys, $count: Int!) {
       edges {
         node {
           title
+          vendor
+          slug: handle
+          priceRangeV2: priceRange {
+            minVariantPrice {
+              currencyCode
+              amount
+            }
+            maxVariantPrice {
+              currencyCode
+              amount
+            }
+          }
           id
           images(first: 1) {
             edges {
