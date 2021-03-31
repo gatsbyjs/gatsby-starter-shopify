@@ -1,14 +1,11 @@
 import * as React from 'react'
-import { chakra, useColorModeValue } from '@chakra-ui/react'
-
 const defaultId = `skip-to-content`
 
 const SkipNavLink = ({ children = `Skip to content`, contentId, ...props }) => {
   const id = contentId || defaultId
-  const background = useColorModeValue(`bg`, `dark.bg`)
 
   return (
-    <chakra.a
+    <a
       {...props}
       border={0}
       height="1px"
@@ -22,7 +19,7 @@ const SkipNavLink = ({ children = `Skip to content`, contentId, ...props }) => {
         position: `fixed`,
         top: `10px`,
         left: `10px`,
-        background,
+        outline: `1px dashed red`,
         zIndex: `skipLink`,
         width: `auto`,
         height: `auto`,
@@ -31,7 +28,7 @@ const SkipNavLink = ({ children = `Skip to content`, contentId, ...props }) => {
       data-skip-to-content
     >
       {children}
-    </chakra.a>
+    </a>
   )
 }
 

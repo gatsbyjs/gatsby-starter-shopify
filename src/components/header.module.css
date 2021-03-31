@@ -32,6 +32,6 @@
 }
 
 .logoSpan:hover {
-  color: #4299e199;
+  color:var(--blue-hover);
   text-decoration: none;
 }
