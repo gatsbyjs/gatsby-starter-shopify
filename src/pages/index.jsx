@@ -41,7 +41,7 @@ export const query = graphql`
 const IndexPage = ({ data }) => {
   return (
     <Layout>
-      <main className={mainBackground}>
+      <main className={mainBackground} id="#main">
         <div className={container}>
           10k products and 25k variants. Shopify, Gatsby, Gatsby Cloud.
           Instantly preview content, build in seconds.

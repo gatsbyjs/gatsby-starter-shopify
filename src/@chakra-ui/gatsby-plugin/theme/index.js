@@ -7,7 +7,6 @@ import { createBreakpoints } from '@chakra-ui/theme-tools'
  */
 
 // Global styles
-import styles from './styles'
 
 // Components overrides & custom
 import Container from './components/container'
@@ -26,7 +25,6 @@ const breakpoints = createBreakpoints({
 })
 
 const theme = extendTheme({
-  styles,
   space: sizes,
   sizes,
   colors,
