@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useLocation } from '@reach/router'
 import queryString from 'query-string'
 import { graphql, useStaticQuery } from 'gatsby'
+import slugify from 'slugify'
 import { CgSearch } from 'react-icons/cg'
 import Layout from '../components/layout'
 import { CheckFilter } from '../components/check-filter'
@@ -103,7 +104,6 @@ const SearchPage = () => {
     setSortKey(event.target.value)
   }
 
-  console.log(data)
   return (
     <Layout>
       <div className={main}>
@@ -165,7 +165,9 @@ const SearchPage = () => {
                     product={{
                       title: node.title,
                       priceRangeV2: node.priceRangeV2,
-                      slug: `${node.slug}`,
+                      slug: `/products/${slugify(node.productType, {
+                        lower: true,
+                      })}/${node.handle}`,
                       images: [],
                       storefrontImages: node.images,
                       vendor: node.vendor,

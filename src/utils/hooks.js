@@ -9,7 +9,8 @@ query ($query: String!, $sortKey: ProductSortKeys, $count: Int!) {
         node {
           title
           vendor
-          slug: handle
+          productType
+          handle
           priceRangeV2: priceRange {
             minVariantPrice {
               currencyCode
