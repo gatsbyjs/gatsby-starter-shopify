@@ -43,7 +43,14 @@ export function CheckFilter({
         </summary>
       )}
       {items.map((item) => (
-        <label key={item}>
+        <label
+          style={{
+            color: selectedItems.includes(item)
+              ? `inherit`
+              : `var(--black-fade-40)`,
+          }}
+          key={item}
+        >
           <input
             type="checkbox"
             onChange={toggleItem}

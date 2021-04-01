@@ -138,6 +138,7 @@ const SearchPage = () => {
             setSelectedItems={setSelectedProductTypes}
             onFilter={onFilter}
           />
+          <hr />
           <CheckFilter
             name="Brands"
             items={vendors}
@@ -145,6 +146,7 @@ const SearchPage = () => {
             setSelectedItems={setSelectedVendors}
             onFilter={onFilter}
           />
+          <hr />
           <CheckFilter
             open={false}
             name="Tags"

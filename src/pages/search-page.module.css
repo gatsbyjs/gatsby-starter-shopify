@@ -13,6 +13,13 @@
   padding-top: 0;
 }
 
+.filters details {
+  margin-bottom: var(--size-2xl);
+}
+.filters * + details {
+  margin-top: var(--size-2xl);
+}
+
 .results {
   grid-area: results;
 }

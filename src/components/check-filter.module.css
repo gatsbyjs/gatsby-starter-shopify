@@ -4,6 +4,7 @@
 
 .filterStyle label {
   cursor: pointer;
+  margin-top: 2px;
 }
 
 .filterStyle summary {
