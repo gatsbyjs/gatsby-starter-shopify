@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { filterStyle } from './check-filter.module.css'
+import { filterStyle, summary, clearButton } from './check-filter.module.css'
 export function CheckFilter({
   items,
   name,
@@ -28,9 +28,20 @@ export function CheckFilter({
     }
   }
 
+  const clearItems = () => {
+    setSelectedItems([])
+  }
+
   return (
     <details open={open} className={filterStyle}>
-      {name && <summary>{name}</summary>}
+      {name && (
+        <summary className={summary}>
+          {name}{' '}
+          <button className={clearButton} onClick={clearItems}>
+            Clear
+          </button>
+        </summary>
+      )}
       {items.map((item) => (
         <label key={item}>
           <input

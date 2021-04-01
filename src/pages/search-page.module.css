@@ -9,6 +9,8 @@
 
 .filters {
   grid-area: filters;
+  padding: var(--size-xl);
+  padding-top: 0;
 }
 
 .results {
@@ -20,9 +22,13 @@
 }
 
 .search {
+  position: relative;
   grid-area: search;
-  display: flex;
   height: min-content;
+  display: grid;
+  grid-gap: var(--size-2xl);
+  grid-template-columns: auto max-content;
+  align-items: center;
 }
 
 .search input {
@@ -34,6 +40,17 @@
   padding: var(--size-md);
   padding-left: 3rem;
   height: 3em;
+}
+
+.searchIcon {
+  position: absolute;
+  top: calc(50% - 12px);
+  left: 12px;
+}
+
+.sortSelector {
+  padding-left: var(--size-2xl);
+  padding-right: var(--size-2xl);
 }
 
 .productList {

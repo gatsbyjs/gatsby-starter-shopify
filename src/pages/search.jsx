@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useLocation } from '@reach/router'
 import queryString from 'query-string'
 import { graphql, useStaticQuery } from 'gatsby'
+import { CgSearch } from 'react-icons/cg'
 import Layout from '../components/layout'
 import { CheckFilter } from '../components/check-filter'
 import ProductCard from '../components/product-card'
@@ -10,6 +11,8 @@ import { useProductSearch } from '../utils/hooks'
 import {
   main,
   search,
+  searchIcon,
+  sortSelector,
   results,
   filters,
   productList,
@@ -47,6 +50,8 @@ const SearchPage = () => {
 
   const [searchTerm, setSearchTerm] = React.useState(queryParams.s)
 
+  const [sortKey, setSortKey] = React.useState(`RELEVANCE`)
+
   const [{ data, fetching }] = useProductSearch(
     {
       term: searchTerm,
@@ -57,7 +62,7 @@ const SearchPage = () => {
       allVendors: vendors,
       allTags: tags,
     },
-    `RELEVANCE`
+    sortKey
   )
 
   const createUrlString = (
@@ -94,21 +99,38 @@ const SearchPage = () => {
     )
   }
 
+  const onChangeSort = (event) => {
+    setSortKey(event.target.value)
+  }
+
   console.log(data)
   return (
     <Layout>
       <div className={main}>
         <div className={search}>
+          <CgSearch className={searchIcon} size={24} />
           <input
             type="search"
             value={searchTerm}
             onChange={(e) => onSearch(e.currentTarget.value)}
             placeholder="Search..."
           />
+          <div className={sortSelector}>
+            Sort by{' '}
+            <select
+              name="sort"
+              id="sort"
+              value={sortKey}
+              onChange={onChangeSort}
+            >
+              <option value="PRICE">Price</option>
+              <option value="RELEVANCE">Relevance</option>
+              <option value="TITLE">Title</option>
+              <option value="VENDOR">Vendor</option>
+            </select>
+          </div>
         </div>
         <section className={filters}>
-          <span>{fetching ? 'Loading...' : ' '}</span>
-
           <CheckFilter
             name="Type"
             items={productTypes}
@@ -134,21 +156,25 @@ const SearchPage = () => {
         </section>
         <section className={results}>
           <ul className={productList}>
-            {data?.products?.edges?.map(({ node }) => (
-              <li className={productListItem}>
-                <ProductCard
-                  product={{
-                    title: node.title,
-                    priceRangeV2: node.priceRangeV2,
-                    slug: `${node.slug}`,
-                    images: [],
-                    storefrontImages: node.images,
-                    vendor: node.vendor,
-                  }}
-                  key={node.id}
-                />
-              </li>
-            ))}
+            {fetching ? (
+              <span>{'Loading...'}</span>
+            ) : (
+              data?.products?.edges?.map(({ node }) => (
+                <li className={productListItem}>
+                  <ProductCard
+                    product={{
+                      title: node.title,
+                      priceRangeV2: node.priceRangeV2,
+                      slug: `${node.slug}`,
+                      images: [],
+                      storefrontImages: node.images,
+                      vendor: node.vendor,
+                    }}
+                    key={node.id}
+                  />
+                </li>
+              ))
+            )}
           </ul>
         </section>
       </div>
