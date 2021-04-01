@@ -3,9 +3,24 @@
   --black-fade-40: #979797;
   --black-fade-10: #e2e2e2;
   --black-fade-5: #eeeeee;
-  --blue-hover:#4299e199;
+  --blue-hover: #4299e199;
   --border-radius: 8px;
   --size-sm: 4px;
   --size-md: 8px;
   --size-lg: 16px;
+  --solid: 1;
+  --dense: 1.25;
+  --default: 1.5;
+  --tracked: 0.075em;
+  --tight: -0.015em;
+  --body: 400;
+  --semiBold: 600;
+  --bold: 700;
+  --text-xs: 12px;
+--text-sm: 14px;
+--text-md: 16px;
+--text-lg: 18px;
+--text-xl: 20px;
+--text-2xl: 24px;
+--text-4xl:36px;
 }

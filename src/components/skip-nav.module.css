@@ -13,5 +13,5 @@
 
 .navLink:focus{
     top:10px;
-    outline: 3px solid #000 ;
+    outline: 3px solid rgb(1, 131, 218) ;
 }
