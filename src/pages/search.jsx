@@ -51,7 +51,7 @@ const SearchPage = () => {
 
   const [searchTerm, setSearchTerm] = React.useState(queryParams.s)
 
-  const [sortKey, setSortKey] = React.useState(`RELEVANCE`)
+  const [sortKey, setSortKey] = React.useState(queryParams.sort ?? `RELEVANCE`)
 
   const [{ data, fetching }] = useProductSearch(
     {
@@ -66,11 +66,12 @@ const SearchPage = () => {
     sortKey
   )
 
-  const createUrlString = (
+  const createUrlString = ({
     searchTerm,
     newItems = [],
-    filterName = undefined
-  ) => {
+    filterName = undefined,
+    sortKey,
+  }) => {
     // only add filters to the url when not all options are selected
     const shouldFilterType = productTypes.length !== selectedProductTypes.length
     const shouldFilterBrand = vendors.length !== selectedVendors.length
@@ -78,9 +79,10 @@ const SearchPage = () => {
 
     return `search?${queryString.stringify({
       s: searchTerm,
-      Type: shouldFilterType ? selectedProductTypes : undefined,
-      Brands: shouldFilterBrand ? selectedVendors : undefined,
-      Tags: shouldFilterTags ? selectedTags : undefined,
+      sort: sortKey,
+      Type: shouldFilterType ? selectedProductTypes.join(',') : undefined,
+      Brands: shouldFilterBrand ? selectedVendors.join(',') : undefined,
+      Tags: shouldFilterTags ? selectedTags.join(',') : undefined,
       [filterName]: newItems.length
         ? newItems.filter(Boolean).join(',')
         : undefined,
@@ -89,19 +91,28 @@ const SearchPage = () => {
 
   const onSearch = (newSearchTerm) => {
     setSearchTerm(newSearchTerm)
-    window.history.replaceState({}, null, createUrlString(newSearchTerm))
+    window.history.replaceState(
+      {},
+      null,
+      createUrlString({ searchTerm: newSearchTerm, sortKey })
+    )
   }
 
   const onFilter = (newItems, filterName) => {
     window.history.replaceState(
       {},
       null,
-      createUrlString(searchTerm, newItems, filterName)
+      createUrlString({ searchTerm, newItems, filterName, sortKey })
     )
   }
 
-  const onChangeSort = (event) => {
-    setSortKey(event.target.value)
+  const onChangeSort = (sortKey) => {
+    setSortKey(sortKey)
+    window.history.replaceState(
+      {},
+      null,
+      createUrlString({ searchTerm, sortKey: sortKey })
+    )
   }
 
   return (
@@ -121,7 +132,7 @@ const SearchPage = () => {
               name="sort"
               id="sort"
               value={sortKey}
-              onChange={onChangeSort}
+              onChange={(e) => onChangeSort(e.target.value)}
             >
               <option value="PRICE">Price</option>
               <option value="RELEVANCE">Relevance</option>
