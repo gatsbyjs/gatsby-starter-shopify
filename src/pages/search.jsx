@@ -173,7 +173,7 @@ const SearchPage = () => {
               <span>{'Loading...'}</span>
             ) : (
               data?.products?.edges?.map(({ node }) => (
-                <li className={productListItem}>
+                <li className={productListItem} key={node.id}>
                   <ProductCard
                     product={{
                       title: node.title,
