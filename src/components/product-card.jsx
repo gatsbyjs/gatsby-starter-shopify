@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { graphql } from 'gatsby'
 import { GatsbyImage } from 'gatsby-plugin-image'
+import { getShopifyImage } from 'gatsby-source-shopify-experimental'
 import Link from './link'
 import formatPrice from '../utils/format-price'
 import {
@@ -18,12 +19,28 @@ const ProductCard = ({ product }) => {
     slug,
     images: [firstImage],
     vendor,
+    storefrontImages,
   } = product
 
   const price = formatPrice(
     priceRangeV2.minVariantPrice.currencyCode,
     priceRangeV2.minVariantPrice.amount
   )
+
+  let storefrontImageData = {}
+  if (storefrontImages) {
+    const storefrontImage = storefrontImages.edges[0].node
+    try {
+      storefrontImageData = getShopifyImage({
+        image: storefrontImage,
+        layout: 'fixed',
+        width: 200,
+        height: 200,
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   return (
     <Link
@@ -32,7 +49,10 @@ const ProductCard = ({ product }) => {
       aria-label={`View ${title} product page`}
     >
       <div className={productImageStyle} data-name="product-image-box">
-        <GatsbyImage alt="" image={firstImage.gatsbyImageData} />
+        <GatsbyImage
+          alt=""
+          image={firstImage?.gatsbyImageData ?? storefrontImageData}
+        />
       </div>
       <div className={productDetailsStyle}>
         <div className={productVendorStyle}>{vendor}</div>

@@ -1,5 +1,9 @@
 .productCardStyle {
   max-width: 400px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .productImageStyle {
@@ -12,6 +16,7 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
+  width: 100%;
 }
 
 .productVendorStyle {
@@ -20,5 +25,9 @@
 }
 
 .productHeadingStyle {
+  width: 100%;
   font-size: 18px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

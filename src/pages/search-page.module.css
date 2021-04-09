@@ -1,0 +1,73 @@
+.main {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: min-content 1fr;
+  grid-template-areas:
+    'filters search'
+    'filters results';
+}
+
+.filters {
+  grid-area: filters;
+  padding: var(--size-xl);
+  padding-top: 0;
+}
+
+.filters details {
+  margin-bottom: var(--size-2xl);
+}
+.filters * + details {
+  margin-top: var(--size-2xl);
+}
+
+.results {
+  grid-area: results;
+}
+
+.results ul {
+  flex-direction: column;
+}
+
+.search {
+  position: relative;
+  grid-area: search;
+  height: min-content;
+  display: grid;
+  grid-gap: var(--size-2xl);
+  grid-template-columns: auto max-content;
+  align-items: center;
+}
+
+.search input {
+  display: block;
+  flex: 1;
+  font-size: 18px;
+  background-color: var(--black-fade-5);
+  border-radius: var(--border-radius);
+  padding: var(--size-md);
+  padding-left: 3rem;
+  height: 3em;
+}
+
+.searchIcon {
+  position: absolute;
+  top: calc(50% - 12px);
+  left: 12px;
+}
+
+.sortSelector {
+  padding-left: var(--size-2xl);
+  padding-right: var(--size-2xl);
+}
+
+.productList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-gap: var(--size-lg);
+}
+
+.productListItem {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

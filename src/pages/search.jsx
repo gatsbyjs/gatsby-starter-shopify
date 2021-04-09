@@ -1,10 +1,29 @@
 import * as React from 'react'
-import { graphql, Link, useStaticQuery } from 'gatsby'
-import { SearchSidebar } from '../components/search-sidebar'
+import { useLocation } from '@reach/router'
+import queryString from 'query-string'
+import { graphql, useStaticQuery } from 'gatsby'
+import slugify from 'slugify'
+import { CgSearch } from 'react-icons/cg'
 import Layout from '../components/layout'
+import { CheckFilter } from '../components/check-filter'
+import ProductCard from '../components/product-card'
+
+import { useProductSearch } from '../utils/hooks'
+import {
+  main,
+  search,
+  searchIcon,
+  sortSelector,
+  results,
+  filters,
+  productList,
+  productListItem,
+} from './search-page.module.css'
 
 const SearchPage = () => {
-  const data = useStaticQuery(graphql`
+  const {
+    products: { productTypes, vendors, tags },
+  } = useStaticQuery(graphql`
     query {
       products: allShopifyProduct {
         productTypes: distinct(field: productType)
@@ -13,10 +32,167 @@ const SearchPage = () => {
       }
     }
   `)
+  // get query params from URL if they exist, to populate default state
+  const location = useLocation()
+  const queryParams = queryString.parse(location.search)
+
+  const initialTags = queryParams.Tag ? [...queryParams?.Tag?.split(',')] : tags
+  const [selectedTags, setSelectedTags] = React.useState(initialTags)
+  const initialVendors = queryParams.Brand
+    ? [...queryParams?.Brand?.split(',')]
+    : vendors
+  const [selectedVendors, setSelectedVendors] = React.useState(initialVendors)
+  const initialProductTypes = queryParams.Type
+    ? [...queryParams?.Type?.split(',')]
+    : productTypes
+  const [selectedProductTypes, setSelectedProductTypes] = React.useState(
+    initialProductTypes
+  )
+
+  const [searchTerm, setSearchTerm] = React.useState(queryParams.s)
+
+  const [sortKey, setSortKey] = React.useState(queryParams.sort ?? `RELEVANCE`)
+
+  const [{ data, fetching }] = useProductSearch(
+    {
+      term: searchTerm,
+      selectedTags,
+      selectedProductTypes,
+      selectedVendors,
+      allProductTypes: productTypes,
+      allVendors: vendors,
+      allTags: tags,
+    },
+    sortKey
+  )
+
+  const createUrlString = ({
+    searchTerm,
+    newItems = [],
+    filterName = undefined,
+    sortKey,
+  }) => {
+    // only add filters to the url when not all options are selected
+    const shouldFilterType = productTypes.length !== selectedProductTypes.length
+    const shouldFilterBrand = vendors.length !== selectedVendors.length
+    const shouldFilterTags = tags.length !== selectedTags.length
+
+    return `search?${queryString.stringify({
+      s: searchTerm,
+      sort: sortKey,
+      Type: shouldFilterType ? selectedProductTypes.join(',') : undefined,
+      Brands: shouldFilterBrand ? selectedVendors.join(',') : undefined,
+      Tags: shouldFilterTags ? selectedTags.join(',') : undefined,
+      [filterName]: newItems.length
+        ? newItems.filter(Boolean).join(',')
+        : undefined,
+    })}`
+  }
+
+  const onSearch = (newSearchTerm) => {
+    setSearchTerm(newSearchTerm)
+    window.history.replaceState(
+      {},
+      null,
+      createUrlString({ searchTerm: newSearchTerm, sortKey })
+    )
+  }
+
+  const onFilter = (newItems, filterName) => {
+    window.history.replaceState(
+      {},
+      null,
+      createUrlString({ searchTerm, newItems, filterName, sortKey })
+    )
+  }
+
+  const onChangeSort = (sortKey) => {
+    setSortKey(sortKey)
+    window.history.replaceState(
+      {},
+      null,
+      createUrlString({ searchTerm, sortKey: sortKey })
+    )
+  }
 
   return (
     <Layout>
-      <SearchSidebar {...data.products} />
+      <div className={main}>
+        <div className={search}>
+          <CgSearch className={searchIcon} size={24} />
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={(e) => onSearch(e.currentTarget.value)}
+            placeholder="Search..."
+          />
+          <div className={sortSelector}>
+            Sort by{' '}
+            <select
+              name="sort"
+              id="sort"
+              value={sortKey}
+              onChange={(e) => onChangeSort(e.target.value)}
+            >
+              <option value="PRICE">Price</option>
+              <option value="RELEVANCE">Relevance</option>
+              <option value="TITLE">Title</option>
+              <option value="VENDOR">Vendor</option>
+            </select>
+          </div>
+        </div>
+        <section className={filters}>
+          <CheckFilter
+            name="Type"
+            items={productTypes}
+            selectedItems={selectedProductTypes}
+            setSelectedItems={setSelectedProductTypes}
+            onFilter={onFilter}
+          />
+          <hr />
+          <CheckFilter
+            name="Brands"
+            items={vendors}
+            selectedItems={selectedVendors}
+            setSelectedItems={setSelectedVendors}
+            onFilter={onFilter}
+          />
+          <hr />
+          <CheckFilter
+            open={false}
+            name="Tags"
+            items={tags}
+            selectedItems={selectedTags}
+            setSelectedItems={setSelectedTags}
+            onFilter={onFilter}
+          />
+        </section>
+        <section className={results}>
+          <ul className={productList}>
+            {fetching ? (
+              <span>{'Loading...'}</span>
+            ) : (
+              data?.products?.edges?.map(({ node }) => (
+                <li className={productListItem} key={node.id}>
+                  <ProductCard
+                    product={{
+                      title: node.title,
+                      priceRangeV2: node.priceRangeV2,
+                      slug: `/products/${slugify(node.productType, {
+                        lower: true,
+                      })}/${node.handle}`,
+                      images: [],
+                      storefrontImages: node.images,
+                      vendor: node.vendor,
+                    }}
+                    key={node.id}
+                  />
+                </li>
+              ))
+            )}
+          </ul>
+        </section>
+      </div>
     </Layout>
   )
 }

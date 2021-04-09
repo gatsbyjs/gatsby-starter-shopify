@@ -3,6 +3,18 @@ import * as React from 'react'
 import Client from 'shopify-buy'
 import { useDisclosure } from '@chakra-ui/react'
 
+import { createClient, Provider as UrlqProvider } from 'urql'
+
+const urqlClient = createClient({
+  url: `https://${process.env.GATSBY_SHOPIFY_STORE_URL}/api/2021-01/graphql.json`,
+  fetchOptions: {
+    headers: {
+      'X-Shopify-Storefront-Access-Token':
+        process.env.GATSBY_STOREFRONT_ACCESS_TOKEN,
+    },
+  },
+})
+
 const client = Client.buildClient(
   {
     domain: process.env.GATSBY_SHOPIFY_STORE_URL,
@@ -120,20 +132,22 @@ export const StoreProvider = ({ children }) => {
   }
 
   return (
-    <StoreContext.Provider
-      value={{
-        ...defaultValues,
-        addVariantToCart,
-        removeLineItem,
-        updateLineItem,
-        checkout,
-        loading,
-        isOpen,
-        onOpen,
-        onClose,
-      }}
-    >
-      {children}
-    </StoreContext.Provider>
+    <UrlqProvider value={urqlClient}>
+      <StoreContext.Provider
+        value={{
+          ...defaultValues,
+          addVariantToCart,
+          removeLineItem,
+          updateLineItem,
+          checkout,
+          loading,
+          isOpen,
+          onOpen,
+          onClose,
+        }}
+      >
+        {children}
+      </StoreContext.Provider>
+    </UrlqProvider>
   )
 }

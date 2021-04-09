@@ -8,6 +8,8 @@
   --size-sm: 4px;
   --size-md: 8px;
   --size-lg: 16px;
+  --size-xl: 24px;
+  --size-2xl: 32px;
   --solid: 1;
   --dense: 1.25;
   --default: 1.5;
@@ -17,10 +19,10 @@
   --semiBold: 600;
   --bold: 700;
   --text-xs: 12px;
---text-sm: 14px;
---text-md: 16px;
---text-lg: 18px;
---text-xl: 20px;
---text-2xl: 24px;
---text-4xl:36px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-4xl: 36px;
 }
