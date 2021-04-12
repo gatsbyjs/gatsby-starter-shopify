@@ -1,5 +1,10 @@
 .productCardStyle {
   max-width: 400px;
+  transition: all .3s ease-in-out;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    padding: 0.5rem;
 }
 
 .productImageStyle {

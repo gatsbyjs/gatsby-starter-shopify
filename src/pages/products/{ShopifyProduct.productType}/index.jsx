@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Container, VisuallyHidden } from '@chakra-ui/react'
 import { graphql } from 'gatsby'
 import Layout from '../../../components/layout'
 import ProductListing from '../../../components/product-listing'
@@ -12,7 +11,7 @@ const ProductTypeIndex = ({
   return (
     <Layout>
       <SEO title={`Category: ${productType}`} />
-      <VisuallyHidden as="h1">{productType}</VisuallyHidden>
+      <h1>{productType}</h1>
       <div>
         <ProductListing products={products} />
       </div>

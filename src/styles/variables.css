@@ -17,10 +17,10 @@
   --semiBold: 600;
   --bold: 700;
   --text-xs: 12px;
---text-sm: 14px;
---text-md: 16px;
---text-lg: 18px;
---text-xl: 20px;
---text-2xl: 24px;
---text-4xl:36px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-4xl: 36px;
 }

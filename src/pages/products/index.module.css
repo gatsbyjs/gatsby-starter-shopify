@@ -1,0 +1,21 @@
+.container{
+    width: 100%;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    padding-inline-start: 1rem;
+    padding-inline-end: 1rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.visuallyHidden {
+	border: 0;
+    visibility: hidden;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}

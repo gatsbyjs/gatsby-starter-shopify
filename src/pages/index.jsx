@@ -1,6 +1,5 @@
 import * as React from 'react'
 import {
-  mainBackground,
   container,
   em,
   gridItemOne,
@@ -41,7 +40,7 @@ export const query = graphql`
 const IndexPage = ({ data }) => {
   return (
     <Layout>
-      <main className={mainBackground} id="#main">
+      <main id="#main">
         <div className={container}>
           10k products and 25k variants. Shopify, Gatsby, Gatsby Cloud.
           Instantly preview content, build in seconds.
@@ -77,7 +76,6 @@ const IndexPage = ({ data }) => {
           ))}
         </div>
       </main>
-      {/* <pre> {JSON.stringify(data, null, 2)}</pre> */}
     </Layout>
   )
 }

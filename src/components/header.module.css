@@ -35,3 +35,11 @@
   color:var(--primary-color-8);
   text-decoration: none;
 }
+
+.spacer{
+  width:1px ;
+  height: 60px;
+  min-width: 1px;
+  min-height: 60px;
+  display: block;
+}

@@ -4,11 +4,11 @@ import {
   headerSectionStyle,
   containerStyle,
   logoSpan,
+  spacer,
 } from './header.module.css'
 import { Link } from 'gatsby'
 import { StoreContext } from '../context/store-context'
 import Logo from '../icons/logo'
-import Spacer from './spacer'
 import Cart from './cart'
 import Navigation from './navigation'
 import CartButton from './cart-button'
@@ -43,8 +43,7 @@ const Header = () => {
           </div>
         </header>
       </main>
-      <span> </span>
-      <Spacer size="navigationHeight" axis="vertical" />
+      <span className={spacer}> </span>
     </div>
   )
 }
