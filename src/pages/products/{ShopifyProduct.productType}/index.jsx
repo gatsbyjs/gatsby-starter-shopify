@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { graphql } from 'gatsby'
 import Layout from '../../../components/layout'
+import { visuallyHidden } from './product-page.module.css'
 import ProductListing from '../../../components/product-listing'
 import SEO from '../../../components/seo'
 
@@ -11,7 +12,7 @@ const ProductTypeIndex = ({
   return (
     <Layout>
       <SEO title={`Category: ${productType}`} />
-      <h1>{productType}</h1>
+      <h1 className={visuallyHidden}>{productType}</h1>
       <div>
         <ProductListing products={products} />
       </div>
