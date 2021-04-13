@@ -3,39 +3,51 @@ import { useEffect, useState } from 'react'
 import { useQuery } from 'urql'
 
 const ProductsQuery = `
-query ($query: String!, $sortKey: ProductSortKeys, $count: Int!) {
-   products( query: $query, sortKey: $sortKey, first: $count) {
-      edges {
-        node {
-          title
-          vendor
-          productType
-          handle
-          priceRangeV2: priceRange {
-            minVariantPrice {
-              currencyCode
-              amount
-            }
-            maxVariantPrice {
-              currencyCode
-              amount
-            }
+query ($query: String!, $sortKey: ProductSortKeys, $count: Int!, $after: String, $before: String) {
+  products(
+    query: $query
+    sortKey: $sortKey
+    first: $count
+    after: $after
+    before: $before
+  ) {
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+    }
+    edges {
+      cursor
+      node {
+        title
+        vendor
+        productType
+        handle
+        priceRangeV2: priceRange {
+          minVariantPrice {
+            currencyCode
+            amount
           }
-          id
-          images(first: 1) {
-            edges {
-              node {
-                originalSrc
-                width
-                height
-                altText
-              }
+          maxVariantPrice {
+            currencyCode
+            amount
+          }
+        }
+        id
+        images(first: 1) {
+          edges {
+            node {
+              originalSrc
+              width
+              height
+              altText
             }
           }
         }
       }
     }
   }
+}
+
 `
 
 function makeFilter(field, allItems, selectedItems) {
@@ -61,7 +73,9 @@ export function useProductSearch(
   },
   sortKey,
   pause = false,
-  count = 20
+  count = 20,
+  after,
+  before
 ) {
   const [query, setQuery] = useState('')
 
@@ -95,7 +109,7 @@ export function useProductSearch(
 
   return useQuery({
     query: ProductsQuery,
-    variables: { query, sortKey, count },
+    variables: { query, sortKey, count, after, before },
     pause,
   })
 }

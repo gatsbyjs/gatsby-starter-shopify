@@ -18,6 +18,8 @@ import {
   filters,
   productList,
   productListItem,
+  pagination,
+  selectedItem,
 } from './search-page.module.css'
 
 export const query = graphql`
@@ -56,6 +58,10 @@ const SearchPage = ({
 
   const [sortKey, setSortKey] = React.useState(queryParams.sort ?? `RELEVANCE`)
 
+  const [cursor, setCursor] = React.useState(-1)
+  const [pages, setPages] = React.useState([])
+  const [hasFoundLastPage, setHasFoundLastPage] = React.useState(false)
+
   const [{ data, fetching }] = useProductSearch(
     {
       term: searchTerm,
@@ -66,8 +72,22 @@ const SearchPage = ({
       allVendors: vendors,
       allTags: tags,
     },
-    sortKey
+    sortKey,
+    false,
+    10,
+    cursor === -1 ? undefined : pages[cursor]
   )
+
+  React.useEffect(() => {
+    if (cursor === pages.length - 1 && data?.products?.pageInfo?.hasNextPage) {
+      setPages(
+        Array.from(new Set([...pages, data?.products?.edges?.[0]?.cursor]))
+      )
+    }
+    if (data?.products?.pageInfo && !data.products.pageInfo.hasNextPage) {
+      setHasFoundLastPage(true)
+    }
+  }, [data])
 
   const createUrlString = ({
     searchTerm,
@@ -114,7 +134,7 @@ const SearchPage = ({
     window.history.replaceState(
       {},
       null,
-      createUrlString({ searchTerm, sortKey: sortKey })
+      createUrlString({ searchTerm, sortKey })
     )
   }
 
@@ -172,28 +192,56 @@ const SearchPage = ({
         </section>
         <section className={results}>
           <ul className={productList}>
-            {fetching ? (
-              <span>{'Loading...'}</span>
-            ) : (
-              data?.products?.edges?.map(({ node }) => (
-                <li className={productListItem} key={node.id}>
-                  <ProductCard
-                    product={{
-                      title: node.title,
-                      priceRangeV2: node.priceRangeV2,
-                      slug: `/products/${slugify(node.productType, {
-                        lower: true,
-                      })}/${node.handle}`,
-                      images: [],
-                      storefrontImages: node.images,
-                      vendor: node.vendor,
-                    }}
-                    key={node.id}
-                  />
-                </li>
-              ))
-            )}
+            {data?.products?.edges?.map(({ node }) => (
+              <li className={productListItem} key={node.id}>
+                <ProductCard
+                  product={{
+                    title: node.title,
+                    priceRangeV2: node.priceRangeV2,
+                    slug: `/products/${slugify(node.productType, {
+                      lower: true,
+                    })}/${node.handle}`,
+                    images: [],
+                    storefrontImages: node.images,
+                    vendor: node.vendor,
+                  }}
+                  key={node.id}
+                />
+              </li>
+            ))}
           </ul>
+          <nav className={pagination}>
+            <button
+              disabled={!data?.products?.pageInfo?.hasPreviousPage}
+              onClick={() => setCursor(cursor - 1)}
+              aria-label="Previous page"
+            >
+              &lt;
+            </button>
+            <button
+              onClick={() => setCursor(-1)}
+              className={cursor === -1 && selectedItem}
+            >
+              1
+            </button>
+            {pages.map((page, index) => (
+              <button
+                onClick={() => setCursor(index)}
+                className={index === cursor && selectedItem}
+              >
+                {index === pages.length - 1 && !hasFoundLastPage
+                  ? '…'
+                  : index + 2}
+              </button>
+            ))}
+            <button
+              disabled={!data?.products?.pageInfo?.hasNextPage}
+              onClick={() => setCursor(cursor + 1)}
+              aria-label="Next page"
+            >
+              &gt;
+            </button>
+          </nav>
         </section>
       </div>
     </Layout>
