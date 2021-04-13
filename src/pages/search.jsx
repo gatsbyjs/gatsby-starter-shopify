@@ -20,18 +20,21 @@ import {
   productListItem,
 } from './search-page.module.css'
 
-const SearchPage = () => {
-  const {
-    products: { productTypes, vendors, tags },
-  } = useStaticQuery(graphql`
-    query {
-      products: allShopifyProduct {
-        productTypes: distinct(field: productType)
-        tags: distinct(field: tags)
-        vendors: distinct(field: vendor)
-      }
+export const query = graphql`
+  query {
+    products: allShopifyProduct {
+      productTypes: distinct(field: productType)
+      tags: distinct(field: tags)
+      vendors: distinct(field: vendor)
     }
-  `)
+  }
+`
+
+const SearchPage = ({
+  data: {
+    products: { productTypes, vendors, tags },
+  },
+}) => {
   // get query params from URL if they exist, to populate default state
   const location = useLocation()
   const queryParams = queryString.parse(location.search)
