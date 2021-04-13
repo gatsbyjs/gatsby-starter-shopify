@@ -16,23 +16,21 @@ import formatPrice from '../utils/format-price'
 
 export const query = graphql`
   query {
-    allShopifyProduct {
-      edges {
-        node {
-          title
-          slug: gatsbyPath(
-            filePath: "/products/{ShopifyProduct.productType}/{ShopifyProduct.handle}"
-          )
-          description
-          priceRangeV2 {
-            maxVariantPrice {
-              amount
-              currencyCode
-            }
+    shopifyCollection(handle: { eq: "frontpage" }) {
+      products {
+        title
+        slug: gatsbyPath(
+          filePath: "/products/{ShopifyProduct.productType}/{ShopifyProduct.handle}"
+        )
+        description
+        priceRangeV2 {
+          maxVariantPrice {
+            amount
+            currencyCode
           }
-          images {
-            gatsbyImageData(aspectRatio: 1, width: 640)
-          }
+        }
+        images {
+          gatsbyImageData(aspectRatio: 1, width: 640)
         }
       }
     }
@@ -59,7 +57,7 @@ const IndexPage = ({ data }) => {
         </div>
 
         <div className={gridItemOne}>
-          {data.allShopifyProduct.edges.map(({ node: product }) => (
+          {data.shopifyCollection.products.map((product) => (
             <Link to={product.slug} className={productCardStyle}>
               <div className={productImageStyle} data-name="product-image-box">
                 <GatsbyImage image={product.images[0].gatsbyImageData} />
