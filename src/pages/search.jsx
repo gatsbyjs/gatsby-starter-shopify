@@ -80,7 +80,12 @@ const SearchPage = ({
   React.useEffect(() => {
     if (cursor === pages.length - 1 && data?.products?.pageInfo?.hasNextPage) {
       setPages(
-        Array.from(new Set([...pages, data?.products?.edges?.[0]?.cursor]))
+        Array.from(
+          new Set([
+            ...pages,
+            data?.products?.edges?.[data.products.edges.length - 1]?.cursor,
+          ])
+        )
       )
     }
     if (data?.products?.pageInfo && !data.products.pageInfo.hasNextPage) {
