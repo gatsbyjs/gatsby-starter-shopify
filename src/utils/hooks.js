@@ -67,6 +67,10 @@ function makeQueryStringValue(allItems, selectedItems) {
   return selectedItems
 }
 
+/**
+ * Extracts default search values from the query string
+ * @param {string} query
+ */
 export function getValuesFromQueryString(query) {
   const {
     q: term,
@@ -74,8 +78,10 @@ export function getValuesFromQueryString(query) {
     p: productTypes,
     t: tags,
     v: vendors,
+    x: maxPrice,
+    n: minPrice,
   } = queryString.parse(query)
-  return { term, sortKey, productTypes, tags, vendors }
+  return { term, sortKey, productTypes, tags, vendors, maxPrice, minPrice }
 }
 
 export function useProductSearch(
@@ -90,7 +96,7 @@ export function useProductSearch(
     minPrice,
     maxPrice,
   },
-  sortKey = 'RELEVANCE',
+  sortKey,
   pause = false,
   count = 20,
   after,
@@ -98,12 +104,16 @@ export function useProductSearch(
 ) {
   const [query, setQuery] = useState('')
 
+  // Relevance is non-deterministic if there is no query, so we default to "trending" instead
+  const initialSortKey = term ? 'RELEVANCE' : 'BEST_SELLING'
+
   useEffect(() => {
     const parts = [
       term,
       makeFilter('tag', allTags, selectedTags),
       makeFilter('product_type', allProductTypes, selectedProductTypes),
       makeFilter('vendor', allVendors, selectedVendors),
+      // Exclude empty filter values
     ].filter(Boolean)
 
     if (maxPrice) {
@@ -114,21 +124,24 @@ export function useProductSearch(
     }
 
     const qs = queryString.stringify({
-      q: term,
-      s: sortKey === 'RELEVANCE' ? undefined : sortKey,
+      // Don't show if falsy
+      q: term || undefined,
+      x: maxPrice || undefined,
+      n: minPrice || undefined,
+      // Don't show if sort order is default
+      s: sortKey === initialSortKey ? undefined : sortKey,
+      // Don't show if all values are selected
       p: makeQueryStringValue(allProductTypes, selectedProductTypes),
       v: makeQueryStringValue(allVendors, selectedVendors),
       t: makeQueryStringValue(allTags, selectedTags),
-      maxPrice,
-      minPrice,
     })
 
+    // Sorry IE, you can live without search persistence
     if (window.location.search !== qs && 'URL' in window) {
       const url = new URL(window.location.href)
       url.search = qs
       window.history.replaceState({}, null, url.toString())
     }
-
     setQuery(parts.join(' '))
   }, [
     term,
@@ -144,7 +157,13 @@ export function useProductSearch(
 
   return useQuery({
     query: ProductsQuery,
-    variables: { query, sortKey, count, after, before },
+    variables: {
+      query,
+      sortKey: sortKey || initialSortKey,
+      count,
+      after,
+      before,
+    },
     pause,
   })
 }

@@ -43,9 +43,7 @@ const SearchPage = ({
 
   const [searchTerm, setSearchTerm] = React.useState(queryParams.term)
 
-  const [sortKey, setSortKey] = React.useState(
-    queryParams.sortKey ?? `RELEVANCE`
-  )
+  const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
 
   const [selectedTags, setSelectedTags] = React.useState(
     queryParams.tags || tags
@@ -109,10 +107,11 @@ const SearchPage = ({
               value={sortKey}
               onChange={(e) => setSortKey(e.target.value)}
             >
-              <option value="PRICE">Price</option>
               <option value="RELEVANCE">Relevance</option>
+              <option value="PRICE">Price</option>
               <option value="TITLE">Title</option>
-              <option value="VENDOR">Vendor</option>
+              <option value="CREATED_AT">New items</option>
+              <option value="BEST_SELLING">Trending</option>
             </select>
           </div>
         </div>
@@ -169,11 +168,11 @@ const SearchPage = ({
             </button>
             <button
               onClick={() => setCursor(-1)}
-              className={cursor === -1 && selectedItem}
+              className={cursor === -1 ? selectedItem : undefined}
             >
               1
             </button>
-            {pages.map((page, index) => (
+            {pages.map((_, index) => (
               <button
                 onClick={() => setCursor(index)}
                 className={index === cursor ? selectedItem : undefined}
