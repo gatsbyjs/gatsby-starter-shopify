@@ -30,7 +30,7 @@
     "@sindresorhus/slugify": "^1.1.0",
     "babel-plugin-react-icons": "^0.1.1",
     "framer-motion": "^3.10.2",
-    "gatsby": "next",
+    "gatsby": "^3.3.0",
     "gatsby-plugin-gatsby-cloud": "^2.0.0",
     "gatsby-plugin-image": "next",
     "gatsby-plugin-react-helmet": "^4.0.0",

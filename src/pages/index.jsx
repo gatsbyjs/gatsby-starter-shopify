@@ -12,7 +12,7 @@ import {
 import { GatsbyImage } from 'gatsby-plugin-image'
 import Layout from '../components/layout'
 import { graphql, Link } from 'gatsby'
-import formatPrice from '../utils/format-price'
+import { formatPrice } from '../utils/format-price'
 
 export const query = graphql`
   query {
@@ -39,7 +39,7 @@ export const query = graphql`
 const IndexPage = ({ data }) => {
   return (
     <Layout>
-      <main className={mainBackground} id="#main">
+      <main className={mainBackground}>
         <div className={container}>
           10k products and 25k variants. Shopify, Gatsby, Gatsby Cloud.
           Instantly preview content, build in seconds.
@@ -75,7 +75,6 @@ const IndexPage = ({ data }) => {
           ))}
         </div>
       </main>
-      {/* <pre> {JSON.stringify(data, null, 2)}</pre> */}
     </Layout>
   )
 }
