@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useLocation } from '@reach/router'
 import { graphql } from 'gatsby'
 import slugify from 'slugify'
-import { CgSearch } from 'react-icons/cg'
+import { CgSearch, CgChevronRight, CgChevronLeft } from 'react-icons/cg'
 import Layout from '../components/layout'
 import { CheckFilter } from '../components/check-filter'
 import ProductCard from '../components/product-card'
@@ -204,7 +204,7 @@ const SearchPage = ({
                 onClick={() => setCursor(cursor - 1)}
                 aria-label="Previous page"
               >
-                &lt;
+                <CgChevronLeft />
               </button>
               <button
                 onClick={() => setCursor(-1)}
@@ -228,7 +228,7 @@ const SearchPage = ({
                 onClick={() => setCursor(cursor + 1)}
                 aria-label="Next page"
               >
-                &gt;
+                <CgChevronRight />
               </button>
             </nav>
           )}

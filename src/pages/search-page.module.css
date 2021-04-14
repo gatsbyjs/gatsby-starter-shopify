@@ -83,6 +83,8 @@
   height: var(--size-2xl);
   font-size: var(--text-sm);
   border-radius: var(--border-radius-sm);
+  display: grid;
+  place-items: center;
 }
 
 .pagination > button:hover {
