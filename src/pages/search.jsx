@@ -1,14 +1,13 @@
 import * as React from 'react'
 import { useLocation } from '@reach/router'
-import queryString from 'query-string'
-import { graphql, useStaticQuery } from 'gatsby'
+import { graphql } from 'gatsby'
 import slugify from 'slugify'
 import { CgSearch } from 'react-icons/cg'
 import Layout from '../components/layout'
 import { CheckFilter } from '../components/check-filter'
 import ProductCard from '../components/product-card'
 
-import { useProductSearch } from '../utils/hooks'
+import { getValuesFromQueryString, useProductSearch } from '../utils/hooks'
 import {
   main,
   search,
@@ -39,24 +38,26 @@ const SearchPage = ({
 }) => {
   // get query params from URL if they exist, to populate default state
   const location = useLocation()
-  const queryParams = queryString.parse(location.search)
 
-  const initialTags = queryParams.Tag ? [...queryParams?.Tag?.split(',')] : tags
-  const [selectedTags, setSelectedTags] = React.useState(initialTags)
-  const initialVendors = queryParams.Brand
-    ? [...queryParams?.Brand?.split(',')]
-    : vendors
-  const [selectedVendors, setSelectedVendors] = React.useState(initialVendors)
-  const initialProductTypes = queryParams.Type
-    ? [...queryParams?.Type?.split(',')]
-    : productTypes
-  const [selectedProductTypes, setSelectedProductTypes] = React.useState(
-    initialProductTypes
+  const queryParams = getValuesFromQueryString(location.search)
+
+  const [searchTerm, setSearchTerm] = React.useState(queryParams.term)
+
+  const [sortKey, setSortKey] = React.useState(
+    queryParams.sortKey ?? `RELEVANCE`
   )
 
-  const [searchTerm, setSearchTerm] = React.useState(queryParams.s)
+  const [selectedTags, setSelectedTags] = React.useState(
+    queryParams.tags || tags
+  )
 
-  const [sortKey, setSortKey] = React.useState(queryParams.sort ?? `RELEVANCE`)
+  const [selectedVendors, setSelectedVendors] = React.useState(
+    queryParams.vendors || vendors
+  )
+
+  const [selectedProductTypes, setSelectedProductTypes] = React.useState(
+    queryParams.productTypes || productTypes
+  )
 
   const [cursor, setCursor] = React.useState(-1)
   const [pages, setPages] = React.useState([])
@@ -89,55 +90,6 @@ const SearchPage = ({
     }
   }, [data])
 
-  const createUrlString = ({
-    searchTerm,
-    newItems = [],
-    filterName = undefined,
-    sortKey,
-  }) => {
-    // only add filters to the url when not all options are selected
-    const shouldFilterType = productTypes.length !== selectedProductTypes.length
-    const shouldFilterBrand = vendors.length !== selectedVendors.length
-    const shouldFilterTags = tags.length !== selectedTags.length
-
-    return `search?${queryString.stringify({
-      s: searchTerm,
-      sort: sortKey,
-      Type: shouldFilterType ? selectedProductTypes.join(',') : undefined,
-      Brands: shouldFilterBrand ? selectedVendors.join(',') : undefined,
-      Tags: shouldFilterTags ? selectedTags.join(',') : undefined,
-      [filterName]: newItems.length
-        ? newItems.filter(Boolean).join(',')
-        : undefined,
-    })}`
-  }
-
-  const onSearch = (newSearchTerm) => {
-    setSearchTerm(newSearchTerm)
-    window.history.replaceState(
-      {},
-      null,
-      createUrlString({ searchTerm: newSearchTerm, sortKey })
-    )
-  }
-
-  const onFilter = (newItems, filterName) => {
-    window.history.replaceState(
-      {},
-      null,
-      createUrlString({ searchTerm, newItems, filterName, sortKey })
-    )
-  }
-
-  const onChangeSort = (sortKey) => {
-    setSortKey(sortKey)
-    window.history.replaceState(
-      {},
-      null,
-      createUrlString({ searchTerm, sortKey })
-    )
-  }
-
   return (
     <Layout>
       <div className={main}>
@@ -146,7 +98,7 @@ const SearchPage = ({
           <input
             type="search"
             value={searchTerm}
-            onChange={(e) => onSearch(e.currentTarget.value)}
+            onChange={(e) => setSearchTerm(e.currentTarget.value)}
             placeholder="Search..."
           />
           <div className={sortSelector}>
@@ -155,7 +107,7 @@ const SearchPage = ({
               name="sort"
               id="sort"
               value={sortKey}
-              onChange={(e) => onChangeSort(e.target.value)}
+              onChange={(e) => setSortKey(e.target.value)}
             >
               <option value="PRICE">Price</option>
               <option value="RELEVANCE">Relevance</option>
@@ -170,7 +122,6 @@ const SearchPage = ({
             items={productTypes}
             selectedItems={selectedProductTypes}
             setSelectedItems={setSelectedProductTypes}
-            onFilter={onFilter}
           />
           <hr />
           <CheckFilter
@@ -178,7 +129,6 @@ const SearchPage = ({
             items={vendors}
             selectedItems={selectedVendors}
             setSelectedItems={setSelectedVendors}
-            onFilter={onFilter}
           />
           <hr />
           <CheckFilter
@@ -187,7 +137,6 @@ const SearchPage = ({
             items={tags}
             selectedItems={selectedTags}
             setSelectedItems={setSelectedTags}
-            onFilter={onFilter}
           />
         </section>
         <section className={results}>
@@ -227,7 +176,8 @@ const SearchPage = ({
             {pages.map((page, index) => (
               <button
                 onClick={() => setCursor(index)}
-                className={index === cursor && selectedItem}
+                className={index === cursor ? selectedItem : undefined}
+                key={`search${index}`}
               >
                 {index === pages.length - 1 && !hasFoundLastPage
                   ? '…'

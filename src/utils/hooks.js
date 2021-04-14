@@ -1,5 +1,6 @@
 // @ts-check
 import { useEffect, useState } from 'react'
+import queryString from 'query-string'
 import { useQuery } from 'urql'
 
 const ProductsQuery = `
@@ -59,6 +60,24 @@ function makeFilter(field, allItems, selectedItems) {
     .join(' OR ')})`
 }
 
+function makeQueryStringValue(allItems, selectedItems) {
+  if (allItems.length === selectedItems.length) {
+    return []
+  }
+  return selectedItems
+}
+
+export function getValuesFromQueryString(query) {
+  const {
+    q: term,
+    s: sortKey,
+    p: productTypes,
+    t: tags,
+    v: vendors,
+  } = queryString.parse(query)
+  return { term, sortKey, productTypes, tags, vendors }
+}
+
 export function useProductSearch(
   {
     term,
@@ -71,7 +90,7 @@ export function useProductSearch(
     minPrice,
     maxPrice,
   },
-  sortKey,
+  sortKey = 'RELEVANCE',
   pause = false,
   count = 20,
   after,
@@ -92,6 +111,22 @@ export function useProductSearch(
     }
     if (minPrice) {
       parts.push(`variants.price:>=${minPrice}`)
+    }
+
+    const qs = queryString.stringify({
+      q: term,
+      s: sortKey === 'RELEVANCE' ? undefined : sortKey,
+      p: makeQueryStringValue(allProductTypes, selectedProductTypes),
+      v: makeQueryStringValue(allVendors, selectedVendors),
+      t: makeQueryStringValue(allTags, selectedTags),
+      maxPrice,
+      minPrice,
+    })
+
+    if (window.location.search !== qs && 'URL' in window) {
+      const url = new URL(window.location.href)
+      url.search = qs
+      window.history.replaceState({}, null, url.toString())
     }
 
     setQuery(parts.join(' '))

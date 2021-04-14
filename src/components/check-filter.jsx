@@ -6,13 +6,11 @@ export function CheckFilter({
   selectedItems = [],
   setSelectedItems,
   open = true,
-  onFilter,
 }) {
   const toggleItem = ({ currentTarget: input }) => {
     if (input.checked) {
       setSelectedItems((items) => {
         const newItems = [...items, input.value]
-        onFilter(newItems, name)
         return newItems
       })
     } else {
@@ -22,7 +20,6 @@ export function CheckFilter({
           return
         }
         const newItems = [...items.slice(0, idx), ...items.slice(idx + 1)]
-        onFilter(newItems, name)
         return newItems
       })
     }
