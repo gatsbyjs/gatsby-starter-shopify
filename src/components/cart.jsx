@@ -18,7 +18,7 @@ import { FiArrowRight as ArrowIcon } from 'react-icons/fi'
 import { StoreContext } from '../context/store-context'
 import LineItem from './line-item'
 import Spacer from './spacer'
-import formatPrice from '../utils/format-price'
+import { formatPrice } from '../utils/format-price'
 import { ChakraHelpersContext } from '../context/chakra-helpers-context'
 
 const TableHeading = ({ children, ...rest }) => (
