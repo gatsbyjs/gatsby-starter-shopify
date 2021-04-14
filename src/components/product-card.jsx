@@ -3,7 +3,7 @@ import { graphql } from 'gatsby'
 import { GatsbyImage } from 'gatsby-plugin-image'
 import { getShopifyImage } from 'gatsby-source-shopify-experimental'
 import Link from './link'
-import formatPrice from '../utils/format-price'
+import { formatPrice } from '../utils/format-price'
 import {
   productCardStyle,
   productHeadingStyle,

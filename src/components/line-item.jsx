@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import debounce from 'lodash.debounce'
 import { StoreContext } from '../context/store-context'
-import formatPrice from '../utils/format-price'
+import { formatPrice } from '../utils/format-price'
 
 const LineItem = ({ item }) => {
   const {
