@@ -124,8 +124,15 @@ const SearchPage = ({
     }
   }, [selectedTags, selectedProductTypes, selectedVendors, sortKey, searchTerm])
 
-  const productList =
-    (!data?.products?.edges ? products.edges : data?.products?.edges) || []
+  const isDefault =
+    selectedTags.length === tags.length &&
+    selectedProductTypes.length === productTypes.length &&
+    selectedVendors.length === vendors.length &&
+    !searchTerm &&
+    !sortKey &&
+    cursor === -1
+
+  const productList = (isDefault ? products.edges : data?.products?.edges) || []
 
   return (
     <Layout>
