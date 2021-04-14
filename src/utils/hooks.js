@@ -104,8 +104,8 @@ export function useProductSearch(
 ) {
   const [query, setQuery] = useState('')
 
-  // Relevance is non-deterministic if there is no query, so we default to "trending" instead
-  const initialSortKey = term ? 'RELEVANCE' : 'BEST_SELLING'
+  // Relevance is non-deterministic if there is no query, so we default to "title" instead
+  const initialSortKey = term ? 'RELEVANCE' : 'TITLE'
 
   useEffect(() => {
     const parts = [
@@ -153,6 +153,7 @@ export function useProductSearch(
     selectedVendors,
     minPrice,
     maxPrice,
+    sortKey,
   ])
 
   return useQuery({
