@@ -21,7 +21,10 @@ export default Products
 
 export const query = graphql`
   {
-    products: allShopifyProduct(sort: { fields: publishedAt, order: ASC }) {
+    products: allShopifyProduct(
+      sort: { fields: publishedAt, order: ASC }
+      limit: 100
+    ) {
       nodes {
         ...ProductCard
       }

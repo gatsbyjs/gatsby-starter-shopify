@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Link } from 'gatsby'
 import { footerStyle } from './footer.module.css'
 
 const Footer = () => {

@@ -1,10 +1,10 @@
 .productCardStyle {
   max-width: 400px;
-  transition: all .3s ease-in-out;
-    cursor: pointer;
-    text-decoration: none;
-    outline: none;
-    padding: 0.5rem;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  padding: 0.5rem;
 }
 
 .productImageStyle {
@@ -17,6 +17,7 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
+  width: 100%;
 }
 
 .productVendorStyle {
@@ -25,5 +26,9 @@
 }
 
 .productHeadingStyle {
+  width: 100%;
   font-size: 18px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

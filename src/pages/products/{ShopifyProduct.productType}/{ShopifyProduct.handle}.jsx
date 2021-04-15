@@ -27,7 +27,7 @@ import { GatsbyImage, getSrc } from 'gatsby-plugin-image'
 import Layout from '../../../components/layout'
 import { StoreContext } from '../../../context/store-context'
 import AddToCart from '../../../components/add-to-cart'
-import formatPrice from '../../../utils/format-price'
+import { formatPrice } from '../../../utils/format-price'
 import SEO from '../../../components/seo'
 
 const Product = ({ data: { product, suggestions } }) => {
@@ -246,7 +246,7 @@ export const query = graphql`
       }
       storefrontId
       images {
-        altText
+        # altText
         gatsbyImageData(layout: CONSTRAINED, width: 640)
       }
       variants {

@@ -4,9 +4,20 @@
 
 .filterStyle label {
   cursor: pointer;
+  margin-top: 2px;
 }
 
 .filterStyle summary {
   font-weight: bold;
   text-transform: uppercase;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.clearButton {
+  color: var(--black-fade-40);
 }
