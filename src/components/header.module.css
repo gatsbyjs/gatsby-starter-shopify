@@ -21,6 +21,7 @@
   z-index: docked;
   height: 10%;
   align-items: center;
+  padding-bottom: 60px;
 }
 
 .logoSpan {
@@ -32,6 +33,6 @@
 }
 
 .logoSpan:hover {
-  color:var(--primary-color-8);
+  color: var(--primary-color-8);
   text-decoration: none;
 }

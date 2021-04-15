@@ -2,3 +2,20 @@
   display: flex;
   flex-direction: row;
 }
+
+.Linkstyle {
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  padding: 0.5rem;
+}
+
+.Linkstyle:hover {
+  text-decoration: underline;
+}
+
+.Linkstyle:focus {
+  box-shadow: outline;
+  outline: 1px solid rgb(39, 5, 231);
+}

@@ -154,10 +154,10 @@ const Product = ({ data: { product, suggestions } }) => {
             )}
 
             <div className={infodiv}>
-              <Stack spacing={4}>
+              <div>
                 <h1 className={header}>{title}</h1>
                 <p>{description}</p>
-              </Stack>
+              </div>
               <div className={priceingdiv}>
                 <h2 className={priceValue}>
                   <span>{price} </span> incl. 7% VAT plus shipping

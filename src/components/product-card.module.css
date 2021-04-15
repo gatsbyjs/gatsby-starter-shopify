@@ -1,9 +1,10 @@
 .productCardStyle {
   max-width: 400px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  padding: 0.5rem;
 }
 
 .productImageStyle {

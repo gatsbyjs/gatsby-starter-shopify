@@ -18,8 +18,7 @@ import { FiArrowRight as ArrowIcon } from 'react-icons/fi'
 import { StoreContext } from '../context/store-context'
 import LineItem from './line-item'
 import Spacer from './spacer'
-import { formatPrice } from '../utils/format-price'
-import { ChakraHelpersContext } from '../context/chakra-helpers-context'
+import formatPrice from '../utils/format-price'
 
 const TableHeading = ({ children, ...rest }) => (
   <Box fontSize="18px" fontWeight="medium" {...rest}>
@@ -40,7 +39,6 @@ const CalcText = ({ children, ...rest }) => (
 
 const Cart = ({ isOpen, onClose, btnRef }) => {
   const { checkout, loading } = React.useContext(StoreContext)
-  const { primaryColorScheme } = React.useContext(ChakraHelpersContext)
   const emptyCart = checkout.lineItems.length === 0
   const priceColor = useColorModeValue(`primary`, `dark.primary`)
   const isDemoStore = process.env.GATSBY_DEMO_STORE
@@ -111,17 +109,12 @@ const Cart = ({ isOpen, onClose, btnRef }) => {
                   </Box>
                   <Spacer as={GridItem} colSpan="2" axis="vertical" size={6} />
                   {isDemoStore ? (
-                    <Button
-                      gridColumn="span 2/span 2"
-                      colorScheme={primaryColorScheme}
-                      disabled={true}
-                    >
+                    <Button gridColumn="span 2/span 2" disabled={true}>
                       Demo Store - Checkout Disabled
                     </Button>
                   ) : (
                     <Button
                       gridColumn="span 2/span 2"
-                      colorScheme={primaryColorScheme}
                       onClick={handleCheckout}
                       disabled={loading}
                       rightIcon={<ArrowIcon />}

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Container, VisuallyHidden } from '@chakra-ui/react'
+import { container, visuallyHidden } from './index.module.css'
 import { graphql } from 'gatsby'
 import Layout from '../../components/layout'
 import ProductListing from '../../components/product-listing'
@@ -9,10 +9,10 @@ const Products = ({ data: { products } }) => {
   return (
     <Layout>
       <SEO title="All Products in Hexagon Store" />
-      <VisuallyHidden as="h1">Products</VisuallyHidden>
-      <Container py={20}>
+      <h1 className={visuallyHidden}>Products</h1>
+      <div className={container}>
         <ProductListing products={products} />
-      </Container>
+      </div>
     </Layout>
   )
 }

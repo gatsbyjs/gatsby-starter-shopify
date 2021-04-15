@@ -1,8 +1,7 @@
 import * as React from 'react'
-import { graphql } from 'gatsby'
+import { graphql, Link } from 'gatsby'
 import { GatsbyImage } from 'gatsby-plugin-image'
 import { getShopifyImage } from 'gatsby-source-shopify-experimental'
-import Link from './link'
 import { formatPrice } from '../utils/format-price'
 import {
   productCardStyle,

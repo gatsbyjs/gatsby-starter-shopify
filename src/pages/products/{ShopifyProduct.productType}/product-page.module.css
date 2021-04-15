@@ -20,6 +20,7 @@
 }
 
 .productImage {
+  background-color: var(--black-fade-5);
   margin-bottom: 2px;
   overflow-x: scroll;
 }
@@ -85,4 +86,16 @@ form {
 form > fieldset {
   margin-right: 6px;
   margin-top: 24px;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

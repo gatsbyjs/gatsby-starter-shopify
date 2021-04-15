@@ -1,7 +1,6 @@
-import { graphql, useStaticQuery } from 'gatsby'
+import { graphql, useStaticQuery, Link } from 'gatsby'
 import * as React from 'react'
-import Link from './link'
-import { navStyle } from './navigation.module.css'
+import { navStyle, Linkstyle } from './navigation.module.css'
 import slugify from '@sindresorhus/slugify'
 // In theory this could also be defined inside "gatsby-config.js" and then queried via GraphQL
 
@@ -17,21 +16,26 @@ const Navigation = () => {
   `)
 
   return (
-    <div className={navStyle}>
-      <Link p={2} to="/products/" activeClassName="active">
+    <nav
+      className={navStyle}
+      direction={['column', 'row']}
+      fontSize="lg"
+      sx={{ 'a.active': { fontWeight: `medium` } }}
+    >
+      <Link className={Linkstyle} to="/products/" activeClassName="active">
         All Products
       </Link>
       {productTypes.map((name) => (
         <Link
           key={name}
-          p={2}
+          className={Linkstyle}
           to={`/products/${slugify(name)}`}
           activeClassName="active"
         >
           {name}
         </Link>
       ))}
-    </div>
+    </nav>
   )
 }
 
