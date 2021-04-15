@@ -1,14 +1,13 @@
 import * as React from 'react'
 import { useLocation } from '@reach/router'
-import queryString from 'query-string'
-import { graphql, useStaticQuery } from 'gatsby'
+import { graphql } from 'gatsby'
 import slugify from 'slugify'
-import { CgSearch } from 'react-icons/cg'
+import { CgSearch, CgChevronRight, CgChevronLeft } from 'react-icons/cg'
 import Layout from '../components/layout'
 import { CheckFilter } from '../components/check-filter'
 import ProductCard from '../components/product-card'
 
-import { useProductSearch } from '../utils/hooks'
+import { getValuesFromQueryString, useProductSearch } from '../utils/hooks'
 import {
   main,
   search,
@@ -16,45 +15,75 @@ import {
   sortSelector,
   results,
   filters,
-  productList,
+  productList as productListStyle,
   productListItem,
+  pagination,
+  selectedItem,
 } from './search-page.module.css'
-
 export const query = graphql`
   query {
-    products: allShopifyProduct {
+    meta: allShopifyProduct {
       productTypes: distinct(field: productType)
       tags: distinct(field: tags)
       vendors: distinct(field: vendor)
+    }
+    products: allShopifyProduct(limit: 10, sort: { fields: title }) {
+      edges {
+        node {
+          title
+          vendor
+          productType
+          handle
+          priceRangeV2 {
+            minVariantPrice {
+              currencyCode
+              amount
+            }
+            maxVariantPrice {
+              currencyCode
+              amount
+            }
+          }
+          id
+          images {
+            gatsbyImageData(aspectRatio: 1, width: 200, layout: FIXED)
+          }
+        }
+      }
     }
   }
 `
 
 const SearchPage = ({
   data: {
-    products: { productTypes, vendors, tags },
+    meta: { productTypes, vendors, tags },
+    products,
   },
 }) => {
   // get query params from URL if they exist, to populate default state
   const location = useLocation()
-  const queryParams = queryString.parse(location.search)
 
-  const initialTags = queryParams.Tag ? [...queryParams?.Tag?.split(',')] : tags
-  const [selectedTags, setSelectedTags] = React.useState(initialTags)
-  const initialVendors = queryParams.Brand
-    ? [...queryParams?.Brand?.split(',')]
-    : vendors
-  const [selectedVendors, setSelectedVendors] = React.useState(initialVendors)
-  const initialProductTypes = queryParams.Type
-    ? [...queryParams?.Type?.split(',')]
-    : productTypes
-  const [selectedProductTypes, setSelectedProductTypes] = React.useState(
-    initialProductTypes
+  const queryParams = getValuesFromQueryString(location.search)
+
+  const [searchTerm, setSearchTerm] = React.useState(queryParams.term)
+
+  const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
+
+  const [selectedTags, setSelectedTags] = React.useState(
+    queryParams.tags || tags
   )
 
-  const [searchTerm, setSearchTerm] = React.useState(queryParams.s)
+  const [selectedVendors, setSelectedVendors] = React.useState(
+    queryParams.vendors || vendors
+  )
 
-  const [sortKey, setSortKey] = React.useState(queryParams.sort ?? `RELEVANCE`)
+  const [selectedProductTypes, setSelectedProductTypes] = React.useState(
+    queryParams.productTypes || productTypes
+  )
+
+  const [cursor, setCursor] = React.useState(-1)
+  const [pages, setPages] = React.useState([])
+  const [hasFoundLastPage, setHasFoundLastPage] = React.useState(false)
 
   const [{ data, fetching }] = useProductSearch(
     {
@@ -66,57 +95,44 @@ const SearchPage = ({
       allVendors: vendors,
       allTags: tags,
     },
-    sortKey
+    sortKey,
+    false,
+    10,
+    cursor === -1 ? undefined : pages[cursor]
   )
 
-  const createUrlString = ({
-    searchTerm,
-    newItems = [],
-    filterName = undefined,
-    sortKey,
-  }) => {
-    // only add filters to the url when not all options are selected
-    const shouldFilterType = productTypes.length !== selectedProductTypes.length
-    const shouldFilterBrand = vendors.length !== selectedVendors.length
-    const shouldFilterTags = tags.length !== selectedTags.length
+  React.useEffect(() => {
+    if (cursor === pages.length - 1 && data?.products?.pageInfo?.hasNextPage) {
+      setPages(
+        Array.from(
+          new Set([
+            ...pages,
+            data?.products?.edges?.[data.products.edges.length - 1]?.cursor,
+          ])
+        )
+      )
+    }
+    if (data?.products?.pageInfo && !data.products.pageInfo.hasNextPage) {
+      setHasFoundLastPage(true)
+    }
+  }, [data])
 
-    return `search?${queryString.stringify({
-      s: searchTerm,
-      sort: sortKey,
-      Type: shouldFilterType ? selectedProductTypes.join(',') : undefined,
-      Brands: shouldFilterBrand ? selectedVendors.join(',') : undefined,
-      Tags: shouldFilterTags ? selectedTags.join(',') : undefined,
-      [filterName]: newItems.length
-        ? newItems.filter(Boolean).join(',')
-        : undefined,
-    })}`
-  }
+  React.useEffect(() => {
+    if (cursor !== -1 && pages.length !== 0) {
+      setCursor(-1)
+      setPages([])
+    }
+  }, [selectedTags, selectedProductTypes, selectedVendors, sortKey, searchTerm])
 
-  const onSearch = (newSearchTerm) => {
-    setSearchTerm(newSearchTerm)
-    window.history.replaceState(
-      {},
-      null,
-      createUrlString({ searchTerm: newSearchTerm, sortKey })
-    )
-  }
+  const isDefault =
+    selectedTags.length === tags.length &&
+    selectedProductTypes.length === productTypes.length &&
+    selectedVendors.length === vendors.length &&
+    !searchTerm &&
+    !sortKey &&
+    cursor === -1
 
-  const onFilter = (newItems, filterName) => {
-    window.history.replaceState(
-      {},
-      null,
-      createUrlString({ searchTerm, newItems, filterName, sortKey })
-    )
-  }
-
-  const onChangeSort = (sortKey) => {
-    setSortKey(sortKey)
-    window.history.replaceState(
-      {},
-      null,
-      createUrlString({ searchTerm, sortKey: sortKey })
-    )
-  }
+  const productList = (isDefault ? products.edges : data?.products?.edges) || []
 
   return (
     <Layout>
@@ -126,7 +142,7 @@ const SearchPage = ({
           <input
             type="search"
             value={searchTerm}
-            onChange={(e) => onSearch(e.currentTarget.value)}
+            onChange={(e) => setSearchTerm(e.currentTarget.value)}
             placeholder="Search..."
           />
           <div className={sortSelector}>
@@ -135,12 +151,13 @@ const SearchPage = ({
               name="sort"
               id="sort"
               value={sortKey}
-              onChange={(e) => onChangeSort(e.target.value)}
+              onChange={(e) => setSortKey(e.target.value)}
             >
-              <option value="PRICE">Price</option>
               <option value="RELEVANCE">Relevance</option>
+              <option value="PRICE">Price</option>
               <option value="TITLE">Title</option>
-              <option value="VENDOR">Vendor</option>
+              <option value="CREATED_AT">New items</option>
+              <option value="BEST_SELLING">Trending</option>
             </select>
           </div>
         </div>
@@ -150,7 +167,6 @@ const SearchPage = ({
             items={productTypes}
             selectedItems={selectedProductTypes}
             setSelectedItems={setSelectedProductTypes}
-            onFilter={onFilter}
           />
           <hr />
           <CheckFilter
@@ -158,7 +174,6 @@ const SearchPage = ({
             items={vendors}
             selectedItems={selectedVendors}
             setSelectedItems={setSelectedVendors}
-            onFilter={onFilter}
           />
           <hr />
           <CheckFilter
@@ -167,33 +182,63 @@ const SearchPage = ({
             items={tags}
             selectedItems={selectedTags}
             setSelectedItems={setSelectedTags}
-            onFilter={onFilter}
           />
         </section>
         <section className={results}>
-          <ul className={productList}>
-            {fetching ? (
-              <span>{'Loading...'}</span>
-            ) : (
-              data?.products?.edges?.map(({ node }) => (
-                <li className={productListItem} key={node.id}>
-                  <ProductCard
-                    product={{
-                      title: node.title,
-                      priceRangeV2: node.priceRangeV2,
-                      slug: `/products/${slugify(node.productType, {
-                        lower: true,
-                      })}/${node.handle}`,
-                      images: [],
-                      storefrontImages: node.images,
-                      vendor: node.vendor,
-                    }}
-                    key={node.id}
-                  />
-                </li>
-              ))
-            )}
+          <ul className={productListStyle}>
+            {productList.map(({ node }) => (
+              <li className={productListItem} key={node.id}>
+                <ProductCard
+                  product={{
+                    title: node.title,
+                    priceRangeV2: node.priceRangeV2,
+                    slug: `/products/${slugify(node.productType, {
+                      lower: true,
+                    })}/${node.handle}`,
+                    images: node.images?.edges ? [] : node.images,
+                    storefrontImages: node.images?.edges && node.images,
+                    vendor: node.vendor,
+                  }}
+                  key={node.id}
+                />
+              </li>
+            ))}
           </ul>
+          {data?.products?.pageInfo && (
+            <nav className={pagination}>
+              <button
+                disabled={!data?.products?.pageInfo?.hasPreviousPage}
+                onClick={() => setCursor(cursor - 1)}
+                aria-label="Previous page"
+              >
+                <CgChevronLeft />
+              </button>
+              <button
+                onClick={() => setCursor(-1)}
+                className={cursor === -1 ? selectedItem : undefined}
+              >
+                1
+              </button>
+              {pages.map((_, index) => (
+                <button
+                  onClick={() => setCursor(index)}
+                  className={index === cursor ? selectedItem : undefined}
+                  key={`search${index}`}
+                >
+                  {index === pages.length - 1 && !hasFoundLastPage
+                    ? '…'
+                    : index + 2}
+                </button>
+              ))}
+              <button
+                disabled={!data?.products?.pageInfo?.hasNextPage}
+                onClick={() => setCursor(cursor + 1)}
+                aria-label="Next page"
+              >
+                <CgChevronRight />
+              </button>
+            </nav>
+          )}
         </section>
       </div>
     </Layout>

@@ -71,3 +71,32 @@
   justify-content: center;
   width: 100%;
 }
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pagination > button {
+  width: var(--size-2xl);
+  height: var(--size-2xl);
+  font-size: var(--text-sm);
+  border-radius: var(--border-radius-sm);
+  display: grid;
+  place-items: center;
+}
+
+.pagination > button:hover {
+  background-color: var(--black-fade-10);
+}
+
+.pagination > button.selectedItem {
+  background-color: var(--black-fade-10);
+  font-weight: 700;
+}
+
+.pagination > button:disabled {
+  cursor: default;
+  opacity: 0;
+}
