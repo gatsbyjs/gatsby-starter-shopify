@@ -43,7 +43,6 @@ const Header = () => {
           </div>
         </header>
       </main>
-      <span className={spacer}> </span>
     </div>
   )
 }
