@@ -29,7 +29,7 @@
   color: var(--black-fade-40);
 }
 
-.filterStyle input {
+.checkbox {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -40,12 +40,12 @@
   border-radius: var(--border-radius-sm);
 }
 
-.filterStyle input:checked {
+.checkbox:checked {
   border-color: var(--primary-color-80);
   background-color: var(--primary-color-80);
 }
 
-.filterStyle input::before {
+.checkbox::before {
   line-height: 0;
   font-size: 14px;
   font-weight: bold;

@@ -4,6 +4,7 @@ import {
   summary,
   clearButton,
   selectedLabel,
+  checkbox,
 } from './check-filter.module.css'
 export function CheckFilter({
   items,
@@ -51,6 +52,7 @@ export function CheckFilter({
         >
           <input
             type="checkbox"
+            className={checkbox}
             onChange={toggleItem}
             value={item}
             checked={selectedItems.includes(item)}
