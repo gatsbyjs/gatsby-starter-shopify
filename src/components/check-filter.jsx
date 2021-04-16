@@ -1,5 +1,10 @@
 import * as React from 'react'
-import { filterStyle, summary, clearButton } from './check-filter.module.css'
+import {
+  filterStyle,
+  summary,
+  clearButton,
+  selectedLabel,
+} from './check-filter.module.css'
 export function CheckFilter({
   items,
   name,
@@ -41,11 +46,7 @@ export function CheckFilter({
       )}
       {items.map((item) => (
         <label
-          style={{
-            color: selectedItems.includes(item)
-              ? `inherit`
-              : `var(--black-fade-40)`,
-          }}
+          className={selectedItems.includes(item) ? selectedLabel : undefined}
           key={item}
         >
           <input

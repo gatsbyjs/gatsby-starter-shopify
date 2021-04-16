@@ -5,11 +5,18 @@
 .filterStyle label {
   cursor: pointer;
   margin-top: 2px;
+  color: var(--gray-50);
+}
+
+.filterStyle label.selectedLabel {
+  font-weight: var(--semiBold);
+  color: black;
 }
 
 .filterStyle summary {
   font-weight: bold;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 .summary {
@@ -20,4 +27,28 @@
 
 .clearButton {
   color: var(--black-fade-40);
+}
+
+.filterStyle input {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  appearance: none;
+  border: 1px var(--black-fade-40) solid;
+  width: var(--size-lg);
+  height: var(--size-lg);
+  border-radius: var(--border-radius-sm);
+}
+
+.filterStyle input:checked {
+  border-color: var(--primary-color-80);
+  background-color: var(--primary-color-80);
+}
+
+.filterStyle input::before {
+  line-height: 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  content: '\2713';
 }

@@ -19,7 +19,14 @@ import {
   productListItem,
   pagination,
   selectedItem,
+  priceFilterStyle,
+  summary,
+  clearButton,
+  priceFields,
 } from './search-page.module.css'
+import { getCurrencySymbol } from '../utils/format-price'
+import { CurrencyField } from '../components/currency-field'
+
 export const query = graphql`
   query {
     meta: allShopifyProduct {
@@ -63,9 +70,13 @@ const SearchPage = ({
   // get query params from URL if they exist, to populate default state
   const location = useLocation()
 
+  // These default values come from the page query string
   const queryParams = getValuesFromQueryString(location.search)
 
   const [searchTerm, setSearchTerm] = React.useState(queryParams.term)
+
+  const [minPrice, setMinPrice] = React.useState(queryParams.term)
+  const [maxPrice, setMaxPrice] = React.useState('')
 
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
 
@@ -94,6 +105,8 @@ const SearchPage = ({
       allProductTypes: productTypes,
       allVendors: vendors,
       allTags: tags,
+      minPrice,
+      maxPrice,
     },
     sortKey,
     false,
@@ -102,6 +115,7 @@ const SearchPage = ({
   )
 
   React.useEffect(() => {
+    // There there's a new page of data available then add it to the pagination list
     if (cursor === pages.length - 1 && data?.products?.pageInfo?.hasNextPage) {
       setPages(
         Array.from(
@@ -112,11 +126,13 @@ const SearchPage = ({
         )
       )
     }
+    // Once we've found the last page we can update the UI to remove the ellipsis
     if (data?.products?.pageInfo && !data.products.pageInfo.hasNextPage) {
       setHasFoundLastPage(true)
     }
   }, [data])
 
+  // If the filters change then reset the pagination
   React.useEffect(() => {
     if (cursor !== -1 && pages.length !== 0) {
       setCursor(-1)
@@ -124,13 +140,26 @@ const SearchPage = ({
     }
   }, [selectedTags, selectedProductTypes, selectedVendors, sortKey, searchTerm])
 
+  // If there is no filter then we show the default products that came from the Gatsby data layer
+
   const isDefault =
     selectedTags.length === tags.length &&
     selectedProductTypes.length === productTypes.length &&
     selectedVendors.length === vendors.length &&
     !searchTerm &&
     !sortKey &&
+    !minPrice &&
+    !maxPrice &&
     cursor === -1
+
+  const currencyCode = getCurrencySymbol(
+    products?.edges?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
+  )
+
+  function clearPriceFilter() {
+    setMinPrice('')
+    setMaxPrice('')
+  }
 
   const productList = (isDefault ? products.edges : data?.products?.edges) || []
 
@@ -169,6 +198,30 @@ const SearchPage = ({
             setSelectedItems={setSelectedProductTypes}
           />
           <hr />
+          <details className={priceFilterStyle} open={true}>
+            <summary className={summary}>
+              Price
+              <button className={clearButton} onClick={clearPriceFilter}>
+                Reset
+              </button>
+            </summary>
+            <div className={priceFields}>
+              <CurrencyField
+                {...currencyCode}
+                aria-label="Minimum price"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.currentTarget.value)}
+              />{' '}
+              –{' '}
+              <CurrencyField
+                {...currencyCode}
+                aria-label="Maximum price"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.currentTarget.value)}
+              />
+            </div>
+          </details>
+          <hr />
           <CheckFilter
             name="Brands"
             items={vendors}
@@ -195,8 +248,8 @@ const SearchPage = ({
                     slug: `/products/${slugify(node.productType, {
                       lower: true,
                     })}/${node.handle}`,
-                    images: node.images?.edges ? [] : node.images,
-                    storefrontImages: node.images?.edges && node.images,
+                    images: isDefault ? node.images : [],
+                    storefrontImages: !isDefault && node.images,
                     vendor: node.vendor,
                   }}
                   key={node.id}

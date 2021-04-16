@@ -18,7 +18,8 @@
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "format": "prettier \"**/*.{md,mdx,json,yaml,js,jsx}\" --write"
+    "lint": "prettier \"**/*.{md,mdx,json,yaml,js,jsx}\" --check",
+    "format": "prettier \"**/*.{md,mdx,json,yaml,js,jsx}\"  --write"
   },
   "dependencies": {
     "@chakra-ui/gatsby-plugin": "^1.0.1",
