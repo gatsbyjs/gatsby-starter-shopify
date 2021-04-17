@@ -1,0 +1,27 @@
+.input {
+  display: block;
+  grid-area: 1/1;
+  background: none;
+  text-align: right;
+  padding: var(--size-md);
+}
+
+.symbolAfter .input {
+  text-align: left;
+}
+
+.symbolAfter .currencySymbol {
+  text-align: right;
+}
+
+.currencySymbol {
+  grid-area: 1/1;
+  color: var(--black-fade-40);
+  padding: var(--size-md);
+}
+
+.wrap {
+  display: grid;
+  background-color: var(--black-fade-5);
+  border-radius: var(--border-radius);
+}
