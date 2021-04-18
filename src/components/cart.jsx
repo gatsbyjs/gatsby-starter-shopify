@@ -18,7 +18,7 @@ import { FiArrowRight as ArrowIcon } from 'react-icons/fi'
 import { StoreContext } from '../context/store-context'
 import LineItem from './line-item'
 import Spacer from './spacer'
-import formatPrice from '../utils/format-price'
+import { formatPrice } from '../utils/format-price'
 
 const TableHeading = ({ children, ...rest }) => (
   <Box fontSize="18px" fontWeight="medium" {...rest}>
