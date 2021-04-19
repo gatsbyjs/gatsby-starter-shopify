@@ -11,17 +11,13 @@ import {
   infodiv,
   priceingdiv,
   priceValue,
+  NumberInputStyle,
+  Selectcolorfieldset,
+  selectp,
+  labelFont,
+  tagssection,
+  listfonts,
 } from './product-page.module.css'
-import {
-  Stack,
-  useColorModeValue,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Select,
-} from '@chakra-ui/react'
 import isEqual from 'lodash.isequal'
 import { GatsbyImage, getSrc } from 'gatsby-plugin-image'
 import Layout from '../../../components/layout'
@@ -99,9 +95,6 @@ const Product = ({ data: { product, suggestions } }) => {
     variant.price
   )
 
-  const bgInput = useColorModeValue(`white`, `gray.800`)
-  const priceColor = useColorModeValue(`primary`, `dark.primary`)
-
   const hasVariants = variants.length > 1
   const hasImages = images.length > 0
   const hasMultipleImages = images.length > 1
@@ -165,31 +158,27 @@ const Product = ({ data: { product, suggestions } }) => {
                 <form noValidate>
                   <fieldset>
                     <label htmlFor="quantity"></label>
-                    <NumberInput
-                      onChange={(_, value) => setQuantity(value)}
-                      value={quantity}
+
+                    <input
+                      type="number"
+                      className={NumberInputStyle}
                       id="quantity"
                       name="quantity"
-                      defaultValue={1}
-                      min={1}
-                      maxW={20}
-                    >
-                      <NumberInputField bg={bgInput} />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
+                      onChange={(_, value) => setQuantity(value)}
+                      value={quantity}
+                      min="1"
+                      max="20"
+                    />
                   </fieldset>
                   {hasVariants && (
                     <>
                       {options.map(({ id, name, values }, index) => (
                         <React.Fragment key={id}>
-                          <Stack as="fieldset" mt={4} mr={6}>
+                          <fieldset className={Selectcolorfieldset}>
                             <label htmlFor="variant"></label>
-                            <Select
+                            <select
+                              className={selectp}
                               variant="filled"
-                              bg={bgInput}
                               onChange={(event) =>
                                 handleOptionChange(index, event)
                               }
@@ -200,8 +189,8 @@ const Product = ({ data: { product, suggestions } }) => {
                                   {value}
                                 </option>
                               ))}
-                            </Select>
-                          </Stack>
+                            </select>
+                          </fieldset>
                         </React.Fragment>
                       ))}
                     </>
@@ -213,16 +202,20 @@ const Product = ({ data: { product, suggestions } }) => {
                   />
                 </form>
               </div>
+              <div style={{ paddingTop: '30px' }}>
+                <div className={tagssection}>
+                  <span className={labelFont}>Categories</span>
+                  <span className={listfonts}>{product.productType} </span>
+                </div>
+                <div className={tagssection}>
+                  <span className={labelFont}>Tags</span>
+                  <span className={listfonts}>{product.tags}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </main>
-      {/* <Container my={[20, 28]}>
-        <Heading as="h2" mb={8} fontSize="3xl" color={headingColor}>
-          More Products
-        </Heading>
-        <ProductListing products={suggestions} />
-      </Container> */}
     </Layout>
   )
 }
@@ -234,6 +227,8 @@ export const query = graphql`
     product: shopifyProduct(id: { eq: $id }) {
       title
       description
+      productType
+      tags
       priceRangeV2 {
         maxVariantPrice {
           amount
