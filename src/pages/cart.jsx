@@ -17,7 +17,6 @@ import { formatPrice } from '../utils/format-price'
 const CartPage = () => {
   const { checkout, loading } = React.useContext(StoreContext)
   const emptyCart = checkout.lineItems.length === 0
-  const isDemoStore = process.env.GATSBY_DEMO_STORE
 
   const handleCheckout = () => {
     window.open(checkout.webUrl)
