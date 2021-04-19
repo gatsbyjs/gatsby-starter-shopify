@@ -22,19 +22,17 @@ const Header = () => {
   }, 0)
 
   return (
-    <div>
-      <main className={containerStyle}>
-        <header className={headerStyle}>
-          <Link to="/" className={logoSpan}>
-            <img src={logo} width={24} height={24} alt="My store" />
-          </Link>
-          <Navigation />
-          <Link to="/search">
-            <CgSearch size={24} title="Search" />
-          </Link>
-          <CartButton quantity={quantity} />
-        </header>
-      </main>
+    <div className={containerStyle}>
+      <header className={headerStyle}>
+        <Link to="/" className={logoSpan}>
+          <img src={logo} width={24} height={24} alt="My store" />
+        </Link>
+        <Navigation />
+        <Link to="/search">
+          <CgSearch size={24} title="Search" />
+        </Link>
+        <CartButton quantity={quantity} />
+      </header>
     </div>
   )
 }

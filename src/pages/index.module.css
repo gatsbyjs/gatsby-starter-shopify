@@ -9,7 +9,7 @@
   margin-left: 24px;
   padding-top: 1rem;
   position: sticky;
-  top: 0;
+  top: 72px;
   z-index: 1;
   background: linear-gradient(white, transparent);
 }

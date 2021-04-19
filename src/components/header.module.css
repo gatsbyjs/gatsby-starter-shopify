@@ -8,6 +8,7 @@
   grid-template-columns: 24px 1fr min-content min-content;
   gap: var(--size-lg);
   align-items: center;
+  background-color: white;
 }
 
 .headerSectionStyle {
@@ -23,6 +24,9 @@
   height: 10%;
   align-items: center;
   padding-bottom: 60px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .logoSpan {
