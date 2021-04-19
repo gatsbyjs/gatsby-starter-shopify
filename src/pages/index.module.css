@@ -5,7 +5,7 @@
 
 .container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: var(--grid-narrow);
   margin-left: 24px;
   padding-top: 1rem;
   position: sticky;
@@ -30,10 +30,10 @@
 
 .gridItemOne {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 3fr 3fr 3fr 3fr;
-  gap: 24px;
-  margin: 24px;
+  grid-template-columns: var(--grid-wide);
+  place-items: center;
+  gap: var(--size-lg);
+  padding: 0 var(--size-md);
 }
 
 .productCardStyle {
