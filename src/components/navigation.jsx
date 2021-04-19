@@ -22,9 +22,6 @@ const Navigation = () => {
       fontSize="lg"
       sx={{ 'a.active': { fontWeight: `medium` } }}
     >
-      <Link className={Linkstyle} to="/products/" activeClassName="active">
-        All Products
-      </Link>
       {productTypes.map((name) => (
         <Link
           key={name}
