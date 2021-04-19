@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import * as React from 'react'
 import Client from 'shopify-buy'
-import { useDisclosure } from '@chakra-ui/react'
 
 import { createClient, Provider as UrlqProvider } from 'urql'
 
@@ -44,7 +43,6 @@ const isBrowser = typeof window !== `undefined`
 const localStorageKey = `shopify_checkout_id`
 
 export const StoreProvider = ({ children }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const [checkout, setCheckout] = React.useState(defaultValues.checkout)
   const [loading, setLoading] = React.useState(false)
 
@@ -141,9 +139,6 @@ export const StoreProvider = ({ children }) => {
           updateLineItem,
           checkout,
           loading,
-          isOpen,
-          onOpen,
-          onClose,
         }}
       >
         {children}
