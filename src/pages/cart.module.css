@@ -24,9 +24,11 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding: 0 var(--size-xl);
 }
 
-.totals {
+.totals,
+.table th.totals {
   text-align: right;
 }
 
