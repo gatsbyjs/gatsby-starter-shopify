@@ -11,10 +11,12 @@
   text-decoration: none;
   outline: none;
   padding: 0.5rem;
+  color: var(--gray-50);
 }
 
 .Linkstyle:hover {
   text-decoration: underline;
+  color: var(--text-color);
 }
 
 .Linkstyle:focus {

@@ -1,5 +1,9 @@
 :root {
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --text-color: var(--gray-90);
   --primary-color-80: #f06200;
+  --gray-90: #232129;
   --gray-50: #78757a;
   --black-fade-40: #979797;
   --black-fade-10: #e2e2e2;
@@ -29,6 +33,11 @@
   --text-4xl: 36px;
   --grid-wide: 1fr;
   --grid-narrow: 1fr;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-color);
 }
 
 @media (min-width: 640px) {
