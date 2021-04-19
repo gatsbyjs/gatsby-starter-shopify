@@ -1,0 +1,52 @@
+.table {
+  flex: 1;
+  max-width: 1024px;
+  margin: auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: max-content 1fr repeat(3, max-content);
+  gap: var(--size-md) var(--size-2xl);
+}
+.table th {
+  text-align: left;
+  text-transform: uppercase;
+  font-size: var(--text-xs);
+  padding-bottom: var(--size-2xl);
+}
+
+.table tr,
+.table thead,
+.table tbody {
+  display: contents;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.totals {
+  text-align: right;
+}
+
+.summary {
+  font-weight: var(--semiBold);
+  font-size: var(--text-lg);
+}
+
+.grandTotal {
+  font-size: var(--text-2xl);
+  font-weight: var(--semiBold);
+}
+
+.checkoutButton {
+  background-color: var(--primary-color-80);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  margin: auto;
+  font-weight: var(--bold);
+  font-size: var(--text-lg);
+  padding: var(--size-md) var(--size-2xl);
+}

@@ -4,19 +4,16 @@ import {
   headerSectionStyle,
   containerStyle,
   logoSpan,
-  spacer,
 } from './header.module.css'
 import { Link } from 'gatsby'
 import { StoreContext } from '../context/store-context'
-import Logo from '../icons/logo'
-import Cart from './cart'
+import logo from '../icons/logo.svg'
 import Navigation from './navigation'
 import CartButton from './cart-button'
 import { CgSearch } from 'react-icons/cg'
 
 const Header = () => {
-  const { isOpen, onClose, onOpen, checkout } = React.useContext(StoreContext)
-  const btnRef = React.useRef()
+  const { checkout } = React.useContext(StoreContext)
 
   const items = checkout ? checkout.lineItems : []
 
@@ -26,21 +23,16 @@ const Header = () => {
 
   return (
     <div>
-      <Cart isOpen={isOpen} onClose={onClose} btnRef={btnRef} />
       <main className={containerStyle}>
         <header className={headerStyle}>
-          <div className={headerSectionStyle}>
-            <Link to="/" className={logoSpan}>
-              <Logo />
-            </Link>
-            <Navigation />
-          </div>
-          <div className={headerSectionStyle}>
-            <Link to="/search">
-              <CgSearch size={24} title="Search" />
-            </Link>
-            <CartButton quantity={quantity} onOpen={onOpen} btnRef={btnRef} />
-          </div>
+          <Link to="/" className={logoSpan}>
+            <img src={logo} width={24} height={24} alt="My store" />
+          </Link>
+          <Navigation />
+          <Link to="/search">
+            <CgSearch size={24} title="Search" />
+          </Link>
+          <CartButton quantity={quantity} />
         </header>
       </main>
     </div>
