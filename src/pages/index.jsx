@@ -58,7 +58,7 @@ const IndexPage = ({ data }) => {
         </div>
 
         <div className={gridItemOne}>
-          {data.shopifyCollection.products.map((product) => (
+          {data.shopifyCollection.products.map((product, idx) => (
             <Link
               to={product.slug}
               className={productCardStyle}
@@ -68,6 +68,7 @@ const IndexPage = ({ data }) => {
                 <GatsbyImage
                   image={product.images[0].gatsbyImageData}
                   alt={product.images[0].altText ?? product.title}
+                  loading={idx === 0 ? 'eager' : 'lazy'}
                 />
               </div>
               <div key={product.title}>
