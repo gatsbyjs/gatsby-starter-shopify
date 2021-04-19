@@ -31,7 +31,6 @@ module.exports = {
         name: `images`,
       },
     },
-    '@chakra-ui/gatsby-plugin',
     'gatsby-plugin-image',
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
