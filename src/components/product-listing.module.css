@@ -1,4 +1,6 @@
 .listingContainerStyle {
-  display: flex;
+  display: grid;
+  grid-template-columns: var(--grid-wide);
   gap: 16px;
+  place-items: center;
 }
