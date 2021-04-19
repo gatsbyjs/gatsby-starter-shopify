@@ -1,6 +1,8 @@
 .navStyle {
   display: flex;
   flex-direction: row;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .Linkstyle {

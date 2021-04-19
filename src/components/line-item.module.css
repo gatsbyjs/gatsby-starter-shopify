@@ -1,0 +1,34 @@
+.input {
+  background-color: var(--black-fade-5);
+  border-radius: var(--border-radius);
+  width: 6ch;
+  padding: var(--size-sm) var(--size-md);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  font-weight: var(--semiBold);
+  line-height: 1;
+  padding-bottom: var(--size-md);
+}
+
+.variant {
+  font-size: var(--text-md);
+  text-transform: capitalize;
+  padding-bottom: var(--size-sm);
+}
+
+.remove button {
+  font-size: var(--text-md);
+
+  display: inline-flex;
+  align-items: center;
+}
+
+.remove button svg {
+  margin-right: var(--size-md);
+}
+
+.totals {
+  text-align: right;
+}

@@ -17,6 +17,7 @@ export const query = graphql`
   query {
     shopifyCollection(handle: { eq: "frontpage" }) {
       products {
+        id
         title
         slug: gatsbyPath(
           filePath: "/products/{ShopifyProduct.productType}/{ShopifyProduct.handle}"
@@ -29,6 +30,7 @@ export const query = graphql`
           }
         }
         images {
+          altText
           gatsbyImageData(aspectRatio: 1, width: 640)
         }
       }
@@ -57,9 +59,16 @@ const IndexPage = ({ data }) => {
 
         <div className={gridItemOne}>
           {data.shopifyCollection.products.map((product) => (
-            <Link to={product.slug} className={productCardStyle}>
+            <Link
+              to={product.slug}
+              className={productCardStyle}
+              key={product.id}
+            >
               <div className={productImageStyle} data-name="product-image-box">
-                <GatsbyImage image={product.images[0].gatsbyImageData} />
+                <GatsbyImage
+                  image={product.images[0].gatsbyImageData}
+                  alt={product.images[0].altText ?? product.title}
+                />
               </div>
               <div key={product.title}>
                 <div className={productDetailsStyle}>

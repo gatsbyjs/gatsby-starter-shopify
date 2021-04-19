@@ -27,4 +27,26 @@
   --text-xl: 20px;
   --text-2xl: 24px;
   --text-4xl: 36px;
+  --grid-wide: 1fr;
+  --grid-narrow: 1fr;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --grid-wide: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --grid-wide: repeat(3, 1fr);
+    --grid-narrow: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --grid-wide: repeat(4, 1fr);
+    --grid-narrow: repeat(3, 1fr);
+  }
 }

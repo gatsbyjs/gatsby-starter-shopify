@@ -1,12 +1,14 @@
 .headerStyle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
   width: 100%;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
+  grid-template-columns: 24px 1fr min-content min-content;
+  gap: var(--size-lg);
+  align-items: center;
+  background-color: white;
 }
 
 .headerSectionStyle {
@@ -22,6 +24,9 @@
   height: 10%;
   align-items: center;
   padding-bottom: 60px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .logoSpan {
