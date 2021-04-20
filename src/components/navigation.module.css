@@ -1,7 +1,7 @@
 .navStyle {
   display: flex;
   flex-direction: row;
-  overflow: hidden;
+  overflow-x: auto;
   white-space: nowrap;
 }
 
