@@ -74,21 +74,19 @@ export default function SearchPage({
 
   const [searchTerm, setSearchTerm] = React.useState(queryParams.term)
 
-  const [minPrice, setMinPrice] = React.useState(queryParams.term)
-  const [maxPrice, setMaxPrice] = React.useState("")
+  const [minPrice, setMinPrice] = React.useState(queryParams.minPrice)
+  const [maxPrice, setMaxPrice] = React.useState(queryParams.maxPrice)
 
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
 
-  const [selectedTags, setSelectedTags] = React.useState(
-    queryParams.tags || tags
-  )
+  const [selectedTags, setSelectedTags] = React.useState(queryParams.tags)
 
   const [selectedVendors, setSelectedVendors] = React.useState(
-    queryParams.vendors || vendors
+    queryParams.vendors
   )
 
   const [selectedProductTypes, setSelectedProductTypes] = React.useState(
-    queryParams.productTypes || productTypes
+    queryParams.productTypes
   )
 
   const [cursor, setCursor] = React.useState(-1)

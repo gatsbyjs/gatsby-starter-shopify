@@ -70,6 +70,16 @@ function makeQueryStringValue(allItems, selectedItems) {
   return selectedItems
 }
 
+function arrayify(value) {
+  if (!value) {
+    return []
+  }
+  if (!Array.isArray(value)) {
+    return [value]
+  }
+  return value
+}
+
 /**
  * Extracts default search values from the query string
  * @param {string} query
@@ -78,13 +88,21 @@ export function getValuesFromQueryString(query) {
   const {
     q: term,
     s: sortKey,
-    p: productTypes,
-    t: tags,
-    v: vendors,
     x: maxPrice,
     n: minPrice,
+    p,
+    t,
+    v,
   } = queryString.parse(query)
-  return { term, sortKey, productTypes, tags, vendors, maxPrice, minPrice }
+  return {
+    term,
+    sortKey,
+    maxPrice,
+    minPrice,
+    productTypes: arrayify(p),
+    tags: arrayify(t),
+    vendors: arrayify(v),
+  }
 }
 
 export function useProductSearch(

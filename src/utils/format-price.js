@@ -15,7 +15,6 @@ export const getCurrencySymbol = (currency, locale = undefined) => {
   if (!currency) {
     return
   }
-  console.log({ currency })
   const formatter = Intl.NumberFormat(locale, {
     currency,
     style: "currency",
