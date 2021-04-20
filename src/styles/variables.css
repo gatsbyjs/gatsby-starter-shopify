@@ -22,15 +22,19 @@
   --tracked: 0.075em;
   --tight: -0.015em;
   --body: 400;
+  --medium: 500;
   --semiBold: 600;
   --bold: 700;
   --text-xs: 12px;
   --text-sm: 14px;
   --text-md: 16px;
   --text-lg: 18px;
-  --text-xl: 20px;
-  --text-2xl: 24px;
-  --text-4xl: 36px;
+  --text-xl: 18px;
+  --text-2xl: 18px;
+  --text-3xl: 18px;
+  --text-4xl: 20px;
+  --text-splash: 20px;
+
   --grid-wide: 1fr;
   --grid-narrow: 1fr;
 }
@@ -43,6 +47,11 @@ body {
 @media (min-width: 640px) {
   :root {
     --grid-wide: 1fr 1fr;
+    --text-xl: 20px;
+    --text-2xl: 20px;
+    --text-3xl: 24px;
+    --text-4xl: 24px;
+    --text-splash: 28px;
   }
 }
 
@@ -50,6 +59,10 @@ body {
   :root {
     --grid-wide: repeat(3, 1fr);
     --grid-narrow: 1fr 1fr;
+    --text-2xl: 24px;
+    --text-3xl: 28px;
+    --text-4xl: 28px;
+    --text-splash: 36px;
   }
 }
 
@@ -57,5 +70,7 @@ body {
   :root {
     --grid-wide: repeat(4, 1fr);
     --grid-narrow: repeat(3, 1fr);
+    --text-4xl: 36px;
+    --text-splash: 56px;
   }
 }

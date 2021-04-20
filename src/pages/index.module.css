@@ -5,30 +5,53 @@
 
 .container {
   display: grid;
-  grid-template-columns: var(--grid-narrow);
+  grid-template-columns: var(--grid-wide);
   margin-left: 24px;
-  padding-top: 1rem;
+  padding-top: var(--size-lg);
+  padding-bottom: 50px;
   position: sticky;
   top: 72px;
   z-index: 1;
   background: linear-gradient(white, transparent);
 }
 
-.em {
+.intro {
   grid-column-start: 1;
   grid-column-end: 2;
-  font-weight: 500;
-  font-size: 28px;
-  line-height: var(--dense);
+  padding-bottom: var(--size-lg);
+  font-weight: var(--medium);
+  font-size: var(--text-3xl);
+}
 
+.callOut {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  font-weight: var(--medium);
+  font-size: var(--text-splash);
+  line-height: var(--dense);
   letter-spacing: var(--tight);
 }
 
-.em > span {
-  font-size: var(--text-4xl);
+@media (min-width: 640px) {
+  .intro,
+  .callOut {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
 }
 
-.gridItemOne {
+@media (min-width: 1024px) {
+  .container {
+    padding-top: 50px;
+  }
+}
+
+.callOut > strong {
+  font-weight: var(--bold);
+  text-decoration: underline;
+}
+
+.productGrid {
   display: grid;
   grid-template-columns: var(--grid-wide);
   place-items: center;
@@ -49,9 +72,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-weight: var(--bold);
+  font-weight: var(--semiBold);
+  color: var(--gray-50);
 }
 
 .productHeadingStyle {
   font-size: var(--text-lg);
+  color: var(--text-color);
 }

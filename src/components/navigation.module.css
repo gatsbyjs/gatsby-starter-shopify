@@ -3,6 +3,7 @@
   flex-direction: row;
   overflow-x: auto;
   white-space: nowrap;
+  font-weight: var(--medium);
 }
 
 .Linkstyle {

@@ -45,10 +45,15 @@
   z-index: docked;
   height: 10%;
   align-items: center;
-  padding-bottom: 60px;
   position: sticky;
   top: 0;
   z-index: 1;
+}
+
+@media (min-width: 1024px) {
+  .containerStyle {
+    padding-bottom: 50px;
+  }
 }
 
 .logoSpan {
