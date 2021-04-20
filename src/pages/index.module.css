@@ -77,7 +77,7 @@
   align-items: center;
   justify-content: center;
   font-weight: var(--semiBold);
-  color: var(--gray-50);
+  color: var(--text-color-secondary);
 }
 
 .productHeadingStyle {

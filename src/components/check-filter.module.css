@@ -5,7 +5,7 @@
 .filterStyle label {
   cursor: pointer;
   margin-top: 2px;
-  color: var(--gray-50);
+  color: var(--text-color-secondary);
 }
 
 .filterStyle label.selectedLabel {

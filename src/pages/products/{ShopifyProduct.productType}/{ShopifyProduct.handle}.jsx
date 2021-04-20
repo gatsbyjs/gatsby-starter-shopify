@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { graphql } from 'gatsby'
+import { graphql, Link } from 'gatsby'
 import {
   productBox,
   container,
@@ -11,12 +11,13 @@ import {
   infodiv,
   priceingdiv,
   priceValue,
-  NumberInputStyle,
-  Selectcolorfieldset,
+  numberInputStyle,
+  selectVariant,
   selectp,
   labelFont,
   tagssection,
-  listfonts,
+  breadcrumb,
+  tagList,
 } from './product-page.module.css'
 import isEqual from 'lodash.isequal'
 import { GatsbyImage, getSrc } from 'gatsby-plugin-image'
@@ -25,6 +26,7 @@ import { StoreContext } from '../../../context/store-context'
 import AddToCart from '../../../components/add-to-cart'
 import { formatPrice } from '../../../utils/format-price'
 import SEO from '../../../components/seo'
+import { CgChevronRight as ChevronIcon } from 'react-icons/cg'
 
 const Product = ({ data: { product, suggestions } }) => {
   const {
@@ -147,13 +149,17 @@ const Product = ({ data: { product, suggestions } }) => {
             )}
 
             <div className={infodiv}>
+              <div className={breadcrumb}>
+                <Link to={product.productTypeSlug}>{product.productType}</Link>
+                <ChevronIcon size={12} />
+              </div>
               <div>
                 <h1 className={header}>{title}</h1>
                 <p>{description}</p>
               </div>
               <div className={priceingdiv}>
                 <h2 className={priceValue}>
-                  <span>{price} </span> incl. 7% VAT plus shipping
+                  <span>{price}</span>
                 </h2>
                 <form noValidate>
                   <fieldset>
@@ -161,7 +167,7 @@ const Product = ({ data: { product, suggestions } }) => {
 
                     <input
                       type="number"
-                      className={NumberInputStyle}
+                      className={numberInputStyle}
                       id="quantity"
                       name="quantity"
                       onChange={(_, value) => setQuantity(value)}
@@ -174,7 +180,7 @@ const Product = ({ data: { product, suggestions } }) => {
                     <>
                       {options.map(({ id, name, values }, index) => (
                         <React.Fragment key={id}>
-                          <fieldset className={Selectcolorfieldset}>
+                          <fieldset className={selectVariant}>
                             <label htmlFor="variant"></label>
                             <select
                               className={selectp}
@@ -204,12 +210,20 @@ const Product = ({ data: { product, suggestions } }) => {
               </div>
               <div style={{ paddingTop: '30px' }}>
                 <div className={tagssection}>
-                  <span className={labelFont}>Categories</span>
-                  <span className={listfonts}>{product.productType} </span>
+                  <span className={labelFont}>Type</span>
+                  <span className={tagList}>
+                    <Link to={product.productTypeSlug}>
+                      {product.productType}
+                    </Link>
+                  </span>
                 </div>
                 <div className={tagssection}>
                   <span className={labelFont}>Tags</span>
-                  <span className={listfonts}>{product.tags}</span>
+                  <span className={tagList}>
+                    {product.tags.map((tag) => (
+                      <Link to={`/search?t=${tag}`}>{tag}</Link>
+                    ))}
+                  </span>
                 </div>
               </div>
             </div>
@@ -228,6 +242,9 @@ export const query = graphql`
       title
       description
       productType
+      productTypeSlug: gatsbyPath(
+        filePath: "/products/{ShopifyProduct.productType}"
+      )
       tags
       priceRangeV2 {
         maxVariantPrice {

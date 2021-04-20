@@ -1,10 +1,13 @@
-.addToCart{
-    display: flex;
-    flex-direction: row;
-    color: var( --black-fade-5);
-    background-color: var( --primary-color-80);
-    align-self: flex-end;
-    /* margin-top: 50px; */
-    padding: 10px;
-    border-radius: 9px;
+.addToCart {
+  display: flex;
+  flex-direction: row;
+  color: var(--black-fade-5);
+  background-color: var(--primary-color-80);
+  align-self: flex-end;
+  /* margin-top: 50px; */
+  padding: var(--size-sm) var(--size-xl);
+  border-radius: 9px;
+  font-weight: var(--bold);
+  align-items: center;
+  height: var(--size-input);
 }

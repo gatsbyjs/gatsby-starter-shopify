@@ -2,8 +2,10 @@
   --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   --text-color: var(--gray-90);
-  --primary-color-80: #f06200;
+  --text-color-secondary: var(--gray-50);
+  --primary-color-80: #7026b9;
   --gray-90: #232129;
+  --gray-70: #48434f;
   --gray-50: #78757a;
   --black-fade-40: #979797;
   --black-fade-10: #e2e2e2;
@@ -16,6 +18,7 @@
   --size-lg: 16px;
   --size-xl: 20px;
   --size-2xl: 24px;
+  --size-input: 35px;
   --solid: 1;
   --dense: 1.25;
   --default: 1.5;
@@ -55,6 +58,7 @@ body {
     --size-lg: 16px;
     --size-xl: 24px;
     --size-2xl: 28px;
+    --size-input: 48px;
   }
 }
 
