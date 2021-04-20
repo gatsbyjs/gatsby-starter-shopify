@@ -32,3 +32,15 @@
 .totals {
   text-align: right;
 }
+
+.priceColumn,
+.totals {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .priceColumn,
+  .totals {
+    display: block;
+  }
+}

@@ -10,7 +10,8 @@
   padding-top: var(--size-lg);
   padding-bottom: 50px;
   position: sticky;
-  top: 72px;
+  top: 127px;
+
   z-index: 1;
   background: linear-gradient(white, transparent);
 }
@@ -37,6 +38,9 @@
   .callOut {
     grid-column-start: 1;
     grid-column-end: 3;
+  }
+  .container {
+    top: 72px;
   }
 }
 

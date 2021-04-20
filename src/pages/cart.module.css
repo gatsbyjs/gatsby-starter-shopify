@@ -4,7 +4,7 @@
   margin: auto;
   width: 100%;
   display: grid;
-  grid-template-columns: max-content 1fr repeat(3, max-content);
+  grid-template-columns: 48px 1fr min-content;
   gap: var(--size-md) var(--size-2xl);
 }
 .table th {
@@ -51,4 +51,54 @@
   font-weight: var(--bold);
   font-size: var(--text-lg);
   padding: var(--size-md) var(--size-2xl);
+}
+
+/* Apply only to first of class */
+.summary td {
+  padding-top: 50px;
+}
+
+.summary ~ .summary td {
+  padding-top: 0;
+}
+
+.summary .labelColumn {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.summary .totals {
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+
+.grandTotal .labelColumn {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.collapseColumn {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .summary .labelColumn,
+  .summary .totals,
+  .grandTotal .labelColumn {
+    grid-column-start: auto;
+    grid-column-end: auto;
+  }
+
+  .collapseColumn {
+    display: block;
+  }
+  .table {
+    grid-template-columns: 80px 1fr repeat(3, min-content);
+  }
+}
+
+@media (min-width: 1024px) {
+  .table {
+    grid-template-columns: max-content 1fr repeat(3, max-content);
+  }
 }

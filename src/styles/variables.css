@@ -14,8 +14,8 @@
   --size-sm: 4px;
   --size-md: 8px;
   --size-lg: 16px;
-  --size-xl: 24px;
-  --size-2xl: 32px;
+  --size-xl: 20px;
+  --size-2xl: 24px;
   --solid: 1;
   --dense: 1.25;
   --default: 1.5;
@@ -52,6 +52,9 @@ body {
     --text-3xl: 24px;
     --text-4xl: 24px;
     --text-splash: 28px;
+    --size-lg: 16px;
+    --size-xl: 24px;
+    --size-2xl: 28px;
   }
 }
 
@@ -63,6 +66,7 @@ body {
     --text-3xl: 28px;
     --text-4xl: 28px;
     --text-splash: 36px;
+    --size-2xl: 32px;
   }
 }
 
