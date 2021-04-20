@@ -147,6 +147,7 @@ export function useProductSearch(
     }
     setQuery(parts.join(' '))
   }, [
+    initialSortKey,
     term,
     allTags,
     selectedTags,

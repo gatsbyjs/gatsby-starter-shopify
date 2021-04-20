@@ -10,7 +10,7 @@ import {
   productHeadingStyle,
 } from './index.module.css'
 import { GatsbyImage } from 'gatsby-plugin-image'
-import Layout from '../components/layout'
+import { Layout } from '../components/layout'
 import { graphql, Link } from 'gatsby'
 import { formatPrice } from '../utils/format-price'
 
@@ -38,13 +38,13 @@ export const query = graphql`
     }
   }
 `
-const IndexPage = ({ data }) => {
+export default function IndexPage({ data }) {
   return (
     <Layout>
       <main id="#main">
         <div className={container}>
           <p className={intro}>
-            10k products and 25k variants. Shopify, Gatsby, Gatsby Cloud.
+            10k products and 25k variants.Shopify, Gatsby, Gatsby Cloud.
             Instantly preview content, build in seconds.
           </p>
           <p className={callOut}>
@@ -85,5 +85,3 @@ const IndexPage = ({ data }) => {
     </Layout>
   )
 }
-
-export default IndexPage

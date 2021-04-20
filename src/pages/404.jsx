@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { heading, paragraph, container } from './404.module.css'
-import Layout from '../components/layout'
+import { Layout } from '../components/layout'
 
-const NotFoundPage = () => {
+export default function NotFoundPage() {
   return (
     <Layout>
       <main className={container}>
@@ -14,5 +14,3 @@ const NotFoundPage = () => {
     </Layout>
   )
 }
-
-export default NotFoundPage

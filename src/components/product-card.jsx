@@ -11,7 +11,7 @@ import {
   productVendorStyle,
 } from './product-card.module.css'
 
-const ProductCard = ({ product }) => {
+export function ProductCard({ product }) {
   const {
     title,
     priceRangeV2,
@@ -63,8 +63,6 @@ const ProductCard = ({ product }) => {
     </Link>
   )
 }
-
-export default ProductCard
 
 export const query = graphql`
   fragment ProductCard on ShopifyProduct {

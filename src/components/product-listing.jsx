@@ -1,8 +1,8 @@
 import * as React from 'react'
-import ProductCard from './product-card'
+import { ProductCard } from './product-card'
 import { listingContainerStyle } from './product-listing.module.css'
 
-const ProductListing = ({ products }) => {
+export function ProductListing({ products }) {
   return (
     <div className={listingContainerStyle}>
       {products.nodes.map((p) => (
@@ -11,5 +11,3 @@ const ProductListing = ({ products }) => {
     </div>
   )
 }
-
-export default ProductListing

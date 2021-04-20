@@ -3,9 +3,9 @@ import { useLocation } from '@reach/router'
 import { graphql } from 'gatsby'
 import slugify from 'slugify'
 import { CgSearch, CgChevronRight, CgChevronLeft } from 'react-icons/cg'
-import Layout from '../components/layout'
+import { Layout } from '../components/layout'
 import { CheckFilter } from '../components/check-filter'
-import ProductCard from '../components/product-card'
+import { ProductCard } from '../components/product-card'
 
 import { getValuesFromQueryString, useProductSearch } from '../utils/hooks'
 import {
@@ -20,7 +20,6 @@ import {
   pagination,
   selectedItem,
   priceFilterStyle,
-  summary,
   clearButton,
   priceFields,
 } from './search-page.module.css'
@@ -61,12 +60,12 @@ export const query = graphql`
   }
 `
 
-const SearchPage = ({
+export default function SearchPage({
   data: {
     meta: { productTypes, vendors, tags },
     products,
   },
-}) => {
+}) {
   // get query params from URL if they exist, to populate default state
   const location = useLocation()
 
@@ -96,7 +95,7 @@ const SearchPage = ({
   const [pages, setPages] = React.useState([])
   const [hasFoundLastPage, setHasFoundLastPage] = React.useState(false)
 
-  const [{ data, fetching }] = useProductSearch(
+  const [{ data }] = useProductSearch(
     {
       term: searchTerm,
       selectedTags,
@@ -130,7 +129,7 @@ const SearchPage = ({
     if (data?.products?.pageInfo && !data.products.pageInfo.hasNextPage) {
       setHasFoundLastPage(true)
     }
-  }, [data])
+  }, [data, cursor, pages])
 
   // If the filters change then reset the pagination
   React.useEffect(() => {
@@ -138,10 +137,17 @@ const SearchPage = ({
       setCursor(-1)
       setPages([])
     }
-  }, [selectedTags, selectedProductTypes, selectedVendors, sortKey, searchTerm])
+  }, [
+    selectedTags,
+    selectedProductTypes,
+    selectedVendors,
+    sortKey,
+    searchTerm,
+    cursor,
+    pages,
+  ])
 
   // If there is no filter then we show the default products that came from the Gatsby data layer
-
   const isDefault =
     selectedTags.length === tags.length &&
     selectedProductTypes.length === productTypes.length &&
@@ -180,7 +186,7 @@ const SearchPage = ({
               name="sort"
               id="sort"
               value={sortKey}
-              onChange={(e) => setSortKey(e.target.value)}
+              onBlur={(e) => setSortKey(e.target.value)}
             >
               <option value="RELEVANCE">Relevance</option>
               <option value="PRICE">Price</option>
@@ -199,7 +205,7 @@ const SearchPage = ({
           />
           <hr />
           <details className={priceFilterStyle} open={true}>
-            <summary className={summary}>
+            <summary>
               Price
               <button className={clearButton} onClick={clearPriceFilter}>
                 Reset
@@ -297,5 +303,3 @@ const SearchPage = ({
     </Layout>
   )
 }
-
-export default SearchPage

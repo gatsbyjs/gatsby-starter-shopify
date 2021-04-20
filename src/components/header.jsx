@@ -10,12 +10,12 @@ import {
 import { Link } from 'gatsby'
 import { StoreContext } from '../context/store-context'
 import logo from '../icons/logo.svg'
-import Navigation from './navigation'
-import CartButton from './cart-button'
+import { Navigation } from './navigation'
+import { CartButton } from './cart-button'
 import { CgSearch } from 'react-icons/cg'
 
-const Header = () => {
-  const { checkout } = React.useContext(StoreContext)
+export function Header() {
+  const { checkout, loading } = React.useContext(StoreContext)
 
   const items = checkout ? checkout.lineItems : []
 
@@ -33,10 +33,12 @@ const Header = () => {
         <Link to="/search" className={searchButton}>
           <CgSearch size={24} title="Search" />
         </Link>
-        <CartButton quantity={quantity} className={cartButton} />
+        <CartButton
+          quantity={quantity}
+          className={cartButton}
+          loading={loading}
+        />
       </header>
     </div>
   )
 }
-
-export default Header

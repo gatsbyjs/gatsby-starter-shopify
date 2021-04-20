@@ -3,7 +3,11 @@ import { navLink } from './skip-nav.module.css'
 
 const defaultId = `skip-to-content`
 
-const SkipNavLink = ({ children = `Skip to content`, contentId, ...props }) => {
+export function SkipNavLink({
+  children = `Skip to content`,
+  contentId,
+  ...props
+}) {
   const id = contentId || defaultId
 
   return (
@@ -16,7 +20,7 @@ const SkipNavLink = ({ children = `Skip to content`, contentId, ...props }) => {
 /**
  * Wrap the main content of a page with this, thus also the <main> tag
  */
-const SkipNavContent = ({ children, id: idProp, ...props }) => {
+export function SkipNavContent({ children, id: idProp, ...props }) {
   const id = idProp || defaultId
 
   return (
@@ -25,5 +29,3 @@ const SkipNavContent = ({ children, id: idProp, ...props }) => {
     </main>
   )
 }
-
-export { SkipNavLink, SkipNavContent }

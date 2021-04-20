@@ -14,7 +14,7 @@ import { GatsbyImage } from 'gatsby-plugin-image'
 import { getShopifyImage } from 'gatsby-source-shopify'
 import { ImCross as CrossIcon } from 'react-icons/im'
 
-const LineItem = ({ item }) => {
+export function LineItem({ item }) {
   const {
     removeLineItem,
     checkout,
@@ -103,5 +103,3 @@ const LineItem = ({ item }) => {
     </tr>
   )
 }
-
-export default LineItem

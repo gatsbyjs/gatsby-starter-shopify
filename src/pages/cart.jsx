@@ -1,4 +1,3 @@
-// @ts-check
 import * as React from 'react'
 import {
   table,
@@ -9,14 +8,16 @@ import {
   checkoutButton,
   collapseColumn,
   labelColumn,
+  imageHeader,
+  productHeader,
 } from './cart.module.css'
 
-import Layout from '../components/layout'
+import { Layout } from '../components/layout'
 import { StoreContext } from '../context/store-context'
-import LineItem from '../components/line-item'
+import { LineItem } from '../components/line-item'
 import { formatPrice } from '../utils/format-price'
 
-const CartPage = () => {
+export default function CartPage() {
   const { checkout, loading } = React.useContext(StoreContext)
   const emptyCart = checkout.lineItems.length === 0
 
@@ -33,11 +34,13 @@ const CartPage = () => {
           <>
             <table className={table}>
               <thead>
-                <th>Product</th>
-                <th></th>
-                <th className={collapseColumn}>Price</th>
-                <th>Qty.</th>
-                <th className={[totals, collapseColumn].join(' ')}>Total</th>
+                <tr>
+                  <th className={imageHeader}>Image</th>
+                  <th className={productHeader}>Product</th>
+                  <th className={collapseColumn}>Price</th>
+                  <th>Qty.</th>
+                  <th className={[totals, collapseColumn].join(' ')}>Total</th>
+                </tr>
               </thead>
               <tbody>
                 {checkout.lineItems.map((item) => (
@@ -102,5 +105,3 @@ const CartPage = () => {
     </Layout>
   )
 }
-
-export default CartPage

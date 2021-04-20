@@ -6,6 +6,7 @@ import {
   selectedLabel,
   checkbox,
 } from './check-filter.module.css'
+
 export function CheckFilter({
   items,
   name,
@@ -63,4 +64,3 @@ export function CheckFilter({
     </details>
   )
 }
-export default CheckFilter

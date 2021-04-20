@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { container, visuallyHidden } from './index.module.css'
 import { graphql } from 'gatsby'
-import Layout from '../../components/layout'
-import ProductListing from '../../components/product-listing'
-import SEO from '../../components/seo'
+import { Layout } from '../../components/layout'
+import { ProductListing } from '../../components/product-listing'
+import { Seo } from '../../components/seo'
 
-const Products = ({ data: { products } }) => {
+export default function Products({ data: { products } }) {
   return (
     <Layout>
-      <SEO title="All Products in Hexagon Store" />
+      <Seo title="All Products in Hexagon Store" />
       <h1 className={visuallyHidden}>Products</h1>
       <div className={container}>
         <ProductListing products={products} />
@@ -16,8 +16,6 @@ const Products = ({ data: { products } }) => {
     </Layout>
   )
 }
-
-export default Products
 
 export const query = graphql`
   {

@@ -21,14 +21,14 @@ import {
 } from './product-page.module.css'
 import isEqual from 'lodash.isequal'
 import { GatsbyImage, getSrc } from 'gatsby-plugin-image'
-import Layout from '../../../components/layout'
+import { Layout } from '../../../components/layout'
 import { StoreContext } from '../../../context/store-context'
-import AddToCart from '../../../components/add-to-cart'
+import { AddToCart } from '../../../components/add-to-cart'
 import { formatPrice } from '../../../utils/format-price'
-import SEO from '../../../components/seo'
+import { Seo } from '../../../components/seo'
 import { CgChevronRight as ChevronIcon } from 'react-icons/cg'
 
-const Product = ({ data: { product, suggestions } }) => {
+export default function Product({ data: { product, suggestions } }) {
   const {
     options,
     variants,
@@ -103,7 +103,7 @@ const Product = ({ data: { product, suggestions } }) => {
 
   return (
     <Layout>
-      <SEO
+      <Seo
         title={title}
         description={description}
         image={getSrc(firstImage.gatsbyImageData)}
@@ -163,13 +163,10 @@ const Product = ({ data: { product, suggestions } }) => {
                 </h2>
                 <form noValidate>
                   <fieldset>
-                    <label htmlFor="quantity"></label>
-
                     <input
+                      aria-label="Quantity"
                       type="number"
                       className={numberInputStyle}
-                      id="quantity"
-                      name="quantity"
                       onChange={(_, value) => setQuantity(value)}
                       value={quantity}
                       min="1"
@@ -181,11 +178,11 @@ const Product = ({ data: { product, suggestions } }) => {
                       {options.map(({ id, name, values }, index) => (
                         <React.Fragment key={id}>
                           <fieldset className={selectVariant}>
-                            <label htmlFor="variant"></label>
                             <select
+                              aria-label="Variants"
                               className={selectp}
                               variant="filled"
-                              onChange={(event) =>
+                              onBlur={(event) =>
                                 handleOptionChange(index, event)
                               }
                             >
@@ -233,8 +230,6 @@ const Product = ({ data: { product, suggestions } }) => {
     </Layout>
   )
 }
-
-export default Product
 
 export const query = graphql`
   query($id: String!, $productType: String!) {

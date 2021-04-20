@@ -3,13 +3,13 @@ import { Helmet } from 'react-helmet'
 import { useStaticQuery, graphql } from 'gatsby'
 import { useLocation } from '@reach/router'
 
-const SEO = ({
+export function Seo({
   title = '',
   description = '',
   pathname = '',
   image = '',
   children = null,
-}) => {
+}) {
   const location = useLocation()
   const {
     site: { siteMetadata },
@@ -87,5 +87,3 @@ const SEO = ({
     </Helmet>
   )
 }
-
-export default SEO

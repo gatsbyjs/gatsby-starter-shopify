@@ -2,7 +2,7 @@ import * as React from 'react'
 import { addToCart as addToCartStyle } from './add-to-cart.module.css'
 import { StoreContext } from '../context/store-context'
 
-const AddToCart = ({ variantId, quantity, available, ...props }) => {
+export function AddToCart({ variantId, quantity, available, ...props }) {
   const { addVariantToCart, loading } = React.useContext(StoreContext)
 
   function addToCart(e) {
@@ -22,5 +22,3 @@ const AddToCart = ({ variantId, quantity, available, ...props }) => {
     </button>
   )
 }
-
-export default AddToCart

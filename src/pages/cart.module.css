@@ -81,6 +81,18 @@
   display: none;
 }
 
+.productHeader {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.imageHeader {
+  position: fixed;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 @media (min-width: 640px) {
   .summary .labelColumn,
   .summary .totals,
