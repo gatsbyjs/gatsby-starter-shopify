@@ -1,7 +1,7 @@
 // @ts-check
-import { useEffect, useState } from 'react'
-import queryString from 'query-string'
-import { useQuery } from 'urql'
+import { useEffect, useState } from "react"
+import queryString from "query-string"
+import { useQuery } from "urql"
 
 const ProductsQuery = `
 query ($query: String!, $sortKey: ProductSortKeys, $count: Int!, $after: String, $before: String) {
@@ -60,7 +60,7 @@ function makeFilter(field, allItems, selectedItems) {
   }
   return `(${selectedItems
     .map((item) => `${field}:${JSON.stringify(item)}`)
-    .join(' OR ')})`
+    .join(" OR ")})`
 }
 
 function makeQueryStringValue(allItems, selectedItems) {
@@ -105,17 +105,17 @@ export function useProductSearch(
   after,
   before
 ) {
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState("")
 
   // Relevance is non-deterministic if there is no query, so we default to "title" instead
-  const initialSortKey = term ? 'RELEVANCE' : 'TITLE'
+  const initialSortKey = term ? "RELEVANCE" : "TITLE"
 
   useEffect(() => {
     const parts = [
       term,
-      makeFilter('tag', allTags, selectedTags),
-      makeFilter('product_type', allProductTypes, selectedProductTypes),
-      makeFilter('vendor', allVendors, selectedVendors),
+      makeFilter("tag", allTags, selectedTags),
+      makeFilter("product_type", allProductTypes, selectedProductTypes),
+      makeFilter("vendor", allVendors, selectedVendors),
       // Exclude empty filter values
     ].filter(Boolean)
 
@@ -140,12 +140,12 @@ export function useProductSearch(
     })
 
     // Sorry IE, you can live without search persistence
-    if (window.location.search !== qs && 'URL' in window) {
+    if (window.location.search !== qs && "URL" in window) {
       const url = new URL(window.location.href)
       url.search = qs
       window.history.replaceState({}, null, url.toString())
     }
-    setQuery(parts.join(' '))
+    setQuery(parts.join(" "))
   }, [
     initialSortKey,
     term,

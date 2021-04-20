@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react"
 import {
   table,
   wrap,
@@ -10,12 +10,12 @@ import {
   labelColumn,
   imageHeader,
   productHeader,
-} from './cart.module.css'
+} from "./cart.module.css"
 
-import { Layout } from '../components/layout'
-import { StoreContext } from '../context/store-context'
-import { LineItem } from '../components/line-item'
-import { formatPrice } from '../utils/format-price'
+import { Layout } from "../components/layout"
+import { StoreContext } from "../context/store-context"
+import { LineItem } from "../components/line-item"
+import { formatPrice } from "../utils/format-price"
 
 export default function CartPage() {
   const { checkout, loading } = React.useContext(StoreContext)
@@ -39,7 +39,7 @@ export default function CartPage() {
                   <th className={productHeader}>Product</th>
                   <th className={collapseColumn}>Price</th>
                   <th>Qty.</th>
-                  <th className={[totals, collapseColumn].join(' ')}>Total</th>
+                  <th className={[totals, collapseColumn].join(" ")}>Total</th>
                 </tr>
               </thead>
               <tbody>

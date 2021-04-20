@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { heading, paragraph, container } from './404.module.css'
-import { Layout } from '../components/layout'
+import * as React from "react"
+import { heading, paragraph, container } from "./404.module.css"
+import { Layout } from "../components/layout"
 
 export default function NotFoundPage() {
   return (

@@ -1,13 +1,13 @@
-import * as React from 'react'
-import { useLocation } from '@reach/router'
-import { graphql } from 'gatsby'
-import slugify from 'slugify'
-import { CgSearch, CgChevronRight, CgChevronLeft } from 'react-icons/cg'
-import { Layout } from '../components/layout'
-import { CheckFilter } from '../components/check-filter'
-import { ProductCard } from '../components/product-card'
+import * as React from "react"
+import { useLocation } from "@reach/router"
+import { graphql } from "gatsby"
+import slugify from "slugify"
+import { CgSearch, CgChevronRight, CgChevronLeft } from "react-icons/cg"
+import { Layout } from "../components/layout"
+import { CheckFilter } from "../components/check-filter"
+import { ProductCard } from "../components/product-card"
 
-import { getValuesFromQueryString, useProductSearch } from '../utils/hooks'
+import { getValuesFromQueryString, useProductSearch } from "../utils/hooks"
 import {
   main,
   search,
@@ -22,9 +22,9 @@ import {
   priceFilterStyle,
   clearButton,
   priceFields,
-} from './search-page.module.css'
-import { getCurrencySymbol } from '../utils/format-price'
-import { CurrencyField } from '../components/currency-field'
+} from "./search-page.module.css"
+import { getCurrencySymbol } from "../utils/format-price"
+import { CurrencyField } from "../components/currency-field"
 
 export const query = graphql`
   query {
@@ -75,7 +75,7 @@ export default function SearchPage({
   const [searchTerm, setSearchTerm] = React.useState(queryParams.term)
 
   const [minPrice, setMinPrice] = React.useState(queryParams.term)
-  const [maxPrice, setMaxPrice] = React.useState('')
+  const [maxPrice, setMaxPrice] = React.useState("")
 
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
 
@@ -163,8 +163,8 @@ export default function SearchPage({
   )
 
   function clearPriceFilter() {
-    setMinPrice('')
-    setMaxPrice('')
+    setMinPrice("")
+    setMaxPrice("")
   }
 
   const productList = (isDefault ? products.edges : data?.products?.edges) || []
@@ -181,7 +181,7 @@ export default function SearchPage({
             placeholder="Search..."
           />
           <div className={sortSelector}>
-            Sort by{' '}
+            Sort by{" "}
             <select
               name="sort"
               id="sort"
@@ -217,8 +217,8 @@ export default function SearchPage({
                 aria-label="Minimum price"
                 value={minPrice}
                 onChange={(e) => setMinPrice(e.currentTarget.value)}
-              />{' '}
-              –{' '}
+              />{" "}
+              –{" "}
               <CurrencyField
                 {...currencyCode}
                 aria-label="Maximum price"
@@ -285,7 +285,7 @@ export default function SearchPage({
                   key={`search${index}`}
                 >
                   {index === pages.length - 1 && !hasFoundLastPage
-                    ? '…'
+                    ? "…"
                     : index + 2}
                 </button>
               ))}

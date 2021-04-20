@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react"
 import {
   container,
   intro,
@@ -8,11 +8,11 @@ import {
   productCardStyle,
   productDetailsStyle,
   productHeadingStyle,
-} from './index.module.css'
-import { GatsbyImage } from 'gatsby-plugin-image'
-import { Layout } from '../components/layout'
-import { graphql, Link } from 'gatsby'
-import { formatPrice } from '../utils/format-price'
+} from "./index.module.css"
+import { GatsbyImage } from "gatsby-plugin-image"
+import { Layout } from "../components/layout"
+import { graphql, Link } from "gatsby"
+import { formatPrice } from "../utils/format-price"
 
 export const query = graphql`
   query {
@@ -48,7 +48,7 @@ export default function IndexPage({ data }) {
             Instantly preview content, build in seconds.
           </p>
           <p className={callOut}>
-            Gatsby E-Commerce Starter Kit — PoC in a day,{' '}
+            Gatsby E-Commerce Starter Kit — PoC in a day,{" "}
             <strong>with your own products </strong>
           </p>
         </div>
@@ -64,7 +64,7 @@ export default function IndexPage({ data }) {
                 <GatsbyImage
                   image={product.images[0].gatsbyImageData}
                   alt={product.images[0].altText ?? product.title}
-                  loading={idx === 0 ? 'eager' : 'lazy'}
+                  loading={idx === 0 ? "eager" : "lazy"}
                 />
               </div>
               <div key={product.title}>

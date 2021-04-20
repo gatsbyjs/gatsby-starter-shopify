@@ -8,7 +8,7 @@ export const formatPrice = (currency, value) =>
   Intl.NumberFormat(undefined, {
     currency,
     minimumFractionDigits: 2,
-    style: 'currency',
+    style: "currency",
   }).format(value)
 
 export const getCurrencySymbol = (currency, locale = undefined) => {
@@ -18,10 +18,10 @@ export const getCurrencySymbol = (currency, locale = undefined) => {
   console.log({ currency })
   const formatter = Intl.NumberFormat(locale, {
     currency,
-    style: 'currency',
+    style: "currency",
   })
   const parts = formatter.formatToParts(100)
-  const { value: symbol } = parts.find((part) => part.type === 'currency')
+  const { value: symbol } = parts.find((part) => part.type === "currency")
   const formatted = formatter.format(100)
   const symbolAtEnd = formatted.endsWith(symbol)
   return { symbol, symbolAtEnd }

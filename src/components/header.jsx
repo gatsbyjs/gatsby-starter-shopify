@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react"
 import {
   headerStyle,
   containerStyle,
@@ -6,13 +6,13 @@ import {
   searchButton,
   cartButton,
   navSection,
-} from './header.module.css'
-import { Link } from 'gatsby'
-import { StoreContext } from '../context/store-context'
-import logo from '../icons/logo.svg'
-import { Navigation } from './navigation'
-import { CartButton } from './cart-button'
-import { CgSearch } from 'react-icons/cg'
+} from "./header.module.css"
+import { Link } from "gatsby"
+import { StoreContext } from "../context/store-context"
+import logo from "../icons/logo.svg"
+import { Navigation } from "./navigation"
+import { CartButton } from "./cart-button"
+import { CgSearch } from "react-icons/cg"
 
 export function Header() {
   const { checkout, loading } = React.useContext(StoreContext)

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react"
 import {
   input,
   title,
@@ -6,13 +6,13 @@ import {
   variant,
   totals,
   priceColumn,
-} from './line-item.module.css'
-import debounce from 'lodash.debounce'
-import { StoreContext } from '../context/store-context'
-import { formatPrice } from '../utils/format-price'
-import { GatsbyImage } from 'gatsby-plugin-image'
-import { getShopifyImage } from 'gatsby-source-shopify'
-import { ImCross as CrossIcon } from 'react-icons/im'
+} from "./line-item.module.css"
+import debounce from "lodash.debounce"
+import { StoreContext } from "../context/store-context"
+import { formatPrice } from "../utils/format-price"
+import { GatsbyImage } from "gatsby-plugin-image"
+import { getShopifyImage } from "gatsby-source-shopify"
+import { ImCross as CrossIcon } from "react-icons/im"
 
 export function LineItem({ item }) {
   const {
@@ -59,8 +59,8 @@ export function LineItem({ item }) {
     variantImage.src &&
     getShopifyImage({
       image: variantImage,
-      layout: 'constrained',
-      crop: 'contain',
+      layout: "constrained",
+      crop: "contain",
       width: 160,
       height: 160,
     })
@@ -79,7 +79,7 @@ export function LineItem({ item }) {
       <td>
         <h4 className={title}>{item.title}</h4>
         <div className={variant}>
-          {item.variant.title === 'Default Title' ? '' : item.variant.title}
+          {item.variant.title === "Default Title" ? "" : item.variant.title}
         </div>
         <div className={remove}>
           <button onClick={handleRemove}>

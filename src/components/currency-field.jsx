@@ -1,11 +1,11 @@
 // @ts-check
-import * as React from 'react'
+import * as React from "react"
 import {
   input,
   currencySymbol,
   wrap,
   symbolAfter,
-} from './currency-field.module.css'
+} from "./currency-field.module.css"
 
 export function CurrencyField({
   symbol,
@@ -18,7 +18,7 @@ export function CurrencyField({
     <span
       className={[className, wrap, symbolAtEnd && symbolAfter]
         .filter(Boolean)
-        .join(' ')}
+        .join(" ")}
       style={style}
     >
       <span className={currencySymbol}>{symbol}</span>

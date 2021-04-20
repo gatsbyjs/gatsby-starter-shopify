@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { addToCart as addToCartStyle } from './add-to-cart.module.css'
-import { StoreContext } from '../context/store-context'
+import * as React from "react"
+import { addToCart as addToCartStyle } from "./add-to-cart.module.css"
+import { StoreContext } from "../context/store-context"
 
 export function AddToCart({ variantId, quantity, available, ...props }) {
   const { addVariantToCart, loading } = React.useContext(StoreContext)
@@ -18,7 +18,7 @@ export function AddToCart({ variantId, quantity, available, ...props }) {
       disabled={!available || loading}
       {...props}
     >
-      {available ? 'Add to Cart' : 'Out of Stock'}
+      {available ? "Add to Cart" : "Out of Stock"}
     </button>
   )
 }

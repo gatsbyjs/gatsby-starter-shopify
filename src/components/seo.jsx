@@ -1,13 +1,13 @@
-import * as React from 'react'
-import { Helmet } from 'react-helmet'
-import { useStaticQuery, graphql } from 'gatsby'
-import { useLocation } from '@reach/router'
+import * as React from "react"
+import { Helmet } from "react-helmet"
+import { useStaticQuery, graphql } from "gatsby"
+import { useLocation } from "@reach/router"
 
 export function Seo({
-  title = '',
-  description = '',
-  pathname = '',
-  image = '',
+  title = "",
+  description = "",
+  pathname = "",
+  image = "",
   children = null,
 }) {
   const location = useLocation()

@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { graphql } from 'gatsby'
-import { Layout } from '../../../components/layout'
-import { visuallyHidden } from './product-page.module.css'
-import { ProductListing } from '../../../components/product-listing'
-import { Seo } from '../../../components/seo'
+import * as React from "react"
+import { graphql } from "gatsby"
+import { Layout } from "../../../components/layout"
+import { visuallyHidden } from "./product-page.module.css"
+import { ProductListing } from "../../../components/product-listing"
+import { Seo } from "../../../components/seo"
 
 export default function ProductTypeIndex({
   data: { products },

@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { graphql, Link } from 'gatsby'
+import * as React from "react"
+import { graphql, Link } from "gatsby"
 import {
   productBox,
   container,
@@ -18,15 +18,15 @@ import {
   tagssection,
   breadcrumb,
   tagList,
-} from './product-page.module.css'
-import isEqual from 'lodash.isequal'
-import { GatsbyImage, getSrc } from 'gatsby-plugin-image'
-import { Layout } from '../../../components/layout'
-import { StoreContext } from '../../../context/store-context'
-import { AddToCart } from '../../../components/add-to-cart'
-import { formatPrice } from '../../../utils/format-price'
-import { Seo } from '../../../components/seo'
-import { CgChevronRight as ChevronIcon } from 'react-icons/cg'
+} from "./product-page.module.css"
+import isEqual from "lodash.isequal"
+import { GatsbyImage, getSrc } from "gatsby-plugin-image"
+import { Layout } from "../../../components/layout"
+import { StoreContext } from "../../../context/store-context"
+import { AddToCart } from "../../../components/add-to-cart"
+import { formatPrice } from "../../../utils/format-price"
+import { Seo } from "../../../components/seo"
+import { CgChevronRight as ChevronIcon } from "react-icons/cg"
 
 export default function Product({ data: { product, suggestions } }) {
   const {
@@ -70,7 +70,7 @@ export default function Product({ data: { product, suggestions } }) {
   const handleOptionChange = (index, event) => {
     const value = event.target.value
 
-    if (value === '') {
+    if (value === "") {
       return
     }
 
@@ -141,7 +141,7 @@ export default function Product({ data: { product, suggestions } }) {
                 </div>
                 {hasMultipleImages && (
                   <div className={scrollForMore}>
-                    <span aria-hidden="true">←</span> scroll for more{' '}
+                    <span aria-hidden="true">←</span> scroll for more{" "}
                     <span aria-hidden="true">→</span>
                   </div>
                 )}
@@ -205,7 +205,7 @@ export default function Product({ data: { product, suggestions } }) {
                   />
                 </form>
               </div>
-              <div style={{ paddingTop: '30px' }}>
+              <div style={{ paddingTop: "30px" }}>
                 <div className={tagssection}>
                   <span className={labelFont}>Type</span>
                   <span className={tagList}>

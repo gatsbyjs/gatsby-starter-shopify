@@ -1,15 +1,15 @@
-import * as React from 'react'
-import { graphql, Link } from 'gatsby'
-import { GatsbyImage } from 'gatsby-plugin-image'
-import { getShopifyImage } from 'gatsby-source-shopify'
-import { formatPrice } from '../utils/format-price'
+import * as React from "react"
+import { graphql, Link } from "gatsby"
+import { GatsbyImage } from "gatsby-plugin-image"
+import { getShopifyImage } from "gatsby-source-shopify"
+import { formatPrice } from "../utils/format-price"
 import {
   productCardStyle,
   productHeadingStyle,
   productImageStyle,
   productDetailsStyle,
   productVendorStyle,
-} from './product-card.module.css'
+} from "./product-card.module.css"
 
 export function ProductCard({ product }) {
   const {
@@ -32,7 +32,7 @@ export function ProductCard({ product }) {
     try {
       storefrontImageData = getShopifyImage({
         image: storefrontImage,
-        layout: 'fixed',
+        layout: "fixed",
         width: 200,
         height: 200,
       })

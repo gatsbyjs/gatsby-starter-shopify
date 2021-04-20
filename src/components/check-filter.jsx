@@ -1,11 +1,11 @@
-import * as React from 'react'
+import * as React from "react"
 import {
   filterStyle,
   summary,
   clearButton,
   selectedLabel,
   checkbox,
-} from './check-filter.module.css'
+} from "./check-filter.module.css"
 
 export function CheckFilter({
   items,
@@ -40,7 +40,7 @@ export function CheckFilter({
     <details open={open} className={filterStyle}>
       {name && (
         <summary className={summary}>
-          {name}{' '}
+          {name}{" "}
           <button className={clearButton} onClick={clearItems}>
             Clear
           </button>
@@ -57,8 +57,8 @@ export function CheckFilter({
             onChange={toggleItem}
             value={item}
             checked={selectedItems.includes(item)}
-          />{' '}
-          {item || 'None'}
+          />{" "}
+          {item || "None"}
         </label>
       ))}
     </details>

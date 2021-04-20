@@ -1,7 +1,7 @@
-import { graphql, useStaticQuery, Link } from 'gatsby'
-import * as React from 'react'
-import { navStyle, Linkstyle } from './navigation.module.css'
-import slugify from '@sindresorhus/slugify'
+import { graphql, useStaticQuery, Link } from "gatsby"
+import * as React from "react"
+import { navStyle, Linkstyle } from "./navigation.module.css"
+import slugify from "@sindresorhus/slugify"
 
 export function Navigation({ className }) {
   const {
@@ -15,7 +15,7 @@ export function Navigation({ className }) {
   `)
 
   return (
-    <nav className={[navStyle, className].join(' ')}>
+    <nav className={[navStyle, className].join(" ")}>
       <Link
         key="All"
         className={Linkstyle}
