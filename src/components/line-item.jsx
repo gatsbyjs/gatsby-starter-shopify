@@ -15,12 +15,9 @@ import { getShopifyImage } from "gatsby-source-shopify"
 import { ImCross as CrossIcon } from "react-icons/im"
 
 export function LineItem({ item }) {
-  const {
-    removeLineItem,
-    checkout,
-    updateLineItem,
-    loading,
-  } = React.useContext(StoreContext)
+  const { removeLineItem, checkout, updateLineItem } = React.useContext(
+    StoreContext
+  )
   const [quantity, setQuantity] = React.useState(item.quantity)
 
   const variantImage = {
