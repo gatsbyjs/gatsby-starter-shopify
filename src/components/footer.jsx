@@ -13,8 +13,7 @@ export function Footer() {
     <footer className={footerStyle}>
       <div className={blurb}>
         <div className={logos}>
-          <img src={logo} width={24} height={24} alt="My store" />
-          <img src={logo} width={24} height={24} alt="My store" />
+          <img src={logo} width={24} height={24} alt="" />
         </div>
         <strong>gatsby-starter-shopify</strong> change this by editing{" "}
         <code>src/components/footer.jsx</code>
@@ -25,9 +24,6 @@ export function Footer() {
             <a href="https://github.com/gatsbyjs/gatsby-starter-shopify">
               Source Code and Docs
             </a>
-          </li>
-          <li>
-            <a href="">Deploy to Gatsby Cloud</a>
           </li>
           <li>
             <a href="https://www.gatsbyjs.com/cloud/">About Gatsby Cloud</a>
