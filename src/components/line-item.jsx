@@ -1,5 +1,12 @@
 import * as React from 'react'
-import { input, title, remove, variant, totals } from './line-item.module.css'
+import {
+  input,
+  title,
+  remove,
+  variant,
+  totals,
+  priceColumn,
+} from './line-item.module.css'
 import debounce from 'lodash.debounce'
 import { StoreContext } from '../context/store-context'
 import { formatPrice } from '../utils/format-price'
@@ -52,7 +59,7 @@ const LineItem = ({ item }) => {
     variantImage.src &&
     getShopifyImage({
       image: variantImage,
-      layout: 'fixed',
+      layout: 'constrained',
       crop: 'contain',
       width: 160,
       height: 160,
@@ -81,7 +88,7 @@ const LineItem = ({ item }) => {
         </div>
       </td>
 
-      <td>{price}</td>
+      <td className={priceColumn}>{price}</td>
       <td>
         <input
           className={input}

@@ -1,8 +1,9 @@
 import * as React from 'react'
 import {
   container,
-  em,
-  gridItemOne,
+  intro,
+  callOut,
+  productGrid,
   productImageStyle,
   productCardStyle,
   productDetailsStyle,
@@ -42,22 +43,17 @@ const IndexPage = ({ data }) => {
     <Layout>
       <main id="#main">
         <div className={container}>
-          10k products and 25k variants. Shopify, Gatsby, Gatsby Cloud.
-          Instantly preview content, build in seconds.
-          <p className={em}>
-            Gatsby E-Commerce Starter Kit —{' '}
-            <span>
-              {' '}
-              PoC in a day,
-              <strong>
-                {' '}
-                <u>with your own products </u>{' '}
-              </strong>
-            </span>{' '}
+          <p className={intro}>
+            10k products and 25k variants. Shopify, Gatsby, Gatsby Cloud.
+            Instantly preview content, build in seconds.
+          </p>
+          <p className={callOut}>
+            Gatsby E-Commerce Starter Kit — PoC in a day,{' '}
+            <strong>with your own products </strong>
           </p>
         </div>
 
-        <div className={gridItemOne}>
+        <div className={productGrid}>
           {data.shopifyCollection.products.map((product, idx) => (
             <Link
               to={product.slug}
@@ -73,11 +69,13 @@ const IndexPage = ({ data }) => {
               </div>
               <div key={product.title}>
                 <div className={productDetailsStyle}>
-                  <h2 className={productHeadingStyle}> {product.title}</h2>
-                  {formatPrice(
-                    product.priceRangeV2.maxVariantPrice.currencyCode,
-                    product.priceRangeV2.maxVariantPrice.amount
-                  )}
+                  <h2 className={productHeadingStyle}>{product.title}</h2>
+                  <span>
+                    {formatPrice(
+                      product.priceRangeV2.maxVariantPrice.currencyCode,
+                      product.priceRangeV2.maxVariantPrice.amount
+                    )}
+                  </span>
                 </div>
               </div>
             </Link>

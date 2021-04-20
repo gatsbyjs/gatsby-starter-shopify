@@ -4,7 +4,7 @@ import { navStyle, Linkstyle } from './navigation.module.css'
 import slugify from '@sindresorhus/slugify'
 // In theory this could also be defined inside "gatsby-config.js" and then queried via GraphQL
 
-const Navigation = () => {
+const Navigation = ({ className }) => {
   const {
     allShopifyProduct: { productTypes },
   } = useStaticQuery(graphql`
@@ -16,12 +16,15 @@ const Navigation = () => {
   `)
 
   return (
-    <nav
-      className={navStyle}
-      direction={['column', 'row']}
-      fontSize="lg"
-      sx={{ 'a.active': { fontWeight: `medium` } }}
-    >
+    <nav className={[navStyle, className].join(' ')}>
+      <Link
+        key="All"
+        className={Linkstyle}
+        to={`/search`}
+        activeClassName="active"
+      >
+        All products
+      </Link>
       {productTypes.map((name) => (
         <Link
           key={name}

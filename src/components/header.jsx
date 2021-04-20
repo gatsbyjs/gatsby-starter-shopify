@@ -1,9 +1,11 @@
 import * as React from 'react'
 import {
   headerStyle,
-  headerSectionStyle,
   containerStyle,
   logoSpan,
+  searchButton,
+  cartButton,
+  navSection,
 } from './header.module.css'
 import { Link } from 'gatsby'
 import { StoreContext } from '../context/store-context'
@@ -27,11 +29,11 @@ const Header = () => {
         <Link to="/" className={logoSpan}>
           <img src={logo} width={24} height={24} alt="My store" />
         </Link>
-        <Navigation />
-        <Link to="/search">
+        <Navigation className={navSection} />
+        <Link to="/search" className={searchButton}>
           <CgSearch size={24} title="Search" />
         </Link>
-        <CartButton quantity={quantity} />
+        <CartButton quantity={quantity} className={cartButton} />
       </header>
     </div>
   )

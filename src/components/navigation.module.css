@@ -1,8 +1,9 @@
 .navStyle {
   display: flex;
   flex-direction: row;
-  overflow: hidden;
+  overflow-x: auto;
   white-space: nowrap;
+  font-weight: var(--medium);
 }
 
 .Linkstyle {
@@ -11,7 +12,7 @@
   text-decoration: none;
   outline: none;
   padding: 0.5rem;
-  color: var(--gray-50);
+  color: var(--text-color-secondary);
 }
 
 .Linkstyle:hover {

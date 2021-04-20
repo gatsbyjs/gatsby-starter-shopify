@@ -6,9 +6,31 @@
   padding-top: 1rem;
   padding-bottom: 1rem;
   grid-template-columns: 24px 1fr min-content min-content;
+  grid-template-areas: 'logo nada searchButton cartButton' 'navHeader navHeader navHeader navHeader';
   gap: var(--size-lg);
   align-items: center;
   background-color: white;
+}
+
+@media (min-width: 640px) {
+  .headerStyle {
+    grid-template-areas: 'logo navHeader searchButton cartButton';
+  }
+}
+
+.headerStyle::after {
+  grid-area: navHeader;
+  content: '';
+  display: block;
+  width: var(--size-2xl);
+  z-index: 1;
+  align-self: stretch;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 1)
+  );
+  justify-self: flex-end;
 }
 
 .headerSectionStyle {
@@ -23,13 +45,19 @@
   z-index: docked;
   height: 10%;
   align-items: center;
-  padding-bottom: 60px;
   position: sticky;
   top: 0;
   z-index: 1;
 }
 
+@media (min-width: 1024px) {
+  .containerStyle {
+    padding-bottom: 50px;
+  }
+}
+
 .logoSpan {
+  grid-area: logo;
   display: flex;
   align-items: center;
   justify-self: center;
@@ -37,6 +65,16 @@
   transition: all 0.3s ease-in-out;
 }
 
+.searchButton {
+  grid-area: searchButton;
+}
+.cartButton {
+  grid-area: cartButton;
+}
+.navSection {
+  grid-area: navHeader;
+  align-self: stretch;
+}
 .logoSpan:hover {
   color: var(--primary-color-8);
   text-decoration: none;

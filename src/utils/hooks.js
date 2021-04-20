@@ -52,7 +52,10 @@ query ($query: String!, $sortKey: ProductSortKeys, $count: Int!, $after: String,
 `
 
 function makeFilter(field, allItems, selectedItems) {
-  if (allItems.length === selectedItems.length) {
+  if (selectedItems && !Array.isArray(selectedItems)) {
+    selectedItems = [selectedItems]
+  }
+  if (allItems.length === selectedItems.length || !selectedItems?.length) {
     return
   }
   return `(${selectedItems

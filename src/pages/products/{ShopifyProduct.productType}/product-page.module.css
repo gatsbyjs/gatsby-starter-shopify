@@ -1,28 +1,38 @@
 .productBox {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 64px;
+  grid-template-columns: 1fr;
+  column-gap: var(--size-2xl);
+}
+
+@media (min-width: 640px) {
+  .productBox {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .productBox {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .container {
-  padding-top: 16px;
-  padding-left: 20px;
-  padding-bottom: 20px;
+  padding: var(--size-lg) var(--size-xl);
 }
 
 .header {
-  font-size: 3rem;
+  font-size: var(--text-4xl);
   font-weight: bold;
 }
 
 .productImageWrapper {
   position: relative;
+  padding-bottom: var(--size-2xl);
 }
 
 .productImage {
-  background-color: var(--black-fade-5);
   margin-bottom: 2px;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .productImage:focus {
@@ -73,7 +83,8 @@ li {
 }
 
 .priceValue > span {
-  font-size: 30px;
+  font-size: var(--size-2xl);
+  font-weight: var(--bold);
   line-height: 1.2;
   color: var(--primary-color-80);
 }
@@ -100,29 +111,27 @@ form > fieldset {
   border: 0;
 }
 
-.NumberInputStyle {
+.numberInputStyle {
   width: 100%;
   max-width: 5rem;
   min-width: 0px;
   outline: 0;
   position: relative;
   transition: all 0.2s;
-  font-size: 1rem;
+  font-size: var(--text-lg);
+  color: var(--text-color-secondary);
+  font-weight: var(--medium);
   padding-inline-start: 1rem;
   padding-inline-end: 1.5rem;
-  height: 2.5rem;
-  border-radius: 0.375rem;
+  height: var(--size-input);
+  border-radius: var(--border-radius);
   vertical-align: top;
   border: 1px solid;
   border-color: inherit;
-  background: #ffff;
+  background: var(--black-fade-10);
 }
 
-.NumberInputStyle:hover {
-  background: #e2e8f0;
-}
-
-.Selectcolorfieldset {
+.selectVariant {
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
@@ -138,22 +147,20 @@ form > fieldset {
   transition: all 0.2s;
   padding-bottom: 1px;
   line-height: normal;
-  font-size: 1rem;
   padding-inline-start: 1rem;
   padding-inline-end: 2rem;
-  height: 2.5rem;
-  border-radius: 0.375rem;
+  height: var(--size-input);
+  font-size: var(--text-lg);
+  color: var(--text-color-secondary);
+  font-weight: var(--medium);
+  border-radius: var(--border-radius);
   border: 2px solid;
   border-top-color: currentcolor;
   border-right-color: currentcolor;
   border-bottom-color: currentcolor;
   border-left-color: currentcolor;
   border-color: transparent;
-  background: #ffff;
-}
-
-.selectp:hover {
-  background: #e2e8f0;
+  background: var(--black-fade-10);
 }
 
 .labelFont {
@@ -164,10 +171,14 @@ form > fieldset {
   color: #78757a;
 }
 
-.listfonts {
+.tagList a {
   font-weight: var(--semiBold);
-  color: #48434f;
-  padding-right: 1rem;
+  color: var(--gray-70);
+  padding-right: var(--size-md);
+}
+
+.tagList a:hover {
+  text-decoration: underline;
 }
 
 .tagssection {
@@ -176,4 +187,17 @@ form > fieldset {
   align-items: flex-start;
   padding-top: 5px;
   width: 100%;
+}
+
+.breadcrumb {
+  color: var(--text-color-secondary);
+  font-size: var(--text-sm);
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.breadcrumb a:hover {
+  color: var(--text-color);
+  text-decoration: underline;
 }
