@@ -19,6 +19,9 @@
 .filters * + details {
   margin-top: var(--size-2xl);
 }
+.filters hr {
+  border-color: var(--black-fade-5);
+}
 
 .results {
   grid-area: results;
