@@ -182,7 +182,7 @@ export default function SearchPage({
             placeholder="Search..."
           />
           <div className={sortSelector}>
-            Sort by{" "}
+            <label htmlFor="sort">Sort by </label>
             <select
               name="sort"
               id="sort"
