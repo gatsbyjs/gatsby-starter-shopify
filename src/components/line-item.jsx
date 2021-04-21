@@ -59,11 +59,11 @@ export function LineItem({ item }) {
   }
 
   function doIncrement() {
-    handleQuantityChange((quantity || 0) + 1)
+    handleQuantityChange(Number(quantity || 0) + 1)
   }
 
   function doDecrement() {
-    handleQuantityChange((quantity || 0) - 1)
+    handleQuantityChange(Number(quantity || 0) - 1)
   }
 
   const image = React.useMemo(
