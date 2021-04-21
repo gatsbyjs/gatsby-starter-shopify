@@ -5,8 +5,8 @@ import { listingContainerStyle } from "./product-listing.module.css"
 export function ProductListing({ products }) {
   return (
     <div className={listingContainerStyle}>
-      {products.nodes.map((p) => (
-        <ProductCard product={p} key={p.slug} />
+      {products.map((p) => (
+        <ProductCard product={p} key={p.id} />
       ))}
     </div>
   )

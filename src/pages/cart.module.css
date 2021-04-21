@@ -55,7 +55,7 @@
 
 /* Apply only to first of class */
 .summary td {
-  padding-top: 50px;
+  padding-top: var(--size-fat-pad);
 }
 
 .summary ~ .summary td {

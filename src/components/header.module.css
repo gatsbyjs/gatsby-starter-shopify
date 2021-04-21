@@ -6,7 +6,7 @@
   padding-top: 1rem;
   padding-bottom: 1rem;
   grid-template-columns: 24px 1fr min-content min-content;
-  grid-template-areas: 'logo nada searchButton cartButton' 'navHeader navHeader navHeader navHeader';
+  grid-template-areas: "logo nada searchButton cartButton" "navHeader navHeader navHeader navHeader";
   gap: var(--size-lg);
   align-items: center;
   background-color: white;
@@ -14,13 +14,13 @@
 
 @media (min-width: 640px) {
   .headerStyle {
-    grid-template-areas: 'logo navHeader searchButton cartButton';
+    grid-template-areas: "logo navHeader searchButton cartButton";
   }
 }
 
 .headerStyle::after {
   grid-area: navHeader;
-  content: '';
+  content: "";
   display: block;
   width: var(--size-2xl);
   z-index: 1;
@@ -52,7 +52,7 @@
 
 @media (min-width: 1024px) {
   .containerStyle {
-    padding-bottom: 50px;
+    padding-bottom: var(--size-fat-pad);
   }
 }
 

@@ -6,7 +6,7 @@
   font-weight: var(--medium);
 }
 
-.Linkstyle {
+.navLink {
   transition: all 0.3s ease-in-out;
   cursor: pointer;
   text-decoration: none;
@@ -15,12 +15,17 @@
   color: var(--text-color-secondary);
 }
 
-.Linkstyle:hover {
+.navLink:hover {
   text-decoration: underline;
   color: var(--text-color);
 }
 
-.Linkstyle:focus {
+.navLink:focus {
   box-shadow: outline;
   outline: 1px solid rgb(39, 5, 231);
+}
+
+.activeLink,
+.navLink[aria-active="page"] {
+  color: var(--text-color);
 }

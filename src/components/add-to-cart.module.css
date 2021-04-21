@@ -4,9 +4,8 @@
   color: var(--black-fade-5);
   background-color: var(--primary-color-80);
   align-self: flex-end;
-  /* margin-top: 50px; */
   padding: var(--size-sm) var(--size-xl);
-  border-radius: 9px;
+  border-radius: var(--border-radius);
   font-weight: var(--bold);
   align-items: center;
   height: var(--size-input);
