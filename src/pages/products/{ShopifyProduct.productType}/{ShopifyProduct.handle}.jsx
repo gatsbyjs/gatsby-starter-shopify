@@ -24,6 +24,7 @@ import { GatsbyImage, getSrc } from "gatsby-plugin-image"
 import { Layout } from "../../../components/layout"
 import { StoreContext } from "../../../context/store-context"
 import { AddToCart } from "../../../components/add-to-cart"
+import { NumericInput } from "../../../components/numeric-input"
 import { formatPrice } from "../../../utils/format-price"
 import { Seo } from "../../../components/seo"
 import { CgChevronRight as ChevronIcon } from "react-icons/cg"
@@ -161,12 +162,14 @@ export default function Product({ data: { product, suggestions } }) {
                 <h2 className={priceValue}>
                   <span>{price}</span>
                 </h2>
-                <form noValidate>
+                <form noValidate onSubmit={(e) => e.preventDefault()}>
                   <fieldset>
-                    <input
+                    <NumericInput
                       aria-label="Quantity"
-                      type="number"
-                      className={numberInputStyle}
+                      onIncrement={() =>
+                        setQuantity((q) => Math.min(q + 1, 20))
+                      }
+                      onDecrement={() => setQuantity((q) => Math.max(1, q - 1))}
                       onChange={(_, value) => setQuantity(value)}
                       value={quantity}
                       min="1"

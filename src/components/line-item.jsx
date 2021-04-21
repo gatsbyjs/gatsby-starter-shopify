@@ -67,15 +67,17 @@ export function LineItem({ item }) {
     handleQuantityChange((quantity || 0) - 1)
   }
 
-  const image =
-    variantImage.src &&
-    getShopifyImage({
-      image: variantImage,
-      layout: "constrained",
-      crop: "contain",
-      width: 160,
-      height: 160,
-    })
+  const image = React.useMemo(
+    () =>
+      getShopifyImage({
+        image: variantImage,
+        layout: "constrained",
+        crop: "contain",
+        width: 160,
+        height: 160,
+      }),
+    [variantImage.src]
+  )
 
   return (
     <tr>
