@@ -67,4 +67,14 @@
   .wrap button.increment {
     border: none;
   }
+
+  .wrap button:active {
+    background-color: var(--black-fade-40);
+    color: white;
+  }
+
+  .wrap button:hover {
+    background-color: inherit;
+    color: inherit;
+  }
 }
