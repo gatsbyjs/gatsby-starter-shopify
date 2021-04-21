@@ -4,8 +4,16 @@
 
 .filterStyle label {
   cursor: pointer;
-  margin-top: 2px;
+  margin-top: 6px;
   color: var(--text-color-secondary);
+  max-width: 240px;
+  display: flex;
+  align-items: baseline;
+  line-height: var(--dense);
+}
+
+.filterStyle label:hover {
+  color: var(--gray-90);
 }
 
 .filterStyle label.selectedLabel {
@@ -42,6 +50,7 @@
   width: var(--size-lg);
   height: var(--size-lg);
   border-radius: var(--border-radius-sm);
+  margin-right: var(--size-md);
 }
 
 .checkbox:checked {
@@ -51,7 +60,7 @@
 
 .checkbox::before {
   line-height: 0;
-  font-size: 14px;
+  font-size: var(--text-sm);
   font-weight: bold;
   color: white;
   content: '\2713';
