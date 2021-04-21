@@ -3,8 +3,8 @@
   grid-template-columns: max-content 1fr;
   grid-template-rows: min-content 1fr;
   grid-template-areas:
-    'filters search'
-    'filters results';
+    "filters search"
+    "filters results";
 }
 
 .filters {
