@@ -124,11 +124,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: var(--size-sm);
+  padding-bottom: var(--size-md);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracked);
 }
 
 .clearButton {
   color: var(--black-fade-40);
+  font-size: var(--text-sm);
 }
 
 .priceFields {

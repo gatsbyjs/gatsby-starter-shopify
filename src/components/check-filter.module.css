@@ -17,6 +17,9 @@
   font-weight: bold;
   text-transform: uppercase;
   cursor: pointer;
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracked);
+  padding-bottom: var(--size-md);
 }
 
 .summary {
@@ -27,6 +30,7 @@
 
 .clearButton {
   color: var(--black-fade-40);
+  font-size: var(--text-sm);
 }
 
 .checkbox {
