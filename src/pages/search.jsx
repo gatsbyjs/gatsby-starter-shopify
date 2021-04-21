@@ -22,9 +22,12 @@ import {
   priceFilterStyle,
   clearButton,
   priceFields,
+  progressStyle,
+  resultsStyle,
 } from "./search-page.module.css"
 import { getCurrencySymbol } from "../utils/format-price"
 import { CurrencyField } from "../components/currency-field"
+import { Spinner } from "../components/progress"
 
 export const query = graphql`
   query {
@@ -93,7 +96,7 @@ export default function SearchPage({
   const [pages, setPages] = React.useState([])
   const [hasFoundLastPage, setHasFoundLastPage] = React.useState(false)
 
-  const [{ data }] = useProductSearch(
+  const [{ data, fetching }] = useProductSearch(
     {
       term: searchTerm,
       selectedTags,
@@ -241,7 +244,22 @@ export default function SearchPage({
             setSelectedItems={setSelectedTags}
           />
         </section>
-        <section className={results}>
+        <section className={results} aria-busy={fetching}>
+          {fetching ? (
+            <p className={progressStyle}>
+              <Spinner aria-valuetext="Searching" /> Searching
+              {searchTerm ? ` for "${searchTerm}"…` : `…`}
+            </p>
+          ) : (
+            <p className={resultsStyle}>
+              Search results{" "}
+              {searchTerm && (
+                <>
+                  for "<span>{searchTerm}</span>"
+                </>
+              )}
+            </p>
+          )}
           <ul className={productListStyle}>
             {productList.map(({ node }) => (
               <li className={productListItem} key={node.id}>
@@ -261,7 +279,7 @@ export default function SearchPage({
               </li>
             ))}
           </ul>
-          {data?.products?.pageInfo && (
+          {productList?.length && data?.products?.pageInfo ? (
             <nav className={pagination}>
               <button
                 disabled={!data?.products?.pageInfo?.hasPreviousPage}
@@ -295,7 +313,7 @@ export default function SearchPage({
                 <CgChevronRight />
               </button>
             </nav>
-          )}
+          ) : undefined}
         </section>
       </div>
     </Layout>
