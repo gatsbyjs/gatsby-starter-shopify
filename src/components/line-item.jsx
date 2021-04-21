@@ -1,6 +1,5 @@
 import * as React from "react"
 import {
-  input,
   title,
   remove,
   variant,
@@ -13,11 +12,15 @@ import { formatPrice } from "../utils/format-price"
 import { GatsbyImage } from "gatsby-plugin-image"
 import { getShopifyImage } from "gatsby-source-shopify"
 import { ImCross as CrossIcon } from "react-icons/im"
+import { NumericInput } from "./numeric-input"
 
 export function LineItem({ item }) {
-  const { removeLineItem, checkout, updateLineItem } = React.useContext(
-    StoreContext
-  )
+  const {
+    removeLineItem,
+    checkout,
+    updateLineItem,
+    loading,
+  } = React.useContext(StoreContext)
   const [quantity, setQuantity] = React.useState(item.quantity)
 
   const variantImage = {
@@ -46,21 +49,34 @@ export function LineItem({ item }) {
   const debouncedUli = React.useCallback((value) => uli(value), [])
 
   const handleQuantityChange = (value) => {
+    if (value !== "" && Number(value) < 1) {
+      return
+    }
     setQuantity(value)
     if (Number(value) >= 1) {
       debouncedUli(value)
     }
   }
 
-  const image =
-    variantImage.src &&
-    getShopifyImage({
-      image: variantImage,
-      layout: "constrained",
-      crop: "contain",
-      width: 160,
-      height: 160,
-    })
+  function doIncrement() {
+    handleQuantityChange((quantity || 0) + 1)
+  }
+
+  function doDecrement() {
+    handleQuantityChange((quantity || 0) - 1)
+  }
+
+  const image = React.useMemo(
+    () =>
+      getShopifyImage({
+        image: variantImage,
+        layout: "constrained",
+        crop: "contain",
+        width: 160,
+        height: 160,
+      }),
+    [variantImage.src]
+  )
 
   return (
     <tr>
@@ -87,13 +103,12 @@ export function LineItem({ item }) {
 
       <td className={priceColumn}>{price}</td>
       <td>
-        <input
+        <NumericInput
           disabled={loading}
-          className={input}
-          type="numeric"
-          step={1}
           value={quantity}
           aria-label="Quantity"
+          onIncrement={doIncrement}
+          onDecrement={doDecrement}
           onChange={(e) => handleQuantityChange(e.currentTarget.value)}
         />
       </td>
