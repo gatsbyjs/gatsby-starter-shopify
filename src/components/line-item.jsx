@@ -88,6 +88,7 @@ export function LineItem({ item }) {
       <td className={priceColumn}>{price}</td>
       <td>
         <input
+          disabled={loading}
           className={input}
           type="numeric"
           step={1}
