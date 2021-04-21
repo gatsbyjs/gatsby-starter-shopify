@@ -14,7 +14,7 @@ export default function ProductTypeIndex({
       <Seo title={`Category: ${productType}`} />
       <h1 className={visuallyHidden}>{productType}</h1>
       <div>
-        <ProductListing products={products} />
+        <ProductListing products={products.nodes} />
       </div>
     </Layout>
   )

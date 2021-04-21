@@ -9,6 +9,7 @@ import {
   productImageStyle,
   productDetailsStyle,
   productVendorStyle,
+  productPrice,
 } from "./product-card.module.css"
 
 export function ProductCard({ product }) {
@@ -49,7 +50,7 @@ export function ProductCard({ product }) {
     >
       <div className={productImageStyle} data-name="product-image-box">
         <GatsbyImage
-          alt=""
+          alt={firstImage?.altText ?? title}
           image={firstImage?.gatsbyImageData ?? storefrontImageData}
         />
       </div>
@@ -58,7 +59,7 @@ export function ProductCard({ product }) {
         <h2 as="h2" className={productHeadingStyle}>
           {title}
         </h2>
-        <div>{price}</div>
+        <div className={productPrice}>{price}</div>
       </div>
     </Link>
   )
@@ -66,11 +67,13 @@ export function ProductCard({ product }) {
 
 export const query = graphql`
   fragment ProductCard on ShopifyProduct {
+    id
     title
     slug: gatsbyPath(
       filePath: "/products/{ShopifyProduct.productType}/{ShopifyProduct.handle}"
     )
     images {
+      altText
       gatsbyImageData(aspectRatio: 1, width: 640)
     }
     priceRangeV2 {

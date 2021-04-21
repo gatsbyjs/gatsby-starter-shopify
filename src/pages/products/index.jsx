@@ -11,7 +11,7 @@ export default function Products({ data: { products } }) {
       <Seo title="All Products in Hexagon Store" />
       <h1 className={visuallyHidden}>Products</h1>
       <div className={container}>
-        <ProductListing products={products} />
+        <ProductListing products={products.nodes} />
       </div>
     </Layout>
   )
