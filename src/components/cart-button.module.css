@@ -21,5 +21,6 @@
   top: -8px;
   right: -8px;
   height: 16px;
-  width: 16px;
+  min-width: 16px;
+  padding: 0 var(--size-sm);
 }
