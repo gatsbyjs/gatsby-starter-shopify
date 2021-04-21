@@ -3,8 +3,8 @@
   grid-template-columns: max-content 1fr;
   grid-template-rows: min-content 1fr;
   grid-template-areas:
-    'filters search'
-    'filters results';
+    "filters search"
+    "filters results";
 }
 
 .filters {
@@ -138,4 +138,24 @@
 
 .priceFields input {
   max-width: 120px;
+}
+
+.progressStyle {
+  font-size: var(--text-md);
+  color: var(--text-color-secondary);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  padding: var(--size-xl) 0;
+}
+
+.resultsStyle {
+  font-size: var(--text-md);
+  color: var(--text-color);
+  padding: var(--size-xl) 0;
+}
+
+.resultsStyle span {
+  font-weight: var(--bold);
 }
