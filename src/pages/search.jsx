@@ -138,15 +138,9 @@ export default function SearchPage({
       setCursor(-1)
       setPages([])
     }
-  }, [
-    selectedTags,
-    selectedProductTypes,
-    selectedVendors,
-    sortKey,
-    searchTerm,
-    cursor,
-    pages,
-  ])
+    // We deliberately skip pages and cursor as dependencies to avoid infinite loops
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTags, selectedProductTypes, selectedVendors, sortKey, searchTerm])
 
   // If there is no filter then we show the default products that came from the Gatsby data layer
   const isDefault =
