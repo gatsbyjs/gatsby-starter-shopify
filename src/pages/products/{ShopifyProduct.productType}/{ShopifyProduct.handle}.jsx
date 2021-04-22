@@ -11,7 +11,6 @@ import {
   infodiv,
   priceingdiv,
   priceValue,
-  numberInputStyle,
   selectVariant,
   selectp,
   labelFont,
