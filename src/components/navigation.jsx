@@ -19,7 +19,7 @@ export function Navigation({ className }) {
       <Link
         key="All"
         className={navLink}
-        to="/search"
+        to="/products/"
         activeClassName={activeLink}
       >
         All products

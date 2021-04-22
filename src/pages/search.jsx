@@ -36,7 +36,7 @@ export const query = graphql`
       tags: distinct(field: tags)
       vendors: distinct(field: vendor)
     }
-    products: allShopifyProduct(limit: 10, sort: { fields: title }) {
+    products: allShopifyProduct(limit: 24, sort: { fields: title }) {
       edges {
         node {
           title
@@ -110,14 +110,23 @@ export default function SearchPage({
     },
     sortKey,
     false,
-    10,
+    24,
     cursor === -1 ? undefined : pages[cursor]
   )
 
   React.useEffect(() => {
+    if (location.hash === "#more" && pages.length) {
+      setCursor((cursor) => cursor + 1)
+      const url = new URL(location.href)
+      url.hash = ""
+      window.history.replaceState({}, null, url.toString())
+    }
+  }, [location.hash, pages.length])
+
+  React.useEffect(() => {
     // There there's a new page of data available then add it to the pagination list
     if (cursor === pages.length - 1 && data?.products?.pageInfo?.hasNextPage) {
-      setPages(
+      setPages((pages) =>
         Array.from(
           new Set([
             ...pages,
@@ -130,7 +139,7 @@ export default function SearchPage({
     if (data?.products?.pageInfo && !data.products.pageInfo.hasNextPage) {
       setHasFoundLastPage(true)
     }
-  }, [data, cursor, pages])
+  }, [data, cursor, pages.length])
 
   // If the filters change then reset the pagination
   React.useEffect(() => {

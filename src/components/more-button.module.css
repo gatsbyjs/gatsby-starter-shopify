@@ -1,0 +1,15 @@
+.moreButton {
+  font-size: var(--text-lg);
+  font-weight: var(--semiBold);
+  background: var(--primary-color-80);
+  display: block;
+  width: max-content;
+  padding: var(--size-md) var(--size-xl);
+  margin: var(--size-md) auto;
+  color: white;
+  border-radius: var(--border-radius);
+}
+
+.moreButton:hover {
+  background: var(--black-fade-40);
+}
