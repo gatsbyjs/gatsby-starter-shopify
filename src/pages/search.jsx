@@ -176,19 +176,21 @@ export default function SearchPage({
             placeholder="Search..."
           />
           <div className={sortSelector}>
-            Sort by{" "}
-            <select
-              name="sort"
-              id="sort"
-              value={sortKey}
-              onBlur={(e) => setSortKey(e.target.value)}
-            >
-              <option value="RELEVANCE">Relevance</option>
-              <option value="PRICE">Price</option>
-              <option value="TITLE">Title</option>
-              <option value="CREATED_AT">New items</option>
-              <option value="BEST_SELLING">Trending</option>
-            </select>
+            <label for="sort">
+              Sort by{" "}
+              <select
+                name="sort"
+                id="sort"
+                value={sortKey}
+                onBlur={(e) => setSortKey(e.target.value)}
+              >
+                <option value="RELEVANCE">Relevance</option>
+                <option value="PRICE">Price</option>
+                <option value="TITLE">Title</option>
+                <option value="CREATED_AT">New items</option>
+                <option value="BEST_SELLING">Trending</option>
+              </select>
+            </label>
           </div>
         </div>
         <section className={filters}>
