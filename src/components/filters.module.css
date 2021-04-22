@@ -1,0 +1,41 @@
+.priceFilter {
+  display: grid;
+}
+
+.priceFilterStyle {
+  display: flex;
+}
+
+.priceFilterStyle label {
+  cursor: pointer;
+  margin-top: 2px;
+}
+
+.priceFilterStyle summary {
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--size-md);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracked);
+}
+
+.clearButton {
+  color: var(--black-fade-40);
+  font-size: var(--text-sm);
+}
+
+.priceFields {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--size-sm);
+}
+
+.priceFields input {
+  max-width: 96px;
+}

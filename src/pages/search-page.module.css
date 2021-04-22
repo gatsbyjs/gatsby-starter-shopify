@@ -7,19 +7,19 @@
     "filters results";
 }
 
-.filters {
+.filterStyle {
   grid-area: filters;
   padding: var(--size-xl);
   padding-top: 0;
 }
 
-.filters details {
+.filterStyle details {
   margin-bottom: var(--size-2xl);
 }
-.filters * + details {
+.filterStyle * + details {
   margin-top: var(--size-2xl);
 }
-.filters hr {
+.filterStyle hr {
   border-color: var(--black-fade-5);
 }
 

@@ -1,5 +1,5 @@
 // @ts-check
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useReducer, useState } from "react"
 import queryString from "query-string"
 import { useQuery } from "urql"
 
@@ -106,17 +106,8 @@ export function getValuesFromQueryString(query) {
 }
 
 export function useProductSearch(
-  {
-    term,
-    allTags,
-    selectedTags,
-    allProductTypes,
-    selectedProductTypes,
-    allVendors,
-    selectedVendors,
-    minPrice,
-    maxPrice,
-  },
+  filters,
+  { allTags, allProductTypes, allVendors },
   sortKey,
   pause = false,
   count = 20,
@@ -126,14 +117,15 @@ export function useProductSearch(
   const [query, setQuery] = useState("")
 
   // Relevance is non-deterministic if there is no query, so we default to "title" instead
-  const initialSortKey = term ? "RELEVANCE" : "TITLE"
+  const initialSortKey = filters.term ? "RELEVANCE" : "TITLE"
 
   useEffect(() => {
+    const { term, tags, productTypes, minPrice, maxPrice, vendors } = filters
     const parts = [
       term,
-      makeFilter("tag", allTags, selectedTags),
-      makeFilter("product_type", allProductTypes, selectedProductTypes),
-      makeFilter("vendor", allVendors, selectedVendors),
+      makeFilter("tag", allTags, tags),
+      makeFilter("product_type", allProductTypes, productTypes),
+      makeFilter("vendor", allVendors, vendors),
       // Exclude empty filter values
     ].filter(Boolean)
 
@@ -152,9 +144,9 @@ export function useProductSearch(
       // Don't show if sort order is default
       s: sortKey === initialSortKey ? undefined : sortKey,
       // Don't show if all values are selected
-      p: makeQueryStringValue(allProductTypes, selectedProductTypes),
-      v: makeQueryStringValue(allVendors, selectedVendors),
-      t: makeQueryStringValue(allTags, selectedTags),
+      p: makeQueryStringValue(allProductTypes, productTypes),
+      v: makeQueryStringValue(allVendors, vendors),
+      t: makeQueryStringValue(allTags, tags),
     })
 
     // Sorry IE, you can live without search persistence
@@ -164,21 +156,9 @@ export function useProductSearch(
       window.history.replaceState({}, null, url.toString())
     }
     setQuery(parts.join(" "))
-  }, [
-    initialSortKey,
-    term,
-    allTags,
-    selectedTags,
-    allProductTypes,
-    selectedProductTypes,
-    allVendors,
-    selectedVendors,
-    minPrice,
-    maxPrice,
-    sortKey,
-  ])
+  }, [filters, initialSortKey, allTags, allProductTypes, allVendors, sortKey])
 
-  return useQuery({
+  const [result] = useQuery({
     query: ProductsQuery,
     variables: {
       query,
@@ -189,4 +169,123 @@ export function useProductSearch(
     },
     pause,
   })
+
+  const isDefault =
+    filters.tags.length === allTags.length &&
+    filters.productTypes.length === allProductTypes.length &&
+    filters.vendors.length === allVendors.length &&
+    !filters.term &&
+    !filters.minPrice &&
+    !filters.maxPrice &&
+    !sortKey &&
+    !after
+
+  return { ...result, isDefault }
+}
+
+const defaultState = {
+  pages: [],
+  cursor: -1,
+  hasNextPage: false,
+  hasFoundLastPage: false,
+}
+
+function reducer(state, action) {
+  console.log({ action, state })
+  const { pages, cursor } = state
+  switch (action.type) {
+    case "next": {
+      if (cursor >= pages.length - 1) {
+        return state
+      }
+      return { ...state, cursor: cursor + 1 }
+    }
+    case "prev": {
+      if (cursor < 0) {
+        return state
+      }
+      return { ...state, cursor: cursor - 1 }
+    }
+    case "reset": {
+      if (pages.length) {
+        return defaultState
+      }
+      return state
+    }
+    case "setData": {
+      const data = action.value
+      if (!data) {
+        return state
+      }
+
+      const { hasNextPage = false, hasPreviousPage = false } = data.pageInfo
+      let { hasFoundLastPage = false, pages } = state
+
+      if (data.pageInfo && !hasNextPage) {
+        hasFoundLastPage = true
+      }
+
+      if (cursor === pages.length - 1) {
+        pages = Array.from(
+          new Set([...pages, data.edges?.[data.edges.length - 1]?.cursor])
+        )
+      }
+      console.log("setting data to", {
+        ...state,
+        pages,
+        hasFoundLastPage,
+        hasNextPage,
+        hasPreviousPage,
+      })
+      return { ...state, pages, hasFoundLastPage, hasNextPage, hasPreviousPage }
+    }
+
+    case "goto": {
+      if (action.value < 0 || action.value > pages.length - 1) {
+        return state
+      }
+      return { ...state, cursor: action.value - 1 }
+    }
+
+    default:
+      throw new Error(action.type)
+  }
+}
+
+export function useSearchPagination() {
+  const [state, dispatch] = useReducer(reducer, defaultState)
+
+  const nextPage = useCallback(() => dispatch({ type: "next" }), [])
+  const previousPage = useCallback(() => dispatch({ type: "prev" }), [])
+  const reset = useCallback(() => dispatch({ type: "reset" }), [])
+  const gotoPage = useCallback(
+    (index) => dispatch({ type: "goto", value: index }),
+    []
+  )
+  const setData = useCallback(
+    (data) => dispatch({ type: "setData", value: data }),
+    []
+  )
+
+  const {
+    pages,
+    cursor,
+    hasFoundLastPage,
+    hasNextPage,
+    hasPreviousPage,
+  } = state
+
+  return {
+    nextPage,
+    previousPage,
+    reset,
+    gotoPage,
+    cursor: cursor + 1,
+    hasFoundLastPage,
+    hasNextPage,
+    hasPreviousPage,
+    setData,
+    pageCount: pages.length + 1,
+    nextToken: cursor === -1 || !pages.length ? undefined : pages[cursor],
+  }
 }

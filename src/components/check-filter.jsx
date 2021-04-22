@@ -16,19 +16,17 @@ export function CheckFilter({
 }) {
   const toggleItem = ({ currentTarget: input }) => {
     if (input.checked) {
-      setSelectedItems((items) => {
-        const newItems = [...items, input.value]
-        return newItems
-      })
+      setSelectedItems([...selectedItems, input.value])
     } else {
-      setSelectedItems((items) => {
-        const idx = items.indexOf(input.value)
-        if (idx === -1) {
-          return
-        }
-        const newItems = [...items.slice(0, idx), ...items.slice(idx + 1)]
-        return newItems
-      })
+      const idx = selectedItems.indexOf(input.value)
+      if (idx === -1) {
+        return
+      }
+      const newItems = [
+        ...selectedItems.slice(0, idx),
+        ...selectedItems.slice(idx + 1),
+      ]
+      setSelectedItems(newItems)
     }
   }
 
