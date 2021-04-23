@@ -1,10 +1,11 @@
 .main {
   display: grid;
-  grid-template-columns: max-content 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: min-content 1fr;
   grid-template-areas:
-    "filters search"
-    "filters results";
+    "search"
+    "results"
+    "filters";
 }
 
 .filters {
@@ -25,6 +26,7 @@
 
 .results {
   grid-area: results;
+  padding: 0 var(--size-2xl);
 }
 
 .results ul {
@@ -36,15 +38,15 @@
   grid-area: search;
   height: min-content;
   display: grid;
-  grid-gap: var(--size-2xl);
   grid-template-columns: auto max-content;
   align-items: center;
+  padding: var(--size-md) var(--size-xl);
 }
 
 .search input {
   display: block;
   flex: 1;
-  font-size: 18px;
+  font-size: var(--text-lg);
   background-color: var(--black-fade-5);
   border-radius: var(--border-radius);
   padding: var(--size-md);
@@ -54,13 +56,20 @@
 
 .searchIcon {
   position: absolute;
-  top: calc(50% - 12px);
-  left: 12px;
+  left: calc(var(--size-2xl));
+  /* top: calc(50% - 12px);
+  left: 12px; */
 }
 
 .sortSelector {
-  padding-left: var(--size-2xl);
-  padding-right: var(--size-2xl);
+  padding-left: var(--size-lg);
+}
+
+.sortSelector label {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 
 .sortSelector > label,
@@ -72,6 +81,43 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   grid-gap: var(--size-lg);
+}
+
+@media (min-width: 1024px) {
+  .main {
+    grid-template-columns: max-content 1fr;
+    grid-template-areas:
+      "search search"
+      "filters results";
+  }
+  .sortSelector label {
+    position: initial;
+    width: auto;
+    height: auto;
+  }
+}
+
+@media (min-width: 1280px) {
+  .main {
+    grid-template-areas:
+      "filters search"
+      "filters results";
+  }
+  .search {
+    grid-gap: var(--size-2xl);
+    padding: 0;
+  }
+  .searchIcon {
+    position: absolute;
+    top: calc(50% - 12px);
+    left: 12px;
+  }
+  .results {
+    padding: 0;
+  }
+  .sortSelector {
+    padding: 0 var(--size-2xl);
+  }
 }
 
 .productListItem {
