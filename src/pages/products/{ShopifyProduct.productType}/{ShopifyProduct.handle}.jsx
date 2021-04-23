@@ -169,7 +169,9 @@ export default function Product({ data: { product, suggestions } }) {
                         setQuantity((q) => Math.min(q + 1, 20))
                       }
                       onDecrement={() => setQuantity((q) => Math.max(1, q - 1))}
-                      onChange={(_, value) => setQuantity(value)}
+                      onChange={(event) =>
+                        setQuantity(event.currentTarget.value)
+                      }
                       value={quantity}
                       min="1"
                       max="20"

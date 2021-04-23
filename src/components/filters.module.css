@@ -26,6 +26,7 @@
 .clearButton {
   color: var(--black-fade-40);
   font-size: var(--text-sm);
+  line-height: 1;
 }
 
 .priceFields {

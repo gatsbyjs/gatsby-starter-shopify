@@ -3,6 +3,7 @@ import { useLocation } from "@reach/router"
 import { graphql } from "gatsby"
 import slugify from "slugify"
 import { CgSearch, CgChevronRight, CgChevronLeft } from "react-icons/cg"
+import { MdClear, MdSort } from "react-icons/md"
 import { Layout } from "../components/layout"
 import { ProductCard } from "../components/product-card"
 
@@ -24,6 +25,9 @@ import {
   progressStyle,
   resultsStyle,
   filterStyle,
+  clearSearch,
+  searchForm,
+  sortIcon,
 } from "./search-page.module.css"
 import { getCurrencySymbol } from "../utils/format-price"
 import { Spinner } from "../components/progress"
@@ -140,28 +144,41 @@ export default function SearchPage({
   )
 
   const productList = (isDefault ? products.edges : data?.products?.edges) || []
-
+  console.log(filters)
   return (
     <Layout>
       <div className={main}>
         <div className={search}>
-          <CgSearch className={searchIcon} size={24} />
-          <input
-            type="search"
-            value={filters.term}
-            onChange={(_, term) =>
-              setFilters((filters) => ({ ...filters, term }))
-            }
-            placeholder="Search..."
-          />
+          <form onSubmit={(e) => e.preventDefault()} className={searchForm}>
+            <CgSearch aria-hidden className={searchIcon} size={24} />
+
+            <input
+              type="text"
+              value={filters.term}
+              onChange={(e) =>
+                setFilters({ ...filters, term: e.currentTarget.value })
+              }
+              placeholder="Search..."
+            />
+            {filters.term ? (
+              <button
+                className={clearSearch}
+                type="reset"
+                onClick={() => setFilters({ ...filters, term: "" })}
+                aria-label="Clear search query"
+              >
+                <MdClear size={20} />
+              </button>
+            ) : undefined}
+          </form>
           <div className={sortSelector}>
             <label htmlFor="sort">
-              Sort by{" "}
+              <span>Sort by:</span>
               <select
                 name="sort"
                 id="sort"
                 value={sortKey}
-                onBlur={(e) => setSortKey(e.target.value)}
+                onChange={(e) => setSortKey(e.target.value)}
               >
                 <option value="RELEVANCE">Relevance</option>
                 <option value="PRICE">Price</option>
@@ -170,6 +187,7 @@ export default function SearchPage({
                 <option value="BEST_SELLING">Trending</option>
               </select>
             </label>
+            <MdSort className={sortIcon} size={20} />
           </div>
         </div>
         <section className={filterStyle}>

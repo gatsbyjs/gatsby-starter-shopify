@@ -19,6 +19,15 @@ export function Filters({
     setFilters((filters) => ({ ...filters, [key]: value }))
   }
 
+  const updateNumeric = (key, value) => {
+    if (
+      !isNaN(Number(value)) ||
+      (value.endsWith(".") && !isNaN(Number(value.substring(0, -1))))
+    ) {
+      updateFilter(key, value)
+    }
+  }
+
   return (
     <>
       <CheckFilter
@@ -31,32 +40,38 @@ export function Filters({
       <details className={priceFilterStyle} open={true}>
         <summary>
           Price
-          <button
-            className={clearButton}
-            onClick={() =>
-              setFilters((filters) => ({
-                ...filters,
-                maxPrice: "",
-                minPrice: "",
-              }))
-            }
-          >
-            Reset
-          </button>
+          {(filters.maxPrice || filters.minPrice) && (
+            <button
+              className={clearButton}
+              onClick={() =>
+                setFilters((filters) => ({
+                  ...filters,
+                  maxPrice: "",
+                  minPrice: "",
+                }))
+              }
+            >
+              Reset
+            </button>
+          )}
         </summary>
         <div className={priceFields}>
           <CurrencyField
             {...currencyCode}
             aria-label="Minimum price"
             value={filters.minPrice}
-            onChange={(_, value) => updateFilter("minPrice", value)}
+            onChange={(event) =>
+              updateNumeric("minPrice", event.currentTarget.value)
+            }
           />{" "}
           –{" "}
           <CurrencyField
             {...currencyCode}
             aria-label="Maximum price"
             value={filters.maxPrice}
-            onChange={(_, value) => updateFilter("maxPrice", value)}
+            onChange={(event) =>
+              updateNumeric("maxPrice", event.currentTarget.value)
+            }
           />
         </div>
       </details>
