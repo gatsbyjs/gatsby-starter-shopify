@@ -75,6 +75,7 @@ export function LineItem({ item }) {
         width: 160,
         height: 160,
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [variantImage.src]
   )
 

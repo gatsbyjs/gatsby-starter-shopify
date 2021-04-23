@@ -36,7 +36,7 @@ export const query = graphql`
       tags: distinct(field: tags)
       vendors: distinct(field: vendor)
     }
-    products: allShopifyProduct(limit: 10, sort: { fields: title }) {
+    products: allShopifyProduct(limit: 24, sort: { fields: title }) {
       edges {
         node {
           title
@@ -110,14 +110,23 @@ export default function SearchPage({
     },
     sortKey,
     false,
-    10,
+    24,
     cursor === -1 ? undefined : pages[cursor]
   )
 
   React.useEffect(() => {
+    if (location.hash === "#more" && pages.length) {
+      setCursor((cursor) => cursor + 1)
+      const url = new URL(location.href)
+      url.hash = ""
+      window.history.replaceState({}, null, url.toString())
+    }
+  }, [location.hash, pages.length])
+
+  React.useEffect(() => {
     // There there's a new page of data available then add it to the pagination list
     if (cursor === pages.length - 1 && data?.products?.pageInfo?.hasNextPage) {
-      setPages(
+      setPages((pages) =>
         Array.from(
           new Set([
             ...pages,
@@ -130,7 +139,7 @@ export default function SearchPage({
     if (data?.products?.pageInfo && !data.products.pageInfo.hasNextPage) {
       setHasFoundLastPage(true)
     }
-  }, [data, cursor, pages])
+  }, [data, cursor, pages.length])
 
   // If the filters change then reset the pagination
   React.useEffect(() => {
@@ -138,15 +147,9 @@ export default function SearchPage({
       setCursor(-1)
       setPages([])
     }
-  }, [
-    selectedTags,
-    selectedProductTypes,
-    selectedVendors,
-    sortKey,
-    searchTerm,
-    cursor,
-    pages,
-  ])
+    // We deliberately skip pages and cursor as dependencies to avoid infinite loops
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTags, selectedProductTypes, selectedVendors, sortKey, searchTerm])
 
   // If there is no filter then we show the default products that came from the Gatsby data layer
   const isDefault =
@@ -182,19 +185,21 @@ export default function SearchPage({
             placeholder="Search..."
           />
           <div className={sortSelector}>
-            <label htmlFor="sort">Sort by </label>
-            <select
-              name="sort"
-              id="sort"
-              value={sortKey}
-              onBlur={(e) => setSortKey(e.target.value)}
-            >
-              <option value="RELEVANCE">Relevance</option>
-              <option value="PRICE">Price</option>
-              <option value="TITLE">Title</option>
-              <option value="CREATED_AT">New items</option>
-              <option value="BEST_SELLING">Trending</option>
-            </select>
+            <label htmlFor="sort">
+              Sort by{" "}
+              <select
+                name="sort"
+                id="sort"
+                value={sortKey}
+                onBlur={(e) => setSortKey(e.target.value)}
+              >
+                <option value="RELEVANCE">Relevance</option>
+                <option value="PRICE">Price</option>
+                <option value="TITLE">Title</option>
+                <option value="CREATED_AT">New items</option>
+                <option value="BEST_SELLING">Trending</option>
+              </select>
+            </label>
           </div>
         </div>
         <section className={filters}>

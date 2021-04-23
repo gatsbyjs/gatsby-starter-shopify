@@ -72,6 +72,11 @@
   overflow: hidden;
 }
 
+.sortSelector > label,
+.sortSelector > label > select {
+  cursor: pointer;
+}
+
 .productList {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
