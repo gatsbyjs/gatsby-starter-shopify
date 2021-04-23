@@ -10,8 +10,23 @@
 
 .filterStyle {
   grid-area: filters;
-  padding: var(--size-xl);
-  padding-top: 0;
+  /* Visually hidden */
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.filterStyle.modalOpen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  z-index: 10;
+  background-color: white;
+  padding: 12px 12px 12px 24px;
 }
 
 .filterStyle details {
@@ -22,6 +37,26 @@
 }
 .filterStyle hr {
   border-color: var(--black-fade-5);
+}
+
+.filterTitle {
+  display: grid;
+  align-items: center;
+  grid-template-columns: min-content 1fr min-content;
+  color: var(--text-color-secondary);
+}
+
+.filterTitle button {
+  display: grid;
+  place-items: center;
+  width: var(--size-input);
+  height: var(--size-input);
+  position: relative;
+}
+
+.filterTitle h2 {
+  font-size: var(--text-4xl);
+  font-weight: var(--bold);
 }
 
 .results {
@@ -38,7 +73,7 @@
   grid-area: search;
   height: min-content;
   display: grid;
-  grid-template-columns: auto max-content;
+  grid-template-columns: auto max-content max-content;
   align-items: center;
   padding: var(--size-md) var(--size-xl);
 }
@@ -78,6 +113,23 @@
 }
 
 .clearSearch:hover {
+  background-color: var(--text-color-secondary);
+  color: var(--black-fade-5);
+}
+
+.filterButton {
+  color: var(--text-color-secondary);
+  padding: var(--size-sm);
+  display: grid;
+  place-items: center;
+  width: var(--size-input);
+}
+
+.filterButton.activeFilters {
+  color: var(--primary-color-80);
+}
+
+.filterButton:hover {
   background-color: var(--text-color-secondary);
   color: var(--black-fade-5);
 }
@@ -122,6 +174,24 @@
 }
 
 @media (min-width: 1024px) {
+  .filterTitle {
+    display: none;
+  }
+  .filterButton {
+    display: none;
+  }
+
+  .filterStyle.modalOpen {
+    position: fixed;
+  }
+
+  .filterStyle {
+    padding: var(--size-xl);
+    padding-top: 0;
+    /* Visually hidden */
+    width: auto;
+    height: auto;
+  }
   .sortIcon {
     display: none;
   }
@@ -149,6 +219,7 @@
 
   .sortSelector select {
     width: auto;
+    padding-right: var(--size-xl);
     opacity: 1;
   }
   .sortSelector label span {

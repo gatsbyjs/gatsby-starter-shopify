@@ -84,7 +84,7 @@ export function Filters({
       />
       <hr />
       <CheckFilter
-        open={false}
+        open={true}
         name="Tags"
         items={tags}
         selectedItems={filters.tags}

@@ -170,17 +170,20 @@ export function useProductSearch(
     pause,
   })
 
-  const isDefault =
-    filters.tags.length === allTags.length &&
-    filters.productTypes.length === allProductTypes.length &&
-    filters.vendors.length === allVendors.length &&
-    !filters.term &&
-    !filters.minPrice &&
-    !filters.maxPrice &&
-    !sortKey &&
-    !after
+  const filterCount =
+    (filters.tags.length === allTags.length ? 0 : filters.tags.length) +
+    (filters.productTypes.length === allProductTypes.length
+      ? 0
+      : filters.productTypes.length) +
+    (filters.vendors.length === allVendors.length
+      ? 0
+      : filters.vendors.length) +
+    (filters.minPrice ? 1 : 0) +
+    (filters.maxPrice ? 1 : 0)
 
-  return { ...result, isDefault }
+  const isDefault = !filterCount && !filters.term && !sortKey && !after
+
+  return { ...result, isDefault, filterCount }
 }
 
 const defaultState = {

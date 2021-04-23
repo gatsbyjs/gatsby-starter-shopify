@@ -3,6 +3,10 @@ import { useLocation } from "@reach/router"
 import { graphql } from "gatsby"
 import slugify from "slugify"
 import { CgSearch, CgChevronRight, CgChevronLeft } from "react-icons/cg"
+import {
+  RiFilterLine as FilterIcon,
+  RiFilterFill as FilterIconActive,
+} from "react-icons/ri"
 import { MdClear, MdSort } from "react-icons/md"
 import { Layout } from "../components/layout"
 import { ProductCard } from "../components/product-card"
@@ -28,6 +32,10 @@ import {
   clearSearch,
   searchForm,
   sortIcon,
+  filterButton,
+  filterTitle,
+  modalOpen,
+  activeFilters,
 } from "./search-page.module.css"
 import { getCurrencySymbol } from "../utils/format-price"
 import { Spinner } from "../components/progress"
@@ -40,7 +48,7 @@ export const query = graphql`
       tags: distinct(field: tags)
       vendors: distinct(field: vendor)
     }
-    products: allShopifyProduct(limit: 6, sort: { fields: title }) {
+    products: allShopifyProduct(limit: 24, sort: { fields: title }) {
       edges {
         node {
           title
@@ -83,6 +91,9 @@ export default function SearchPage({
 
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
 
+  // This modal is only used on mobile
+  const [showModal, setShowModal] = React.useState(false)
+
   const {
     nextPage,
     previousPage,
@@ -97,16 +108,7 @@ export default function SearchPage({
     hasPreviousPage,
   } = useSearchPagination()
 
-  console.log({
-    cursor,
-    pageCount,
-    nextToken,
-    hasFoundLastPage,
-    hasNextPage,
-    hasPreviousPage,
-  })
-
-  const { data, fetching, isDefault } = useProductSearch(
+  const { data, fetching, isDefault, filterCount } = useProductSearch(
     filters,
     {
       allProductTypes: productTypes,
@@ -115,20 +117,30 @@ export default function SearchPage({
     },
     sortKey,
     false,
-    6,
+    24, // Products per page
     nextToken
   )
 
-  console.log({ data })
-
   React.useEffect(() => {
-    if (location.hash === "#more" && pageCount > 1) {
+    // Scroll up when navigating
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    })
+  }, [cursor])
+
+  const hash =
+    typeof window === "undefined" ? location.hash : window.location.hash
+  React.useEffect(() => {
+    // Automatically load the next page if "#more" is in the URL
+    if (hash === "#more" && pageCount > 1) {
       nextPage()
       const url = new URL(location.href)
       url.hash = ""
       window.history.replaceState({}, null, url.toString())
     }
-  }, [location.hash, pageCount])
+  }, [hash, pageCount])
 
   React.useEffect(() => {
     setData(data?.products)
@@ -171,6 +183,20 @@ export default function SearchPage({
               </button>
             ) : undefined}
           </form>
+          <button
+            className={[
+              filterButton,
+              filterCount ? activeFilters : undefined,
+            ].join(" ")}
+            onClick={() => setShowModal((show) => !show)}
+            aria-hidden
+          >
+            {filterCount ? (
+              <FilterIconActive size={20} />
+            ) : (
+              <FilterIcon size={20} />
+            )}
+          </button>
           <div className={sortSelector}>
             <label htmlFor="sort">
               <span>Sort by:</span>
@@ -190,7 +216,14 @@ export default function SearchPage({
             <MdSort className={sortIcon} size={20} />
           </div>
         </div>
-        <section className={filterStyle}>
+        <section className={[filterStyle, showModal && modalOpen].join(" ")}>
+          <div className={filterTitle}>
+            <h2>Filter</h2>
+            <div></div>
+            <button aria-hidden onClick={() => setShowModal(false)}>
+              <MdClear size={20} />
+            </button>
+          </div>
           <Filters
             setFilters={setFilters}
             filters={filters}

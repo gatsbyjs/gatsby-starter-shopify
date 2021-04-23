@@ -39,11 +39,11 @@ export function CheckFilter({
       {name && (
         <summary className={summary}>
           {name}{" "}
-          {selectedItems.length && (
+          {selectedItems.length ? (
             <button className={clearButton} onClick={clearItems}>
               Clear
             </button>
-          )}
+          ) : undefined}
         </summary>
       )}
       {items.map((item) => (
