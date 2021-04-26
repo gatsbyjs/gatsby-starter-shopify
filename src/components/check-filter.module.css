@@ -30,6 +30,12 @@
   padding-bottom: var(--size-md);
 }
 
+.filterStyle summary::-webkit-details-marker,
+.filterStyle summary::marker {
+  display: none;
+  color: transparent;
+}
+
 .summary {
   display: flex;
   align-items: center;

@@ -37,13 +37,15 @@ export function CheckFilter({
   return (
     <details open={open} className={filterStyle}>
       {name && (
-        <summary className={summary}>
-          {name}{" "}
-          {selectedItems.length ? (
-            <button className={clearButton} onClick={clearItems}>
-              Clear
-            </button>
-          ) : undefined}
+        <summary>
+          <div className={summary}>
+            {name}{" "}
+            {selectedItems.length ? (
+              <button className={clearButton} onClick={clearItems}>
+                Clear
+              </button>
+            ) : undefined}
+          </div>
         </summary>
       )}
       {items.map((item) => (

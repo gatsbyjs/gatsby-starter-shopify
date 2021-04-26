@@ -5,6 +5,7 @@ import {
   priceFilterStyle,
   clearButton,
   priceFields,
+  summary,
 } from "./filters.module.css"
 
 export function Filters({
@@ -39,21 +40,23 @@ export function Filters({
       <hr />
       <details className={priceFilterStyle} open={true}>
         <summary>
-          Price
-          {(filters.maxPrice || filters.minPrice) && (
-            <button
-              className={clearButton}
-              onClick={() =>
-                setFilters((filters) => ({
-                  ...filters,
-                  maxPrice: "",
-                  minPrice: "",
-                }))
-              }
-            >
-              Reset
-            </button>
-          )}
+          <div className={summary}>
+            Price
+            {(filters.maxPrice || filters.minPrice) && (
+              <button
+                className={clearButton}
+                onClick={() =>
+                  setFilters((filters) => ({
+                    ...filters,
+                    maxPrice: "",
+                    minPrice: "",
+                  }))
+                }
+              >
+                Reset
+              </button>
+            )}
+          </div>
         </summary>
         <div className={priceFields}>
           <CurrencyField

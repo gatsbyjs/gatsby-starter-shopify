@@ -11,7 +11,7 @@
   margin-top: 2px;
 }
 
-.priceFilterStyle summary {
+.priceFilterStyle .summary {
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
@@ -21,6 +21,12 @@
   padding-bottom: var(--size-md);
   font-size: var(--text-xs);
   letter-spacing: var(--tracked);
+}
+
+.priceFilterStyle summary::-webkit-details-marker,
+summary::marker {
+  color: transparent;
+  display: none;
 }
 
 .clearButton {
