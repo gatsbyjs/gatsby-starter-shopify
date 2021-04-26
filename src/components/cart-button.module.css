@@ -1,10 +1,9 @@
 .cartButtonContainerStyle {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   position: relative;
   align-self: center;
-  height: fit-content;
 }
 
 .badgeStyle {
@@ -18,9 +17,13 @@
   font-weight: 700;
   border-radius: 999px;
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: 4px;
+  right: 4px;
   height: 16px;
   min-width: 16px;
   padding: 0 var(--size-sm);
+}
+
+.linkStyle[aria-current="page"] {
+  color: var(--primary-color-80);
 }

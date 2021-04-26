@@ -17,16 +17,23 @@
 }
 
 .filterStyle.modalOpen {
-  position: absolute;
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  width: auto;
-  height: auto;
+  height: 100vh;
+  width: 100vw;
   z-index: 10;
   background-color: white;
-  padding: 12px 12px 12px 24px;
+  overscroll-behavior: contain;
+}
+
+.filterWrap {
+  overflow-y: scroll;
+  padding: 0 var(--size-2xl);
 }
 
 .filterStyle details {
@@ -40,6 +47,7 @@
 }
 
 .filterTitle {
+  padding: 12px 12px 12px 24px;
   display: grid;
   align-items: center;
   grid-template-columns: min-content 1fr min-content;

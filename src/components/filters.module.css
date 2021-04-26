@@ -30,13 +30,8 @@
 }
 
 .priceFields {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
   align-items: center;
+  justify-content: stretch;
   gap: var(--size-sm);
-}
-
-.priceFields input {
-  max-width: 96px;
 }

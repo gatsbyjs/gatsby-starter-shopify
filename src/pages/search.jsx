@@ -36,6 +36,7 @@ import {
   filterTitle,
   modalOpen,
   activeFilters,
+  filterWrap,
 } from "./search-page.module.css"
 import { getCurrencySymbol } from "../utils/format-price"
 import { Spinner } from "../components/progress"
@@ -123,12 +124,22 @@ export default function SearchPage({
 
   React.useEffect(() => {
     // Scroll up when navigating
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    })
-  }, [cursor])
+    if (!showModal) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      })
+    }
+  }, [cursor, showModal])
+
+  React.useEffect(() => {
+    if (showModal) {
+      document.documentElement.style.overflow = "hidden"
+    } else {
+      document.documentElement.style.overflow = ""
+    }
+  }, [showModal])
 
   const hash =
     typeof window === "undefined" ? location.hash : window.location.hash
@@ -156,11 +167,10 @@ export default function SearchPage({
   )
 
   const productList = (isDefault ? products.edges : data?.products?.edges) || []
-  console.log(filters)
   return (
     <Layout>
       <div className={main}>
-        <div className={search}>
+        <div className={search} aria-hidden={modalOpen}>
           <form onSubmit={(e) => e.preventDefault()} className={searchForm}>
             <CgSearch aria-hidden className={searchIcon} size={24} />
 
@@ -224,16 +234,22 @@ export default function SearchPage({
               <MdClear size={20} />
             </button>
           </div>
-          <Filters
-            setFilters={setFilters}
-            filters={filters}
-            tags={tags}
-            vendors={vendors}
-            productTypes={productTypes}
-            currencyCode={currencyCode}
-          />
+          <div className={filterWrap}>
+            <Filters
+              setFilters={setFilters}
+              filters={filters}
+              tags={tags}
+              vendors={vendors}
+              productTypes={productTypes}
+              currencyCode={currencyCode}
+            />
+          </div>
         </section>
-        <section className={results} aria-busy={fetching}>
+        <section
+          className={results}
+          aria-busy={fetching}
+          aria-hidden={modalOpen}
+        >
           {fetching ? (
             <p className={progressStyle}>
               <Spinner aria-valuetext="Searching" /> Searching
