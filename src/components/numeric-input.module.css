@@ -8,6 +8,10 @@
   overflow: hidden;
 }
 
+.wrap button span {
+  display: none;
+}
+
 .input {
   grid-area: input;
   background: none;
@@ -54,8 +58,9 @@
 /* On mobile, make the buttons easier to press */
 @media (pointer: coarse) {
   .wrap {
-    grid-template-columns: min-content 1fr min-content;
+    grid-template-columns: var(--size-input) 1fr var(--size-input);
     grid-template-areas: "decrement input increment";
+    color: var(--text-color-secondary);
   }
   .input {
     text-align: center;
@@ -63,7 +68,18 @@
   }
   .wrap button {
     padding: 0 var(--size-md);
+    font-size: var(--text-lg);
+    font-weight: var(--bold);
   }
+
+  .wrap button span {
+    display: inline;
+  }
+
+  .wrap button svg {
+    display: none;
+  }
+
   .wrap button.increment {
     border: none;
   }

@@ -9,4 +9,5 @@
   font-weight: var(--bold);
   align-items: center;
   height: var(--size-input);
+  justify-content: center;
 }

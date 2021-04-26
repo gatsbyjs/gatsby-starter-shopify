@@ -1,7 +1,12 @@
 .title {
   font-size: var(--text-4xl);
   font-weight: var(--bold);
-  text-align: center;
   margin: 0;
-  padding-bottom: var(--size-2xl);
+  padding: var(--size-2xl) var(--size-2xl) var(--size-md);
+}
+
+@media (min-width: 640px) {
+  .title {
+    text-align: center;
+  }
 }

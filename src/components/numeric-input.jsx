@@ -22,6 +22,7 @@ export function NumericInput({
         aria-label="Increment"
         onClick={onIncrement}
       >
+        <span>+</span>
         <MdArrowDropUp />
       </button>
       <button
@@ -30,6 +31,7 @@ export function NumericInput({
         aria-label="Decrement"
         onClick={onDecrement}
       >
+        <span>-</span>
         <MdArrowDropDown />
       </button>
     </div>

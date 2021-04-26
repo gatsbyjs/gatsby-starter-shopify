@@ -9,14 +9,14 @@ import {
   scrollForMore,
   noImagePreview,
   infodiv,
-  priceingdiv,
+  optionsWrapper,
   priceValue,
   selectVariant,
-  selectp,
   labelFont,
-  tagssection,
   breadcrumb,
   tagList,
+  addToCartStyle,
+  metaSection,
 } from "./product-page.module.css"
 import isEqual from "lodash.isequal"
 import { GatsbyImage, getSrc } from "gatsby-plugin-image"
@@ -148,84 +148,64 @@ export default function Product({ data: { product, suggestions } }) {
               </div>
             )}
 
-            <div className={infodiv}>
+            <div>
               <div className={breadcrumb}>
                 <Link to={product.productTypeSlug}>{product.productType}</Link>
                 <ChevronIcon size={12} />
               </div>
-              <div>
-                <h1 className={header}>{title}</h1>
-                <p>{description}</p>
-              </div>
-              <div className={priceingdiv}>
-                <h2 className={priceValue}>
-                  <span>{price}</span>
-                </h2>
-                <form noValidate onSubmit={(e) => e.preventDefault()}>
-                  <fieldset>
-                    <NumericInput
-                      aria-label="Quantity"
-                      onIncrement={() =>
-                        setQuantity((q) => Math.min(q + 1, 20))
-                      }
-                      onDecrement={() => setQuantity((q) => Math.max(1, q - 1))}
-                      onChange={(event) =>
-                        setQuantity(event.currentTarget.value)
-                      }
-                      value={quantity}
-                      min="1"
-                      max="20"
-                    />
-                  </fieldset>
-                  {hasVariants && (
-                    <>
-                      {options.map(({ id, name, values }, index) => (
-                        <React.Fragment key={id}>
-                          <fieldset className={selectVariant}>
-                            <select
-                              aria-label="Variants"
-                              className={selectp}
-                              variant="filled"
-                              onBlur={(event) =>
-                                handleOptionChange(index, event)
-                              }
-                            >
-                              <option value="">{`Select ${name}`}</option>
-                              {values.map((value) => (
-                                <option value={value} key={`${name}-${value}`}>
-                                  {value}
-                                </option>
-                              ))}
-                            </select>
-                          </fieldset>
-                        </React.Fragment>
+              <h1 className={header}>{title}</h1>
+              <p>{description}</p>
+              <h2 className={priceValue}>
+                <span>{price}</span>
+              </h2>
+              <fieldset className={optionsWrapper}>
+                {hasVariants &&
+                  options.map(({ id, name, values }, index) => (
+                    <select
+                      aria-label="Variants"
+                      className={selectVariant}
+                      onBlur={(event) => handleOptionChange(index, event)}
+                      key={id}
+                    >
+                      <option value="">{`Select ${name}`}</option>
+                      {values.map((value) => (
+                        <option value={value} key={`${name}-${value}`}>
+                          {value}
+                        </option>
                       ))}
-                    </>
-                  )}
-                  <AddToCart
-                    variantId={productVariant.storefrontId}
-                    quantity={quantity}
-                    available={available}
-                  />
-                </form>
+                    </select>
+                  ))}
+              </fieldset>
+              <div className={addToCartStyle}>
+                <NumericInput
+                  aria-label="Quantity"
+                  onIncrement={() => setQuantity((q) => Math.min(q + 1, 20))}
+                  onDecrement={() => setQuantity((q) => Math.max(1, q - 1))}
+                  onChange={(event) => setQuantity(event.currentTarget.value)}
+                  value={quantity}
+                  min="1"
+                  max="20"
+                />
+                <AddToCart
+                  variantId={productVariant.storefrontId}
+                  quantity={quantity}
+                  available={available}
+                />
               </div>
-              <div style={{ paddingTop: "30px" }}>
-                <div className={tagssection}>
-                  <span className={labelFont}>Type</span>
-                  <span className={tagList}>
-                    <Link to={product.productTypeSlug}>
-                      {product.productType}
-                    </Link>
-                  </span>
-                </div>
-                <div className={tagssection}>
-                  <span className={labelFont}>Tags</span>
-                  <span className={tagList}>
-                    {product.tags.map((tag) => (
-                      <Link to={`/search?t=${tag}`}>{tag}</Link>
-                    ))}
-                  </span>
-                </div>
+              <div className={metaSection}>
+                <span className={labelFont}>Type</span>
+                <span className={tagList}>
+                  <Link to={product.productTypeSlug}>
+                    {product.productType}
+                  </Link>
+                </span>
+
+                <span className={labelFont}>Tags</span>
+                <span className={tagList}>
+                  {product.tags.map((tag) => (
+                    <Link to={`/search?t=${tag}`}>{tag}</Link>
+                  ))}
+                </span>
               </div>
             </div>
           </div>
