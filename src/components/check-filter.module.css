@@ -6,10 +6,10 @@
   cursor: pointer;
   margin-top: 6px;
   color: var(--text-color-secondary);
-  max-width: 240px;
   display: flex;
   align-items: baseline;
-  line-height: var(--dense);
+  line-height: var(--loose);
+  font-size: var(--text-lg);
 }
 
 .filterStyle label:hover {
@@ -30,6 +30,12 @@
   padding-bottom: var(--size-md);
 }
 
+.filterStyle summary::-webkit-details-marker,
+.filterStyle summary::marker {
+  display: none;
+  color: transparent;
+}
+
 .summary {
   display: flex;
   align-items: center;
@@ -39,6 +45,7 @@
 .clearButton {
   color: var(--black-fade-40);
   font-size: var(--text-sm);
+  line-height: var(--solid);
 }
 
 .checkbox {
@@ -47,10 +54,21 @@
   justify-content: center;
   appearance: none;
   border: 1px var(--black-fade-40) solid;
-  width: var(--size-lg);
-  height: var(--size-lg);
+  width: var(--size-xl);
+  height: var(--size-xl);
   border-radius: var(--border-radius-sm);
   margin-right: var(--size-md);
+}
+
+@media (min-width: 640px) {
+  .filterStyle label {
+    line-height: var(--dense);
+    max-width: 240px;
+  }
+  .checkbox {
+    width: var(--size-lg);
+    height: var(--size-lg);
+  }
 }
 
 .checkbox:checked {

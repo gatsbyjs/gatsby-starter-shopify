@@ -3,31 +3,44 @@ import { useLocation } from "@reach/router"
 import { graphql } from "gatsby"
 import slugify from "slugify"
 import { CgSearch, CgChevronRight, CgChevronLeft } from "react-icons/cg"
+import {
+  RiFilterLine as FilterIcon,
+  RiFilterFill as FilterIconActive,
+} from "react-icons/ri"
+import { MdClear, MdSort } from "react-icons/md"
 import { Layout } from "../components/layout"
-import { CheckFilter } from "../components/check-filter"
 import { ProductCard } from "../components/product-card"
 
-import { getValuesFromQueryString, useProductSearch } from "../utils/hooks"
+import {
+  getValuesFromQueryString,
+  useProductSearch,
+  useSearchPagination,
+} from "../utils/hooks"
 import {
   main,
   search,
   searchIcon,
   sortSelector,
   results,
-  filters,
   productList as productListStyle,
   productListItem,
   pagination,
   selectedItem,
-  priceFilterStyle,
-  clearButton,
-  priceFields,
   progressStyle,
   resultsStyle,
+  filterStyle,
+  clearSearch,
+  searchForm,
+  sortIcon,
+  filterButton,
+  filterTitle,
+  modalOpen,
+  activeFilters,
+  filterWrap,
 } from "./search-page.module.css"
 import { getCurrencySymbol } from "../utils/format-price"
-import { CurrencyField } from "../components/currency-field"
 import { Spinner } from "../components/progress"
+import { Filters } from "../components/filters"
 
 export const query = graphql`
   query {
@@ -75,123 +88,133 @@ export default function SearchPage({
   // These default values come from the page query string
   const queryParams = getValuesFromQueryString(location.search)
 
-  const [searchTerm, setSearchTerm] = React.useState(queryParams.term)
-
-  const [minPrice, setMinPrice] = React.useState(queryParams.minPrice)
-  const [maxPrice, setMaxPrice] = React.useState(queryParams.maxPrice)
+  const [filters, setFilters] = React.useState(queryParams)
 
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
 
-  const [selectedTags, setSelectedTags] = React.useState(queryParams.tags)
+  // This modal is only used on mobile
+  const [showModal, setShowModal] = React.useState(false)
 
-  const [selectedVendors, setSelectedVendors] = React.useState(
-    queryParams.vendors
-  )
+  const {
+    nextPage,
+    previousPage,
+    reset,
+    gotoPage,
+    cursor,
+    setData,
+    pageCount,
+    nextToken,
+    hasFoundLastPage,
+    hasNextPage,
+    hasPreviousPage,
+  } = useSearchPagination()
 
-  const [selectedProductTypes, setSelectedProductTypes] = React.useState(
-    queryParams.productTypes
-  )
-
-  const [cursor, setCursor] = React.useState(-1)
-  const [pages, setPages] = React.useState([])
-  const [hasFoundLastPage, setHasFoundLastPage] = React.useState(false)
-
-  const [{ data, fetching }] = useProductSearch(
+  const { data, fetching, isDefault, filterCount } = useProductSearch(
+    filters,
     {
-      term: searchTerm,
-      selectedTags,
-      selectedProductTypes,
-      selectedVendors,
       allProductTypes: productTypes,
       allVendors: vendors,
       allTags: tags,
-      minPrice,
-      maxPrice,
     },
     sortKey,
     false,
-    24,
-    cursor === -1 ? undefined : pages[cursor]
+    24, // Products per page
+    nextToken
   )
 
   React.useEffect(() => {
-    if (location.hash === "#more" && pages.length) {
-      setCursor((cursor) => cursor + 1)
+    // Scroll up when navigating
+    if (!showModal) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      })
+    }
+  }, [cursor, showModal])
+
+  React.useEffect(() => {
+    if (showModal) {
+      document.documentElement.style.overflow = "hidden"
+    } else {
+      document.documentElement.style.overflow = ""
+    }
+  }, [showModal])
+
+  const hash =
+    typeof window === "undefined" ? location.hash : window.location.hash
+  React.useEffect(() => {
+    // Automatically load the next page if "#more" is in the URL
+    if (hash === "#more" && pageCount > 1) {
+      nextPage()
       const url = new URL(location.href)
       url.hash = ""
       window.history.replaceState({}, null, url.toString())
     }
-  }, [location.hash, pages.length])
+  }, [hash, pageCount])
 
   React.useEffect(() => {
-    // There there's a new page of data available then add it to the pagination list
-    if (cursor === pages.length - 1 && data?.products?.pageInfo?.hasNextPage) {
-      setPages((pages) =>
-        Array.from(
-          new Set([
-            ...pages,
-            data?.products?.edges?.[data.products.edges.length - 1]?.cursor,
-          ])
-        )
-      )
-    }
-    // Once we've found the last page we can update the UI to remove the ellipsis
-    if (data?.products?.pageInfo && !data.products.pageInfo.hasNextPage) {
-      setHasFoundLastPage(true)
-    }
-  }, [data, cursor, pages.length])
+    setData(data?.products)
+  }, [data])
 
   // If the filters change then reset the pagination
   React.useEffect(() => {
-    if (cursor !== -1 && pages.length !== 0) {
-      setCursor(-1)
-      setPages([])
-    }
-    // We deliberately skip pages and cursor as dependencies to avoid infinite loops
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTags, selectedProductTypes, selectedVendors, sortKey, searchTerm])
-
-  // If there is no filter then we show the default products that came from the Gatsby data layer
-  const isDefault =
-    selectedTags.length === tags.length &&
-    selectedProductTypes.length === productTypes.length &&
-    selectedVendors.length === vendors.length &&
-    !searchTerm &&
-    !sortKey &&
-    !minPrice &&
-    !maxPrice &&
-    cursor === -1
+    reset()
+  }, [filters, sortKey])
 
   const currencyCode = getCurrencySymbol(
     products?.edges?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
   )
 
-  function clearPriceFilter() {
-    setMinPrice("")
-    setMaxPrice("")
-  }
-
   const productList = (isDefault ? products.edges : data?.products?.edges) || []
-
   return (
     <Layout>
       <div className={main}>
-        <div className={search}>
-          <CgSearch className={searchIcon} size={24} />
-          <input
-            type="search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.currentTarget.value)}
-            placeholder="Search..."
-          />
+        <div className={search} aria-hidden={modalOpen}>
+          <form onSubmit={(e) => e.preventDefault()} className={searchForm}>
+            <CgSearch aria-hidden className={searchIcon} size={24} />
+
+            <input
+              type="text"
+              value={filters.term}
+              onChange={(e) =>
+                setFilters({ ...filters, term: e.currentTarget.value })
+              }
+              placeholder="Search..."
+            />
+            {filters.term ? (
+              <button
+                className={clearSearch}
+                type="reset"
+                onClick={() => setFilters({ ...filters, term: "" })}
+                aria-label="Clear search query"
+              >
+                <MdClear size={20} />
+              </button>
+            ) : undefined}
+          </form>
+          <button
+            className={[
+              filterButton,
+              filterCount ? activeFilters : undefined,
+            ].join(" ")}
+            onClick={() => setShowModal((show) => !show)}
+            aria-hidden
+          >
+            {filterCount ? (
+              <FilterIconActive size={20} />
+            ) : (
+              <FilterIcon size={20} />
+            )}
+          </button>
           <div className={sortSelector}>
             <label htmlFor="sort">
-              Sort by{" "}
+              <span>Sort by:</span>
               <select
                 name="sort"
                 id="sort"
                 value={sortKey}
-                onBlur={(e) => setSortKey(e.target.value)}
+                onChange={(e) => setSortKey(e.target.value)}
               >
                 <option value="RELEVANCE">Relevance</option>
                 <option value="PRICE">Price</option>
@@ -200,67 +223,44 @@ export default function SearchPage({
                 <option value="BEST_SELLING">Trending</option>
               </select>
             </label>
+            <MdSort className={sortIcon} size={20} />
           </div>
         </div>
-        <section className={filters}>
-          <CheckFilter
-            name="Type"
-            items={productTypes}
-            selectedItems={selectedProductTypes}
-            setSelectedItems={setSelectedProductTypes}
-          />
-          <hr />
-          <details className={priceFilterStyle} open={true}>
-            <summary>
-              Price
-              <button className={clearButton} onClick={clearPriceFilter}>
-                Reset
-              </button>
-            </summary>
-            <div className={priceFields}>
-              <CurrencyField
-                {...currencyCode}
-                aria-label="Minimum price"
-                value={minPrice}
-                onChange={(e) => setMinPrice(e.currentTarget.value)}
-              />{" "}
-              –{" "}
-              <CurrencyField
-                {...currencyCode}
-                aria-label="Maximum price"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(e.currentTarget.value)}
-              />
-            </div>
-          </details>
-          <hr />
-          <CheckFilter
-            name="Brands"
-            items={vendors}
-            selectedItems={selectedVendors}
-            setSelectedItems={setSelectedVendors}
-          />
-          <hr />
-          <CheckFilter
-            open={false}
-            name="Tags"
-            items={tags}
-            selectedItems={selectedTags}
-            setSelectedItems={setSelectedTags}
-          />
+        <section className={[filterStyle, showModal && modalOpen].join(" ")}>
+          <div className={filterTitle}>
+            <h2>Filter</h2>
+            <div></div>
+            <button aria-hidden onClick={() => setShowModal(false)}>
+              <MdClear size={20} />
+            </button>
+          </div>
+          <div className={filterWrap}>
+            <Filters
+              setFilters={setFilters}
+              filters={filters}
+              tags={tags}
+              vendors={vendors}
+              productTypes={productTypes}
+              currencyCode={currencyCode}
+            />
+          </div>
         </section>
-        <section className={results} aria-busy={fetching}>
+        <section
+          className={results}
+          aria-busy={fetching}
+          aria-hidden={modalOpen}
+        >
           {fetching ? (
             <p className={progressStyle}>
               <Spinner aria-valuetext="Searching" /> Searching
-              {searchTerm ? ` for "${searchTerm}"…` : `…`}
+              {filters.term ? ` for "${filters.term}"…` : `…`}
             </p>
           ) : (
             <p className={resultsStyle}>
               Search results{" "}
-              {searchTerm && (
+              {filters.term && (
                 <>
-                  for "<span>{searchTerm}</span>"
+                  for "<span>{filters.term}</span>"
                 </>
               )}
             </p>
@@ -284,35 +284,27 @@ export default function SearchPage({
               </li>
             ))}
           </ul>
-          {productList?.length && data?.products?.pageInfo ? (
+          {productList?.length && pageCount ? (
             <nav className={pagination}>
               <button
-                disabled={!data?.products?.pageInfo?.hasPreviousPage}
-                onClick={() => setCursor(cursor - 1)}
+                disabled={!hasPreviousPage}
+                onClick={previousPage}
                 aria-label="Previous page"
               >
                 <CgChevronLeft />
               </button>
-              <button
-                onClick={() => setCursor(-1)}
-                className={cursor === -1 ? selectedItem : undefined}
-              >
-                1
-              </button>
-              {pages.map((_, index) => (
+              {[...Array(pageCount)].map((_, index) => (
                 <button
-                  onClick={() => setCursor(index)}
+                  onClick={() => gotoPage(index)}
                   className={index === cursor ? selectedItem : undefined}
                   key={`search${index}`}
                 >
-                  {index === pages.length - 1 && !hasFoundLastPage
-                    ? "…"
-                    : index + 2}
+                  {index === pageCount && !hasFoundLastPage ? "…" : index + 1}
                 </button>
               ))}
               <button
-                disabled={!data?.products?.pageInfo?.hasNextPage}
-                onClick={() => setCursor(cursor + 1)}
+                disabled={!hasNextPage}
+                onClick={nextPage}
                 aria-label="Next page"
               >
                 <CgChevronRight />

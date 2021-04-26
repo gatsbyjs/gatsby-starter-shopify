@@ -3,7 +3,7 @@
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --text-color: var(--gray-90);
   --text-color-secondary: var(--gray-50);
-  --primary-color-80: #7026b9;
+  --primary-color-80: #088413;
   --gray-90: #232129;
   --gray-70: #48434f;
   --gray-50: #78757a;
@@ -18,11 +18,12 @@
   --size-lg: 16px;
   --size-xl: 20px;
   --size-2xl: 24px;
-  --size-input: 35px;
+  --size-input: 48px;
   --size-fat-pad: 50px;
   --solid: 1;
   --dense: 1.25;
   --default: 1.5;
+  --loose: 2;
   --tracked: 0.075em;
   --tight: -0.015em;
   --body: 400;

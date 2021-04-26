@@ -8,20 +8,63 @@
     "filters";
 }
 
-.filters {
+.filterStyle {
   grid-area: filters;
-  padding: var(--size-xl);
-  padding-top: 0;
+  /* Visually hidden */
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 
-.filters details {
+.filterStyle.modalOpen {
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 10;
+  background-color: white;
+  overscroll-behavior: contain;
+}
+
+.filterWrap {
+  overflow-y: scroll;
+  padding: 0 var(--size-2xl);
+}
+
+.filterStyle details {
   margin-bottom: var(--size-2xl);
 }
-.filters * + details {
+.filterStyle * + details {
   margin-top: var(--size-2xl);
 }
-.filters hr {
+.filterStyle hr {
   border-color: var(--black-fade-5);
+}
+
+.filterTitle {
+  padding: 12px 12px 12px 24px;
+  display: grid;
+  align-items: center;
+  grid-template-columns: min-content 1fr min-content;
+  color: var(--text-color-secondary);
+}
+
+.filterTitle button {
+  display: grid;
+  place-items: center;
+  width: var(--size-input);
+  height: var(--size-input);
+  position: relative;
+}
+
+.filterTitle h2 {
+  font-size: var(--text-4xl);
+  font-weight: var(--bold);
 }
 
 .results {
@@ -38,45 +81,100 @@
   grid-area: search;
   height: min-content;
   display: grid;
-  grid-template-columns: auto max-content;
+  grid-template-columns: auto max-content max-content;
   align-items: center;
   padding: var(--size-md) var(--size-xl);
 }
 
 .search input {
-  display: block;
-  flex: 1;
   font-size: var(--text-lg);
+  grid-area: input;
+  padding-left: var(--size-md);
+  height: var(--size-input);
+  background: none;
+}
+
+.searchForm {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  grid-template-areas: "input clear";
+  align-items: center;
   background-color: var(--black-fade-5);
   border-radius: var(--border-radius);
-  padding: var(--size-md);
-  padding-left: 3rem;
-  height: 3em;
+  height: var(--size-input);
+  padding: 0 var(--size-md);
 }
 
 .searchIcon {
-  position: absolute;
-  left: calc(var(--size-2xl));
-  /* top: calc(50% - 12px);
-  left: 12px; */
+  display: none;
+  grid-area: icon;
+  color: var(--text-color-secondary);
+}
+
+.clearSearch {
+  grid-area: clear;
+  border-radius: 1000px;
+  color: var(--text-color-secondary);
+  padding: var(--size-sm);
+  display: grid;
+  place-items: center;
+}
+
+.clearSearch:hover {
+  background-color: var(--text-color-secondary);
+  color: var(--black-fade-5);
+}
+
+.filterButton {
+  color: var(--text-color-secondary);
+  padding: var(--size-sm);
+  display: grid;
+  place-items: center;
+  width: var(--size-input);
+}
+
+.filterButton.activeFilters {
+  color: var(--primary-color-80);
+}
+
+.filterButton:hover {
+  background-color: var(--text-color-secondary);
+  color: var(--black-fade-5);
 }
 
 .sortSelector {
-  padding-left: var(--size-lg);
+  display: grid;
+  place-items: center;
+  font-weight: var(--semiBold);
 }
 
 .sortSelector label {
+  grid-area: 1/1;
+}
+
+.sortSelector select {
+  padding-left: var(--size-lg);
+  opacity: 0;
+  width: var(--size-input);
+  height: var(--size-input);
+  cursor: pointer;
+  font-weight: var(--semiBold);
+  appearance: none;
+  background: url("data:image/svg+xml,%3Csvg width='16' height='16' xmlns='http://www.w3.org/2000/svg' fill='black'%3E%3Cpolyline points='4 6 8 10 12 6'/%3E%3C/svg%3E")
+    no-repeat center right;
+}
+
+.sortSelector label span {
   position: absolute;
   width: 0;
   height: 0;
   overflow: hidden;
 }
 
-.sortSelector > label,
-.sortSelector > label > select {
-  cursor: pointer;
+.sortIcon {
+  grid-area: 1/1;
+  color: var(--text-color-secondary);
 }
-
 .productList {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -84,13 +182,55 @@
 }
 
 @media (min-width: 1024px) {
+  .filterTitle {
+    display: none;
+  }
+  .filterButton {
+    display: none;
+  }
+
+  .filterStyle.modalOpen {
+    position: fixed;
+  }
+
+  .filterStyle {
+    padding: var(--size-xl);
+    padding-top: 0;
+    /* Visually hidden */
+    width: auto;
+    height: auto;
+  }
+  .sortIcon {
+    display: none;
+  }
+  .searchIcon {
+    display: inline;
+  }
+  .searchForm {
+    grid-template-columns: 30px 1fr max-content;
+    grid-template-areas: "icon input clear";
+  }
+  .search input {
+    padding-left: 0;
+  }
   .main {
     grid-template-columns: max-content 1fr;
     grid-template-areas:
       "search search"
       "filters results";
   }
-  .sortSelector label {
+
+  .sortSelector {
+    padding-left: var(--size-lg);
+    justify-content: flex-end;
+  }
+
+  .sortSelector select {
+    width: auto;
+    padding-right: var(--size-xl);
+    opacity: 1;
+  }
+  .sortSelector label span {
     position: initial;
     width: auto;
     height: auto;
@@ -106,11 +246,6 @@
   .search {
     grid-gap: var(--size-2xl);
     padding: 0;
-  }
-  .searchIcon {
-    position: absolute;
-    top: calc(50% - 12px);
-    left: 12px;
   }
   .results {
     padding: 0;

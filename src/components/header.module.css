@@ -1,19 +1,19 @@
 .headerStyle {
   display: grid;
   width: 100%;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-left: var(--size-xl);
+  padding-right: var(--size-md);
+  padding-top: 12px;
   grid-template-columns: 24px 1fr min-content min-content;
   grid-template-areas: "logo nada searchButton cartButton" "navHeader navHeader navHeader navHeader";
-  gap: var(--size-lg);
   align-items: center;
   background-color: white;
 }
 
 @media (min-width: 640px) {
   .headerStyle {
+    grid-template-columns: 48px 1fr min-content min-content;
+
     grid-template-areas: "logo navHeader searchButton cartButton";
   }
 }
@@ -67,9 +67,15 @@
 
 .searchButton {
   grid-area: searchButton;
+  width: var(--size-input);
+  height: var(--size-input);
+  display: grid;
+  place-items: center;
 }
 .cartButton {
   grid-area: cartButton;
+  width: var(--size-input);
+  height: var(--size-input);
 }
 .navSection {
   grid-area: navHeader;
