@@ -237,8 +237,8 @@ export const query = graphql`
       }
       storefrontId
       images {
-        # altText
-        gatsbyImageData(layout: CONSTRAINED, width: 640)
+        altText
+        gatsbyImageData(layout: CONSTRAINED, width: 640, aspectRatio: 1)
       }
       variants {
         availableForSale

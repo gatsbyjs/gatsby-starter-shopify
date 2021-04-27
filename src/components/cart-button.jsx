@@ -16,8 +16,8 @@ export function CartButton({ quantity, className }) {
         className={linkStyle}
       >
         <CgShoppingBag size={24} />
+        <div className={badgeStyle}>{quantity}</div>
       </Link>
-      <div className={badgeStyle}>{quantity}</div>
     </div>
   )
 }
