@@ -1,23 +1,23 @@
 import * as React from "react"
+import { title } from "../index.module.css"
 import { graphql } from "gatsby"
 import { Layout } from "../../../components/layout"
-import { title } from "../index.module.css"
 import { ProductListing } from "../../../components/product-listing"
 import { Seo } from "../../../components/seo"
 import slugify from "@sindresorhus/slugify"
 import { MoreButton } from "../../../components/more-button"
 
-export default function ProductTypeIndex({
+export default function Products({
   data: { products },
-  pageContext: { productType },
+  pageContext: { vendor },
 }) {
   return (
     <Layout>
-      <Seo title={`Category: ${productType}`} />
-      <h1 className={title}>{productType}</h1>
+      <Seo title={`${vendor} products`} />
+      <h1 className={title}>{vendor}</h1>
       <ProductListing products={products.nodes} />
       {products.pageInfo.hasNextPage && (
-        <MoreButton to={`/search?p=${slugify(productType)}#more`}>
+        <MoreButton to={`/search?v=${slugify(vendor)}#more`}>
           More Products
         </MoreButton>
       )}
@@ -26,10 +26,10 @@ export default function ProductTypeIndex({
 }
 
 export const query = graphql`
-  query($productType: String!) {
+  query($vendor: String!) {
     products: allShopifyProduct(
-      filter: { productType: { eq: $productType } }
-      sort: { fields: publishedAt, order: ASC }
+      filter: { vendor: { eq: $vendor } }
+      sort: { fields: publishedAt, order: DESC }
       limit: 24
     ) {
       nodes {

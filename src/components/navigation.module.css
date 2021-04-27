@@ -19,6 +19,8 @@
 .navLink:hover {
   text-decoration: underline;
   color: var(--text-color);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 
 .navLink:focus {
@@ -28,5 +30,8 @@
 
 .activeLink,
 .navLink[aria-active="page"] {
-  color: var(--text-color);
+  color: var(--primary-color-80);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }

@@ -4,18 +4,6 @@
   column-gap: var(--size-2xl);
 }
 
-@media (min-width: 640px) {
-  .productBox {
-    grid-template-columns: 1fr 2fr;
-  }
-}
-
-@media (min-width: 1024px) {
-  .productBox {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 .container {
   padding: var(--size-lg) var(--size-xl);
 }
@@ -71,17 +59,6 @@ li {
   font-size: 18px;
 }
 
-.infodiv {
-  display: flex;
-  flex-direction: column;
-}
-
-.priceingdiv {
-  display: flex;
-  flex-direction: column;
-  padding-top: 4rem;
-}
-
 .priceValue > span {
   font-size: var(--size-2xl);
   font-weight: var(--bold);
@@ -89,14 +66,8 @@ li {
   color: var(--primary-color-80);
 }
 
-form {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-form > fieldset {
-  margin-right: 6px;
-  margin-top: 24px;
+.priceValue {
+  padding: var(--size-lg) 0;
 }
 
 .visuallyHidden {
@@ -111,20 +82,23 @@ form > fieldset {
   border: 0;
 }
 
-.selectVariant {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
-  margin-right: 1.5rem;
+.optionsWrapper {
+  display: grid;
+  grid-template-columns: var(--grid-wide);
+  gap: var(--size-gap);
+  padding-bottom: var(--size-gap);
 }
 
-.selectp {
+.addToCartStyle {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  gap: var(--size-gap);
+}
+
+.selectVariant {
   margin-top: 0.5rem;
-  width: 100%;
-  min-width: 0px;
   outline: 0;
   position: relative;
-  transition: all 0.2s;
   padding-bottom: 1px;
   line-height: normal;
   padding-inline-start: 1rem;
@@ -134,21 +108,15 @@ form > fieldset {
   color: var(--text-color-secondary);
   font-weight: var(--medium);
   border-radius: var(--border-radius);
-  border: 2px solid;
-  border-top-color: currentcolor;
-  border-right-color: currentcolor;
-  border-bottom-color: currentcolor;
-  border-left-color: currentcolor;
-  border-color: transparent;
+  border: none;
   background: var(--black-fade-10);
 }
 
 .labelFont {
-  font-weight: var(--bold);
   font-size: var(--size-lg);
   line-height: var(--size-xl);
-  padding-right: 1rem;
-  color: #78757a;
+  padding-right: var(--size-md);
+  color: var(--text-color-secondary);
 }
 
 .tagList a {
@@ -159,14 +127,6 @@ form > fieldset {
 
 .tagList a:hover {
   text-decoration: underline;
-}
-
-.tagssection {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding-top: 5px;
-  width: 100%;
 }
 
 .breadcrumb {
@@ -181,10 +141,25 @@ form > fieldset {
   color: var(--text-color);
   text-decoration: underline;
 }
-.title {
-  font-size: var(--text-4xl);
-  font-weight: var(--bold);
-  text-align: center;
-  margin: 0;
-  padding-bottom: var(--size-2xl);
+
+.metaSection {
+  padding-top: var(--size-2xl);
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: baseline;
+}
+
+@media (min-width: 640px) {
+  .productBox {
+    grid-template-columns: 1fr 2fr;
+  }
+  .addToCartStyle {
+    grid-template-columns: min-content max-content;
+  }
+}
+
+@media (min-width: 1024px) {
+  .productBox {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
