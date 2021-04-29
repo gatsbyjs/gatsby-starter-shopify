@@ -122,8 +122,8 @@ export default function SearchPage({
     nextToken
   )
 
+  // Scroll up when navigating
   React.useEffect(() => {
-    // Scroll up when navigating
     if (!showModal) {
       window.scrollTo({
         top: 0,
@@ -133,6 +133,7 @@ export default function SearchPage({
     }
   }, [cursor, showModal])
 
+  // Stop page from scrolling when modal is visible
   React.useEffect(() => {
     if (showModal) {
       document.documentElement.style.overflow = "hidden"
@@ -143,8 +144,9 @@ export default function SearchPage({
 
   const hash =
     typeof window === "undefined" ? location.hash : window.location.hash
+
+  // Automatically load the next page if "#more" is in the URL
   React.useEffect(() => {
-    // Automatically load the next page if "#more" is in the URL
     if (hash === "#more" && pageCount > 1) {
       nextPage()
       const url = new URL(location.href)
@@ -153,6 +155,7 @@ export default function SearchPage({
     }
   }, [hash, pageCount])
 
+  // When data is updated, update the pagination
   React.useEffect(() => {
     setData(data?.products)
   }, [data])
@@ -166,14 +169,16 @@ export default function SearchPage({
     products?.edges?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
   )
 
+  // If we're using the default filters, use the products from the Gatsby data layer.
+  // Otherwise, use the data from search.
   const productList = (isDefault ? products.edges : data?.products?.edges) || []
+
   return (
     <Layout>
       <div className={main}>
         <div className={search} aria-hidden={modalOpen}>
           <form onSubmit={(e) => e.preventDefault()} className={searchForm}>
             <CgSearch aria-hidden className={searchIcon} size={24} />
-
             <input
               type="text"
               value={filters.term}
@@ -199,6 +204,8 @@ export default function SearchPage({
               filterCount ? activeFilters : undefined,
             ].join(" ")}
             onClick={() => setShowModal((show) => !show)}
+            // This is hidden because the filters are already visible to
+            // screenreaders, so the modal isnt needed.
             aria-hidden
           >
             {filterCount ? (
@@ -208,11 +215,9 @@ export default function SearchPage({
             )}
           </button>
           <div className={sortSelector}>
-            <label htmlFor="sort">
+            <label>
               <span>Sort by:</span>
               <select
-                name="sort"
-                id="sort"
                 value={sortKey}
                 onChange={(e) => setSortKey(e.target.value)}
               >
@@ -275,6 +280,7 @@ export default function SearchPage({
                     slug: `/products/${slugify(node.productType, {
                       lower: true,
                     })}/${node.handle}`,
+                    // The search API and Gatsby data layer have slightly different images available.
                     images: isDefault ? node.images : [],
                     storefrontImages: !isDefault && node.images,
                     vendor: node.vendor,

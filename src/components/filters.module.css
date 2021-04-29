@@ -24,7 +24,7 @@
 }
 
 .priceFilterStyle summary::-webkit-details-marker,
-summary::marker {
+.priceFilterStyle summary::marker {
   color: transparent;
   display: none;
 }
