@@ -1,4 +1,3 @@
-// @ts-check
 import { useCallback, useEffect, useReducer, useState } from "react"
 import queryString from "query-string"
 import { useQuery } from "urql"
