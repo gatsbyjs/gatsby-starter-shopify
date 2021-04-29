@@ -8,7 +8,6 @@ import {
   productImage,
   scrollForMore,
   noImagePreview,
-  infodiv,
   optionsWrapper,
   priceValue,
   selectVariant,

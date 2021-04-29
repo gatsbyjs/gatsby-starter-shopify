@@ -15,7 +15,7 @@ export function Toast({ show, duration = 1000, className, ...props }) {
     }, duration)
     setAnimation(show ? showing : hiding)
     return () => clearTimeout(timeout)
-  }, [show])
+  }, [show, duration])
 
   return visible ? (
     <div

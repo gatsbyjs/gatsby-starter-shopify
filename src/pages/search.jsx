@@ -154,17 +154,17 @@ function SearchPage({
       url.hash = ""
       window.history.replaceState({}, null, url.toString())
     }
-  }, [hash, pageCount])
+  }, [hash, pageCount, location.href, nextPage])
 
   // When data is updated, update the pagination
   React.useEffect(() => {
     setData(data?.products)
-  }, [data])
+  }, [data, setData])
 
   // If the filters change then reset the pagination
   React.useEffect(() => {
     reset()
-  }, [filters, sortKey])
+  }, [filters, sortKey, reset])
 
   const currencyCode = getCurrencySymbol(
     products?.edges?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
@@ -220,6 +220,7 @@ function SearchPage({
               <span>Sort by:</span>
               <select
                 value={sortKey}
+                // eslint-disable-next-line
                 onChange={(e) => setSortKey(e.target.value)}
               >
                 <option value="RELEVANCE">Relevance</option>
