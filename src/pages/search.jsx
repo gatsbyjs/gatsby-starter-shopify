@@ -41,6 +41,7 @@ import {
 import { getCurrencySymbol } from "../utils/format-price"
 import { Spinner } from "../components/progress"
 import { Filters } from "../components/filters"
+import { SearchProvider } from "../context/search-provider"
 
 export const query = graphql`
   query {
@@ -76,7 +77,7 @@ export const query = graphql`
   }
 `
 
-export default function SearchPage({
+function SearchPage({
   data: {
     meta: { productTypes, vendors, tags },
     products,
@@ -314,5 +315,13 @@ export default function SearchPage({
         </section>
       </div>
     </Layout>
+  )
+}
+
+export default function SearchPageTemplate(props) {
+  return (
+    <SearchProvider>
+      <SearchPage {...props} />
+    </SearchProvider>
   )
 }
