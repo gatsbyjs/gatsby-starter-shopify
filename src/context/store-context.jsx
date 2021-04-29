@@ -1,18 +1,6 @@
-import fetch from "isomorphic-fetch"
 import * as React from "react"
+import fetch from "isomorphic-fetch"
 import Client from "shopify-buy"
-
-import { createClient, Provider as UrlqProvider } from "urql"
-
-const urqlClient = createClient({
-  url: `https://${process.env.GATSBY_SHOPIFY_STORE_URL}/api/2021-01/graphql.json`,
-  fetchOptions: {
-    headers: {
-      "X-Shopify-Storefront-Access-Token":
-        process.env.GATSBY_STOREFRONT_ACCESS_TOKEN,
-    },
-  },
-})
 
 const client = Client.buildClient(
   {
@@ -133,20 +121,18 @@ export const StoreProvider = ({ children }) => {
   }
 
   return (
-    <UrlqProvider value={urqlClient}>
-      <StoreContext.Provider
-        value={{
-          ...defaultValues,
-          addVariantToCart,
-          removeLineItem,
-          updateLineItem,
-          checkout,
-          loading,
-          didJustAddToCart,
-        }}
-      >
-        {children}
-      </StoreContext.Provider>
-    </UrlqProvider>
+    <StoreContext.Provider
+      value={{
+        ...defaultValues,
+        addVariantToCart,
+        removeLineItem,
+        updateLineItem,
+        checkout,
+        loading,
+        didJustAddToCart,
+      }}
+    >
+      {children}
+    </StoreContext.Provider>
   )
 }
