@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useLocation } from "@reach/router"
 import { graphql } from "gatsby"
-import slugify from "slugify"
+import slugify from "@sindresorhus/slugify"
 import { CgSearch, CgChevronRight, CgChevronLeft } from "react-icons/cg"
 import {
   RiFilterLine as FilterIcon,
@@ -279,9 +279,9 @@ function SearchPage({
                   product={{
                     title: node.title,
                     priceRangeV2: node.priceRangeV2,
-                    slug: `/products/${slugify(node.productType, {
-                      lower: true,
-                    })}/${node.handle}`,
+                    slug: `/products/${slugify(node.productType)}/${
+                      node.handle
+                    }`,
                     // The search API and Gatsby data layer have slightly different images available.
                     images: isDefault ? node.images : [],
                     storefrontImages: !isDefault && node.images,

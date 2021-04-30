@@ -17,9 +17,7 @@
     "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "lint": "prettier \"**/*.{md,mdx,json,yaml,js,jsx}\" --check",
-    "format": "prettier \"**/*.{md,mdx,json,yaml,js,jsx}\"  --write"
+    "clean": "gatsby clean"
   },
   "dependencies": {
     "@react-icons/all-files": "^4.1.0",
@@ -28,7 +26,7 @@
     "gatsby": "next",
     "gatsby-plugin-gatsby-cloud": "next",
     "gatsby-plugin-image": "next",
-    "gatsby-plugin-react-helmet": "^4.3.0",
+    "gatsby-plugin-react-helmet": "next",
     "gatsby-plugin-sharp": "next",
     "gatsby-plugin-sitemap": "next",
     "gatsby-source-filesystem": "next",
@@ -42,17 +40,6 @@
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "shopify-buy": "^2.11.0",
-    "slugify": "^1.5.0",
     "urql": "^2.0.2"
-  },
-  "devDependencies": {
-    "husky": "^4.3.8",
-    "lint-staged": "^10.5.4",
-    "prettier": "^2.2.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }
