@@ -28,6 +28,16 @@ export function Footer() {
           <li>
             <a href="https://www.gatsbyjs.com/cloud/">About Gatsby Cloud</a>
           </li>
+          {process.env.GATSBY_DEMO_STORE === "true" && (
+            <li>
+              <a href="https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-shopify">
+                <img
+                  src="https://www.gatsbyjs.com/deploynow.png"
+                  alt="Deploy to Gatsby Cloud"
+                />
+              </a>
+            </li>
+          )}
         </ul>
       </nav>
       <div className={copyright}>
