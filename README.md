@@ -7,9 +7,7 @@
   Gatsby Starter Shopify
 </h1>
 
-Kick off your next [Shopify](https://www.shopify.com/) project with this boilerplate. This starter creates a store with a custom landing page, individual filtered views for each product, detailed product pages, and a shopping cart. All styled with CSS modules.
-
-_Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://www.gatsbyjs.com/starters/)._
+Kick off your next [Shopify](https://www.shopify.com/) project with this boilerplate. This starter creates a store with a custom landing page, individual filtered views for each product, detailed product pages, advanced instant search and a shopping cart. All styled with CSS Modules.
 
 Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
 
@@ -28,7 +26,7 @@ Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cl
 
 2.  **Link to your store**
 
-    [Link your Shopify store](https://github.com/gatsbyjs/gatsby-source-shopify#retrieving-api-information-from-shopify)
+    Follow these instructions here to [link your Shopify store](https://github.com/gatsbyjs/gatsby-source-shopify#retrieving-api-information-from-shopify). If you want to try with a development store, see [the sample data and instructions here](example/).
 
 3.  **Start developing.**
 
