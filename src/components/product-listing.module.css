@@ -1,7 +1,7 @@
 .listingContainerStyle {
   display: grid;
-  grid-template-columns: var(--grid-wide);
+  grid-template-columns: var(--product-grid);
   place-items: center;
-  gap: var(--size-lg);
-  padding: 0 var(--size-md);
+  gap: var(--size-gutter-raw);
+  padding: 0 var(--size-gutter-raw);
 }

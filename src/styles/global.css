@@ -1,0 +1,12 @@
+body {
+  font-family: var(--font-body);
+  color: var(--text-color);
+}
+
+.gatsby-image-wrapper {
+  margin: auto;
+}
+
+.gatsby-image-wrapper [data-main-image] {
+  border-radius: var(--radius-sm);
+}

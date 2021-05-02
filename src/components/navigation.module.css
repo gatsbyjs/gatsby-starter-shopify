@@ -8,30 +8,29 @@
 }
 
 .navLink {
-  transition: all 0.3s ease-in-out;
   cursor: pointer;
   text-decoration: none;
-  outline: none;
-  padding: 0.5rem;
+  height: var(--size-input);
+  display: flex;
   color: var(--text-color-secondary);
+  align-items: center;
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
 }
 
 .navLink:hover {
-  text-decoration: underline;
   color: var(--text-color);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-}
-
-.navLink:focus {
-  box-shadow: outline;
-  outline: 1px solid rgb(39, 5, 231);
 }
 
 .activeLink,
 .navLink[aria-active="page"] {
-  color: var(--primary-color-80);
+  color: var(--primary);
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
+}
+
+.activeLink:hover,
+.navLink[aria-active="page"]:hover {
+  color: var(--primary);
 }

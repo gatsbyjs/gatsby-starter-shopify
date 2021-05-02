@@ -13,31 +13,31 @@
 
 .priceFilterStyle .summary {
   cursor: pointer;
-  font-weight: bold;
+  font-weight: var(--bold);
   text-transform: uppercase;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: var(--size-md);
+  padding-bottom: var(--space-md);
   font-size: var(--text-xs);
   letter-spacing: var(--tracked);
 }
 
-.priceFilterStyle summary::-webkit-details-marker,
 .priceFilterStyle summary::marker {
   color: transparent;
   display: none;
 }
 
+/* "Price" reset button */
 .clearButton {
-  color: var(--black-fade-40);
+  color: var(--text-color-secondary);
   font-size: var(--text-sm);
-  line-height: 1;
+  line-height: var(--solid);
 }
 
 .priceFields {
   display: grid;
   align-items: center;
   justify-content: stretch;
-  gap: var(--size-sm);
+  gap: var(--space-sm);
 }

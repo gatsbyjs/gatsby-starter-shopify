@@ -6,14 +6,14 @@ import {
   blurb,
   logos,
 } from "./footer.module.css"
-import logo from "../icons/logo.svg"
+import Logo from "../icons/logo"
 
 export function Footer() {
   return (
     <footer className={footerStyle}>
       <div className={blurb}>
         <div className={logos}>
-          <img src={logo} width={24} height={24} alt="" />
+          <Logo />
         </div>
         <strong>gatsby-starter-shopify</strong> change this by editing{" "}
         <code>src/components/footer.jsx</code>
@@ -34,6 +34,8 @@ export function Footer() {
                 <img
                   src="https://www.gatsbyjs.com/deploynow.png"
                   alt="Deploy to Gatsby Cloud"
+                  height="38"
+                  width="251"
                 />
               </a>
             </li>

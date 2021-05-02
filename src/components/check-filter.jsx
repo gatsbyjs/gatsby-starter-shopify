@@ -1,6 +1,6 @@
 import * as React from "react"
 import {
-  filterStyle,
+  filter,
   summary,
   clearButton,
   selectedLabel,
@@ -35,7 +35,7 @@ export function CheckFilter({
   }
 
   return (
-    <details open={open} className={filterStyle}>
+    <details open={open} className={filter}>
       {name && (
         <summary>
           <div className={summary}>

@@ -1,13 +1,12 @@
 .productCardStyle {
   max-width: 400px;
-  transition: all 0.3s ease-in-out;
   cursor: pointer;
   text-decoration: none;
-  outline: none;
+  padding-bottom: var(--space-md);
 }
 
 .productImageStyle {
-  padding: var(--size-lg);
+  margin-bottom: var(--space-md);
 }
 
 .productDetailsStyle {
@@ -15,7 +14,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-weight: var(--semiBold);
+  font-weight: var(--semibold);
 }
 
 .productVendorStyle {
@@ -29,6 +28,7 @@
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: var(--dense);
 }
 
 .productPrice {

@@ -9,7 +9,7 @@
 
 .heading {
   line-height: var(--dense);
-  font-size: var(--text-4xl);
+  font-size: var(--text-display);
   font-weight: var(--bold);
 }
 

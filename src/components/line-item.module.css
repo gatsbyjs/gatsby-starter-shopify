@@ -1,14 +1,14 @@
 .title {
   font-size: var(--text-2xl);
-  font-weight: var(--semiBold);
-  line-height: 1;
-  padding-bottom: var(--size-md);
+  font-weight: var(--semibold);
+  line-height: var(--solid);
+  padding-bottom: var(--space-md);
 }
 
 .variant {
   font-size: var(--text-md);
   text-transform: capitalize;
-  padding-bottom: var(--size-sm);
+  padding-bottom: var(--space-sm);
 }
 
 .remove button {
@@ -19,7 +19,7 @@
 }
 
 .remove button svg {
-  margin-right: var(--size-md);
+  margin-right: var(--space-md);
 }
 
 .totals {

@@ -3,7 +3,7 @@
   grid-area: 1/1;
   background: none;
   text-align: right;
-  padding: var(--size-md);
+  padding: var(--space-md);
 }
 
 .symbolAfter .input {
@@ -16,12 +16,12 @@
 
 .currencySymbol {
   grid-area: 1/1;
-  color: var(--black-fade-40);
-  padding: var(--size-md);
+  color: var(--text-color-secondary);
+  padding: var(--space-md);
 }
 
 .wrap {
   display: grid;
-  background-color: var(--black-fade-5);
-  border-radius: var(--border-radius);
+  background-color: var(--input-background);
+  border-radius: var(--radius-md);
 }

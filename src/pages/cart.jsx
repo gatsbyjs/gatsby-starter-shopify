@@ -1,4 +1,5 @@
 import * as React from "react"
+import { Link } from "gatsby"
 import {
   table,
   wrap,
@@ -10,6 +11,10 @@ import {
   labelColumn,
   imageHeader,
   productHeader,
+  emptyStateContainer,
+  emptyStateHeading,
+  emptyStateLink,
+  title,
 } from "./cart.module.css"
 
 import { Layout } from "../components/layout"
@@ -29,9 +34,19 @@ export default function CartPage() {
     <Layout>
       <main className={wrap}>
         {emptyCart ? (
-          <p>Your cart is empty</p>
+          <div className={emptyStateContainer}>
+            <h1 className={emptyStateHeading}>Your cart is empty</h1>
+            <p>
+              Looks like you haven’t found anything yet. We understand that
+              sometimes it’s hard to chose — maybe this helps:
+            </p>
+            <Link to="/search?s=BEST_SELLING" className={emptyStateLink}>
+              View trending products
+            </Link>
+          </div>
         ) : (
           <>
+            <h1 className={title}>Your cart</h1>
             <table className={table}>
               <thead>
                 <tr>

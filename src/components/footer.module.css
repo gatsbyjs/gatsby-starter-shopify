@@ -1,17 +1,18 @@
 .footerStyle {
-  padding: var(--size-xl);
-  padding-top: 100px;
-  gap: var(--size-xl);
+  padding: var(--space-2xl) var(--space-xl);
+  gap: var(--space-xl);
   display: grid;
-  grid-template-columns: var(--grid-narrow);
+  grid-template-columns: 1fr;
   text-align: center;
+  color: var(--text-color-secondary);
+  margin-top: var(--space-3xl);
 }
 
 .logos {
   display: flex;
-  gap: var(--size-md);
+  gap: var(--space-md);
   justify-content: center;
-  padding-bottom: var(--size-lg);
+  padding-bottom: var(--space-lg);
 }
 
 .blurb {
@@ -30,14 +31,9 @@
 
 .links li {
   flex-direction: column;
+  align-items: center;
 }
 
-@media (min-width: 1024px) {
-  .footerStyle {
-    text-align: left;
-  }
-
-  .logos {
-    justify-content: flex-start;
-  }
+.links a {
+  padding: var(--space-md);
 }

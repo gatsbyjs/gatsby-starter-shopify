@@ -1,28 +1,26 @@
-.headerStyle {
+.container {
+  display: flex;
+  align-items: center;
+  position: sticky;
+  z-index: 1;
+  top: 0;
+}
+
+.header {
   display: grid;
   width: 100%;
-  padding-left: var(--size-xl);
-  padding-right: var(--size-md);
-  padding-top: var(--size-gap);
-  grid-template-columns: 24px 1fr min-content min-content;
+  padding: var(--size-gap) var(--size-gutter);
+  grid-template-columns: var(--size-input) 1fr min-content min-content;
   grid-template-areas: "logo nada searchButton cartButton" "navHeader navHeader navHeader navHeader";
   align-items: center;
-  background-color: white;
+  background-color: var(--background);
 }
 
-@media (min-width: 640px) {
-  .headerStyle {
-    grid-template-columns: 48px 1fr min-content min-content;
-
-    grid-template-areas: "logo navHeader searchButton cartButton";
-  }
-}
-
-.headerStyle::after {
+.header::after {
   grid-area: navHeader;
   content: "";
   display: block;
-  width: var(--size-2xl);
+  width: var(--space-2xl);
   z-index: 1;
   align-self: stretch;
   background-image: linear-gradient(
@@ -33,55 +31,49 @@
   justify-self: flex-end;
 }
 
-.headerSectionStyle {
-  display: flex;
-  flex-direction: row;
-}
-
-.containerStyle {
-  display: flex;
-  width: 100%;
-  margin: 0fr;
-  z-index: docked;
-  height: 10%;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-@media (min-width: 1024px) {
-  .containerStyle {
-    padding-bottom: var(--size-fat-pad);
+@media (min-width: 640px) {
+  .header {
+    grid-template-areas: "logo navHeader searchButton cartButton";
   }
 }
 
-.logoSpan {
-  grid-area: logo;
+.logo {
   display: flex;
+  grid-area: logo;
+  height: 100%;
+  width: 100%;
   align-items: center;
-  justify-self: center;
-  background-color: transparent;
-  transition: all 0.3s ease-in-out;
+  justify-content: center;
+  color: var(--text-color-secondary);
+}
+
+.logo:hover {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.logo[aria-current="page"] {
+  color: var(--primary);
+}
+
+.nav {
+  grid-area: navHeader;
+  align-self: stretch;
 }
 
 .searchButton {
+  color: var(--text-color-secondary);
   grid-area: searchButton;
   width: var(--size-input);
   height: var(--size-input);
   display: grid;
   place-items: center;
 }
-.cartButton {
-  grid-area: cartButton;
-  width: var(--size-input);
-  height: var(--size-input);
+
+.searchButton:hover {
+  color: var(--text-color);
 }
-.navSection {
-  grid-area: navHeader;
-  align-self: stretch;
-}
-.logoSpan:hover {
-  color: var(--primary-color-8);
-  text-decoration: none;
+
+.searchButton[aria-current="page"] {
+  color: var(--primary);
 }

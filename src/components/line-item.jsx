@@ -11,7 +11,7 @@ import { StoreContext } from "../context/store-context"
 import { formatPrice } from "../utils/format-price"
 import { GatsbyImage } from "gatsby-plugin-image"
 import { getShopifyImage } from "gatsby-source-shopify"
-import { ImCross as CrossIcon } from "react-icons/im"
+import DeleteIcon from "../icons/delete"
 import { NumericInput } from "./numeric-input"
 
 export function LineItem({ item }) {
@@ -97,7 +97,7 @@ export function LineItem({ item }) {
         </div>
         <div className={remove}>
           <button onClick={handleRemove}>
-            <CrossIcon size={12} /> Remove
+            <DeleteIcon /> Remove
           </button>
         </div>
       </td>

@@ -2,12 +2,11 @@ import * as React from "react"
 import { useLocation } from "@reach/router"
 import { graphql } from "gatsby"
 import slugify from "@sindresorhus/slugify"
-import { CgSearch, CgChevronRight, CgChevronLeft } from "react-icons/cg"
-import {
-  RiFilterLine as FilterIcon,
-  RiFilterFill as FilterIconActive,
-} from "react-icons/ri"
-import { MdClear, MdSort } from "react-icons/md"
+import { CgChevronRight, CgChevronLeft } from "react-icons/cg"
+import CrossIcon from "../icons/cross"
+import SortIcon from "../icons/sort"
+import FilterIcon from "../icons/filter"
+import SearchIcon from "../icons/search"
 import { Layout } from "../components/layout"
 import { ProductCard } from "../components/product-card"
 
@@ -179,7 +178,7 @@ function SearchPage({
       <div className={main}>
         <div className={search} aria-hidden={modalOpen}>
           <form onSubmit={(e) => e.preventDefault()} className={searchForm}>
-            <CgSearch aria-hidden className={searchIcon} size={24} />
+            <SearchIcon aria-hidden className={searchIcon} />
             <input
               type="text"
               value={filters.term}
@@ -195,7 +194,7 @@ function SearchPage({
                 onClick={() => setFilters({ ...filters, term: "" })}
                 aria-label="Clear search query"
               >
-                <MdClear size={20} />
+                <CrossIcon />
               </button>
             ) : undefined}
           </form>
@@ -209,11 +208,7 @@ function SearchPage({
             // screenreaders, so the modal isnt needed.
             aria-hidden
           >
-            {filterCount ? (
-              <FilterIconActive size={20} />
-            ) : (
-              <FilterIcon size={20} />
-            )}
+            <FilterIcon />
           </button>
           <div className={sortSelector}>
             <label>
@@ -230,15 +225,14 @@ function SearchPage({
                 <option value="BEST_SELLING">Trending</option>
               </select>
             </label>
-            <MdSort className={sortIcon} size={20} />
+            <SortIcon className={sortIcon} />
           </div>
         </div>
         <section className={[filterStyle, showModal && modalOpen].join(" ")}>
           <div className={filterTitle}>
             <h2>Filter</h2>
-            <div></div>
             <button aria-hidden onClick={() => setShowModal(false)}>
-              <MdClear size={20} />
+              <CrossIcon />
             </button>
           </div>
           <div className={filterWrap}>

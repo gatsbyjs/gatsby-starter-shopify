@@ -1,23 +1,17 @@
 import * as React from "react"
-import {
-  cartButtonContainerStyle,
-  badgeStyle,
-  linkStyle,
-} from "./cart-button.module.css"
-import { CgShoppingBag } from "react-icons/cg"
+import { cartButton, badge } from "./cart-button.module.css"
+import CartIcon from "../icons/cart"
 import { Link } from "gatsby"
 
-export function CartButton({ quantity, className }) {
+export function CartButton({ quantity }) {
   return (
-    <div className={[cartButtonContainerStyle, className].join(" ")}>
-      <Link
-        aria-label={`Shopping Cart with ${quantity} items`}
-        to="/cart"
-        className={linkStyle}
-      >
-        <CgShoppingBag size={24} />
-        <div className={badgeStyle}>{quantity}</div>
-      </Link>
-    </div>
+    <Link
+      aria-label={`Shopping Cart with ${quantity} items`}
+      to="/cart"
+      className={cartButton}
+    >
+      <CartIcon />
+      {quantity > 0 && <div className={badge}>{quantity}</div>}
+    </Link>
   )
 }

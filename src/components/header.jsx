@@ -1,18 +1,17 @@
 import * as React from "react"
 import {
-  headerStyle,
-  containerStyle,
-  logoSpan,
+  header,
+  container,
+  logo as logoCss,
   searchButton,
-  cartButton,
-  navSection,
+  nav,
 } from "./header.module.css"
 import { Link } from "gatsby"
 import { StoreContext } from "../context/store-context"
-import logo from "../icons/logo.svg"
+import Logo from "../icons/logo"
 import { Navigation } from "./navigation"
 import { CartButton } from "./cart-button"
-import { CgSearch } from "react-icons/cg"
+import SearchIcon from "../icons/search"
 import { Toast } from "./toast"
 
 export function Header() {
@@ -25,20 +24,16 @@ export function Header() {
   }, 0)
 
   return (
-    <div className={containerStyle}>
-      <header className={headerStyle}>
-        <Link to="/" className={logoSpan}>
-          <img src={logo} width={24} height={24} alt="My store" />
+    <div className={container}>
+      <header className={header}>
+        <Link to="/" className={logoCss}>
+          <Logo />
         </Link>
-        <Navigation className={navSection} />
+        <Navigation className={nav} />
         <Link to="/search" className={searchButton}>
-          <CgSearch size={24} title="Search" />
+          <SearchIcon />
         </Link>
-        <CartButton
-          quantity={quantity}
-          className={cartButton}
-          loading={loading}
-        />
+        <CartButton quantity={quantity} />
       </header>
       <Toast show={loading || didJustAddToCart}>
         {!didJustAddToCart ? (

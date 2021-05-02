@@ -1,43 +1,36 @@
 .productBox {
   display: grid;
   grid-template-columns: 1fr;
-  column-gap: var(--size-2xl);
+  column-gap: var(--space-3xl);
 }
 
 .container {
-  padding: var(--size-lg) var(--size-xl);
+  padding: var(--size-gutter-raw);
 }
 
 .header {
-  font-size: var(--text-4xl);
-  font-weight: bold;
+  font-size: var(--text-display);
+  font-weight: var(--bold);
+  margin-bottom: var(--space-xl);
+  line-height: var(--dense);
+}
+
+.productDescription {
+  font-size: var(--text-prose);
 }
 
 .productImageWrapper {
   position: relative;
-  padding-bottom: var(--size-2xl);
-}
-
-.productImage {
-  margin-bottom: 2px;
-  overflow-x: auto;
-}
-
-.productImage:focus {
-  outline: none;
-  box-shadow: darkblue;
+  padding-bottom: var(--space-2xl);
 }
 
 ul {
   display: flex;
-  /* flex: 0 0 100%; */
-  /* padding: 6px; */
 }
 
 li {
   display: flex;
   flex: 0 0 100%;
-  padding: 6px;
   white-space: nowrap;
 }
 
@@ -45,7 +38,7 @@ li {
   text-align: center;
   margin-top: 1rem;
   display: none;
-  font-size: 18px;
+  font-size: var(--text-lg);
   transform: translate3d(-50%, 0px, 0px);
   left: 50%;
   position: absolute;
@@ -56,18 +49,18 @@ li {
   align-items: center;
   justify-content: center;
   min-height: 300px;
-  font-size: 18px;
+  font-size: var(--text-lg);
 }
 
 .priceValue > span {
-  font-size: var(--size-2xl);
+  font-size: var(--text-display);
   font-weight: var(--bold);
   line-height: var(--dense);
-  color: var(--primary-color-80);
+  color: var(--primary);
 }
 
 .priceValue {
-  padding: var(--size-lg) 0;
+  padding: var(--space-lg) 0;
 }
 
 .visuallyHidden {
@@ -84,48 +77,69 @@ li {
 
 .optionsWrapper {
   display: grid;
-  grid-template-columns: var(--grid-wide);
-  gap: var(--size-gap);
-  padding-bottom: var(--size-gap);
+  grid-template-columns: var(--product-grid);
+  gap: var(--space-lg);
+  padding-bottom: var(--space-lg);
 }
 
 .addToCartStyle {
   display: grid;
   grid-template-columns: min-content 1fr;
-  gap: var(--size-gap);
+  gap: var(--space-lg);
 }
 
 .selectVariant {
-  margin-top: 0.5rem;
-  outline: 0;
+  background-color: var(--input-background);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  margin-top: var(--space-md);
+  min-width: 24ch;
   position: relative;
-  padding-bottom: 1px;
-  line-height: normal;
-  padding-inline-start: 1rem;
-  padding-inline-end: 2rem;
-  height: var(--size-input);
-  font-size: var(--text-lg);
-  color: var(--text-color-secondary);
-  font-weight: var(--medium);
-  border-radius: var(--border-radius);
+}
+
+.selectVariant select {
+  appearance: none;
+  background-color: transparent;
   border: none;
-  background: var(--black-fade-10);
+  color: var(--input-text);
+  cursor: inherit;
+  font-size: var(--text-md);
+  font-weight: var(--medium);
+  height: var(--size-input);
+  margin: 0;
+  padding: var(--space-sm) var(--space-lg);
+  padding-right: var(--space-2xl);
+  width: 100%;
+}
+
+.selectVariant::after {
+  background-image: url("data:image/svg+xml,%3Csvg fill='none' height='8' viewBox='0 0 13 8' width='13' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m6.87794 7.56356c-.19939.23023-.55654.23024-.75593 0l-5.400738-6.23623c-.280438-.32383-.050412-.82733.377968-.82733h10.80146c.4284 0 .6584.5035.378.82733z' fill='%2378757a'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  content: "";
+  height: 8px;
+  position: absolute;
+  right: var(--space-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 13px;
+  pointer-events: none;
 }
 
 .labelFont {
-  font-size: var(--size-lg);
-  line-height: var(--size-xl);
-  padding-right: var(--size-md);
+  font-size: var(--space-lg);
+  line-height: var(--space-xl);
+  padding-right: var(--space-md);
   color: var(--text-color-secondary);
 }
 
 .tagList a {
-  font-weight: var(--semiBold);
-  color: var(--gray-70);
-  padding-right: var(--size-md);
+  font-weight: var(--semibold);
+  color: var(--text-color-secondary);
+  padding-right: var(--space-md);
 }
 
 .tagList a:hover {
+  color: var(--text-color);
   text-decoration: underline;
 }
 
@@ -143,7 +157,7 @@ li {
 }
 
 .metaSection {
-  padding-top: var(--size-2xl);
+  padding-top: var(--space-3xl);
   display: grid;
   grid-template-columns: max-content 1fr;
   align-items: baseline;

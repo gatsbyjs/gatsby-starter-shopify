@@ -1,8 +1,8 @@
-.filterStyle {
+.filter {
   display: flex;
 }
 
-.filterStyle label {
+.filter label {
   cursor: pointer;
   margin-top: 6px;
   color: var(--text-color-secondary);
@@ -12,26 +12,25 @@
   font-size: var(--text-lg);
 }
 
-.filterStyle label:hover {
-  color: var(--gray-90);
+.filter label:hover {
+  color: var(--input-ui-active);
 }
 
-.filterStyle label.selectedLabel {
-  font-weight: var(--semiBold);
-  color: black;
+.filter label.selectedLabel {
+  font-weight: var(--semibold);
+  color: var(--text-color);
 }
 
-.filterStyle summary {
-  font-weight: bold;
+.filter summary {
+  font-weight: var(--bold);
   text-transform: uppercase;
   cursor: pointer;
   font-size: var(--text-xs);
   letter-spacing: var(--tracked);
-  padding-bottom: var(--size-md);
+  padding-bottom: var(--space-md);
 }
 
-.filterStyle summary::-webkit-details-marker,
-.filterStyle summary::marker {
+.filter summary::marker {
   display: none;
   color: transparent;
 }
@@ -43,7 +42,7 @@
 }
 
 .clearButton {
-  color: var(--black-fade-40);
+  color: var(--text-color-secondary);
   font-size: var(--text-sm);
   line-height: var(--solid);
 }
@@ -53,33 +52,40 @@
   align-items: center;
   justify-content: center;
   appearance: none;
-  border: 1px var(--black-fade-40) solid;
-  width: var(--size-xl);
-  height: var(--size-xl);
-  border-radius: var(--border-radius-sm);
-  margin-right: var(--size-md);
+  border: 1px var(--text-color-secondary) solid;
+  width: var(--space-xl);
+  height: var(--space-xl);
+  border-radius: var(--radius-sm);
+  margin-right: var(--space-md);
 }
 
 @media (min-width: 640px) {
-  .filterStyle label {
+  .filter label {
     line-height: var(--dense);
     max-width: 240px;
   }
+
   .checkbox {
-    width: var(--size-lg);
-    height: var(--size-lg);
+    width: var(--space-lg);
+    height: var(--space-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .filter label {
+    font-size: var(--text-md);
   }
 }
 
 .checkbox:checked {
-  border-color: var(--primary-color-80);
-  background-color: var(--primary-color-80);
+  border-color: var(--primary);
+  background-color: var(--primary);
 }
 
 .checkbox::before {
   line-height: 0;
   font-size: var(--text-sm);
-  font-weight: bold;
-  color: white;
+  font-weight: var(--bold);
+  color: var(--text-color-inverted);
   content: "\2713";
 }

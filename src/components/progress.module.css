@@ -24,7 +24,7 @@
   content: "";
 }
 .spinner:after {
-  background: white;
+  background: var(--background);
   width: 75%;
   height: 75%;
   border-radius: 50%;

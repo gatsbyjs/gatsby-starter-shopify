@@ -27,30 +27,39 @@
   height: 100vh;
   width: 100vw;
   z-index: 10;
-  background-color: white;
+  background-color: var(--background);
   overscroll-behavior: contain;
 }
 
 .filterWrap {
-  overflow-y: scroll;
-  padding: 0 var(--size-2xl);
+  overflow-y: auto;
+  padding: 0 var(--size-gutter-raw);
+}
+
+@media (min-width: 1024px) {
+  .filterWrap {
+    padding: 0;
+    padding-right: var(--space-xl);
+  }
 }
 
 .filterStyle details {
-  margin-bottom: var(--size-2xl);
+  margin-bottom: var(--space-2xl);
 }
+
 .filterStyle * + details {
-  margin-top: var(--size-2xl);
+  margin-top: var(--space-2xl);
 }
+
 .filterStyle hr {
-  border-color: var(--black-fade-5);
+  border-color: var(--border);
 }
 
 .filterTitle {
-  padding: 12px 12px 12px 24px;
+  padding: var(--size-gap) var(--size-gap) var(--size-gap) var(--space-2xl);
   display: grid;
   align-items: center;
-  grid-template-columns: min-content 1fr min-content;
+  grid-template-columns: auto min-content;
   color: var(--text-color-secondary);
 }
 
@@ -63,13 +72,13 @@
 }
 
 .filterTitle h2 {
-  font-size: var(--text-4xl);
+  font-size: var(--text-display);
   font-weight: var(--bold);
 }
 
 .results {
   grid-area: results;
-  padding: 0 var(--size-2xl);
+  padding: 0 var(--space-2xl);
 }
 
 .results ul {
@@ -83,13 +92,15 @@
   display: grid;
   grid-template-columns: auto max-content max-content;
   align-items: center;
-  padding: var(--size-md) var(--size-xl);
+  padding: var(--space-md) var(--space-md) var(--space-md)
+    var(--size-gutter-raw);
 }
 
 .search input {
-  font-size: var(--text-lg);
+  font-size: var(--text-md);
+  font-weight: var(--medium);
   grid-area: input;
-  padding-left: var(--size-md);
+  padding-left: var(--space-md);
   height: var(--size-input);
   background: none;
 }
@@ -99,10 +110,10 @@
   grid-template-columns: 1fr max-content;
   grid-template-areas: "input clear";
   align-items: center;
-  background-color: var(--black-fade-5);
-  border-radius: var(--border-radius);
+  background-color: var(--input-background);
+  border-radius: var(--radius-md);
   height: var(--size-input);
-  padding: 0 var(--size-md);
+  padding: 0 var(--space-md);
 }
 
 .searchIcon {
@@ -113,52 +124,56 @@
 
 .clearSearch {
   grid-area: clear;
-  border-radius: 1000px;
-  color: var(--text-color-secondary);
-  padding: var(--size-sm);
+  border-radius: var(--radius-rounded);
+  color: var(--input-ui);
+  padding: var(--space-sm);
   display: grid;
   place-items: center;
 }
 
 .clearSearch:hover {
-  background-color: var(--text-color-secondary);
-  color: var(--black-fade-5);
+  background-color: var(--input-background-hover);
+  color: var(--input-ui-active);
 }
 
 .filterButton {
   color: var(--text-color-secondary);
-  padding: var(--size-sm);
   display: grid;
   place-items: center;
   width: var(--size-input);
+  height: var(--size-input);
 }
 
 .filterButton.activeFilters {
-  color: var(--primary-color-80);
+  color: var(--primary);
 }
 
 .filterButton:hover {
-  background-color: var(--text-color-secondary);
-  color: var(--black-fade-5);
+  color: var(--text-color-primary);
 }
 
 .sortSelector {
   display: grid;
   place-items: center;
-  font-weight: var(--semiBold);
+  font-weight: var(--semibold);
 }
 
 .sortSelector label {
   grid-area: 1/1;
+  cursor: pointer;
+}
+
+.sortSelector:hover .sortIcon {
+  color: var(--text-color-primary);
 }
 
 .sortSelector select {
-  padding-left: var(--size-lg);
+  padding-left: var(--space-lg);
   opacity: 0;
   width: var(--size-input);
   height: var(--size-input);
   cursor: pointer;
-  font-weight: var(--semiBold);
+  font-weight: var(--semibold);
   appearance: none;
   background: url("data:image/svg+xml,%3Csvg width='16' height='16' xmlns='http://www.w3.org/2000/svg' fill='black'%3E%3Cpolyline points='4 6 8 10 12 6'/%3E%3C/svg%3E")
     no-repeat center right;
@@ -175,16 +190,20 @@
   grid-area: 1/1;
   color: var(--text-color-secondary);
 }
+
 .productList {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  grid-gap: var(--size-lg);
+  grid-gap: var(--space-lg);
+  padding-top: var(--space-2xl);
+  padding-right: var(--size-gutter-raw);
 }
 
 @media (min-width: 1024px) {
   .filterTitle {
     display: none;
   }
+
   .filterButton {
     display: none;
   }
@@ -194,25 +213,32 @@
   }
 
   .filterStyle {
-    padding: var(--size-xl);
+    padding-left: var(--size-gutter-raw);
+    padding-right: var(--space-2xl);
     padding-top: 0;
+    padding-bottom: 0;
     /* Visually hidden */
     width: auto;
     height: auto;
   }
+
   .sortIcon {
     display: none;
   }
+
   .searchIcon {
     display: inline;
   }
+
   .searchForm {
     grid-template-columns: 30px 1fr max-content;
     grid-template-areas: "icon input clear";
   }
+
   .search input {
     padding-left: 0;
   }
+
   .main {
     grid-template-columns: max-content 1fr;
     grid-template-areas:
@@ -221,15 +247,17 @@
   }
 
   .sortSelector {
-    padding-left: var(--size-lg);
+    padding-left: var(--space-lg);
+    padding-right: var(--size-gutter);
     justify-content: flex-end;
   }
 
   .sortSelector select {
     width: auto;
-    padding-right: var(--size-xl);
+    padding-right: var(--space-xl);
     opacity: 1;
   }
+
   .sortSelector label span {
     position: initial;
     width: auto;
@@ -242,16 +270,20 @@
     grid-template-areas:
       "filters search"
       "filters results";
+    padding-top: var(--space-2xl);
   }
+
   .search {
-    grid-gap: var(--size-2xl);
+    grid-gap: var(--space-2xl);
     padding: 0;
   }
+
   .results {
     padding: 0;
   }
+
   .sortSelector {
-    padding: 0 var(--size-2xl);
+    padding-left: 0;
   }
 }
 
@@ -269,24 +301,27 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-top: var(--size-gutter-raw);
+  gap: var(--space-md);
 }
 
 .pagination > button {
-  width: var(--size-2xl);
-  height: var(--size-2xl);
-  font-size: var(--text-sm);
-  border-radius: var(--border-radius-sm);
+  width: var(--size-input);
+  height: var(--size-input);
+  font-size: var(--text-md);
+  border-radius: var(--radius-md);
   display: grid;
   place-items: center;
 }
 
 .pagination > button:hover {
-  background-color: var(--black-fade-10);
+  background-color: var(--black-fade-5);
 }
 
 .pagination > button.selectedItem {
-  background-color: var(--black-fade-10);
-  font-weight: 700;
+  background-color: var(--input-background);
+  color: var(--text-color);
+  font-weight: var(--semibold);
 }
 
 .pagination > button:disabled {
@@ -305,19 +340,14 @@
 
 .priceFilterStyle summary {
   cursor: pointer;
-  font-weight: bold;
+  font-weight: var(--bold);
   text-transform: uppercase;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: var(--size-md);
+  padding-bottom: var(--space-md);
   font-size: var(--text-xs);
   letter-spacing: var(--tracked);
-}
-
-.clearButton {
-  color: var(--black-fade-40);
-  font-size: var(--text-sm);
 }
 
 .priceFields {
@@ -325,7 +355,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: var(--size-sm);
+  gap: var(--space-sm);
 }
 
 .priceFields input {
@@ -339,13 +369,13 @@
   flex-direction: row;
   align-items: center;
   gap: var(--size-gap);
-  padding: var(--size-xl) 0;
+  padding: var(--space-xl) 0;
 }
 
 .resultsStyle {
   font-size: var(--text-md);
   color: var(--text-color);
-  padding: var(--size-xl) 0;
+  padding: var(--space-xl) 0;
 }
 
 .resultsStyle span {

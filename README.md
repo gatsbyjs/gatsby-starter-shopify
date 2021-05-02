@@ -89,11 +89,11 @@ The whole logic for how the site looks and behaves is inside `src`.
 
 2.  **`/context`**: Contains the store context (e.g. adding/deleting/updating items in shopping cart, accessing Shopify), and the urql context used for search using Shopify's Storefront API.
 
-3.  **`/icons`**: Contains the SVG logo.
+3.  **`/icons`**: Contains all custom SVG icons and the logo.
 
 4.  **`/pages`**: Contains the homepage and all automatically generated pages for each product category and individual product pages. The [File System Route API](https://www.gatsbyjs.com/docs/reference/routing/file-system-route-api/) is used to create those pages from your Shopify data.
 
-5.  **`/styles`**: Contains globals styles. These are `variables.css`, used to define shared CSS custom properties, and `reset.css`, which contains a CSS reset based on Chakra.
+5.  **`/styles`**: Contains globals styles. These are `variables.css`, used to define shared CSS custom properties, `reset.css`, which contains a CSS reset based on Chakra, and `global.css`, which includes a tiny set of global styles.
 
 6.  **`/utils`**: Utility functions, e.g. formatting the price correctly, plus custom hooks used for handling search and pagination.
 

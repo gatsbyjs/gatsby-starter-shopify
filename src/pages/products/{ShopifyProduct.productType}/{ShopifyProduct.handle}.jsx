@@ -5,7 +5,6 @@ import {
   container,
   header,
   productImageWrapper,
-  productImage,
   scrollForMore,
   noImagePreview,
   optionsWrapper,
@@ -16,6 +15,7 @@ import {
   tagList,
   addToCartStyle,
   metaSection,
+  productDescription,
 } from "./product-page.module.css"
 import isEqual from "lodash.isequal"
 import { GatsbyImage, getSrc } from "gatsby-plugin-image"
@@ -116,7 +116,6 @@ export default function Product({ data: { product, suggestions } }) {
                   role="group"
                   aria-label="gallery"
                   aria-describedby="instructions"
-                  className={productImage}
                 >
                   {hasImages ? (
                     <ul>
@@ -153,26 +152,27 @@ export default function Product({ data: { product, suggestions } }) {
                 <ChevronIcon size={12} />
               </div>
               <h1 className={header}>{title}</h1>
-              <p>{description}</p>
+              <p className={productDescription}>{description}</p>
               <h2 className={priceValue}>
                 <span>{price}</span>
               </h2>
               <fieldset className={optionsWrapper}>
                 {hasVariants &&
                   options.map(({ id, name, values }, index) => (
-                    <select
-                      aria-label="Variants"
-                      className={selectVariant}
-                      onBlur={(event) => handleOptionChange(index, event)}
-                      key={id}
-                    >
-                      <option value="">{`Select ${name}`}</option>
-                      {values.map((value) => (
-                        <option value={value} key={`${name}-${value}`}>
-                          {value}
-                        </option>
-                      ))}
-                    </select>
+                    <div className={selectVariant}>
+                      <select
+                        aria-label="Variants"
+                        onBlur={(event) => handleOptionChange(index, event)}
+                        key={id}
+                      >
+                        <option value="">{`Select ${name}`}</option>
+                        {values.map((value) => (
+                          <option value={value} key={`${name}-${value}`}>
+                            {value}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   ))}
               </fieldset>
               <div className={addToCartStyle}>
