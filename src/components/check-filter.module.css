@@ -28,6 +28,7 @@
   font-size: var(--text-xs);
   letter-spacing: var(--tracked);
   padding-bottom: var(--space-md);
+  list-style: none;
 }
 
 .filter summary::marker {

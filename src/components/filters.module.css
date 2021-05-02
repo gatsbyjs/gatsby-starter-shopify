@@ -28,6 +28,10 @@
   display: none;
 }
 
+.priceFilterStyle summary {
+  list-style: none;
+}
+
 /* "Price" reset button */
 .clearButton {
   color: var(--text-color-secondary);
