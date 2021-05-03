@@ -1,0 +1,39 @@
+.footerStyle {
+  padding: var(--space-2xl) var(--space-xl);
+  gap: var(--space-xl);
+  display: grid;
+  grid-template-columns: 1fr;
+  text-align: center;
+  color: var(--text-color-secondary);
+  margin-top: var(--space-3xl);
+}
+
+.logos {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  padding-bottom: var(--space-lg);
+}
+
+.blurb {
+  font-size: var(--text-sm);
+}
+
+.copyright {
+  color: var(--text-color-secondary);
+  font-size: var(--text-xs);
+}
+
+.links ul {
+  flex-direction: column;
+  font-size: var(--text-md);
+}
+
+.links li {
+  flex-direction: column;
+  align-items: center;
+}
+
+.links a {
+  padding: var(--space-md);
+}

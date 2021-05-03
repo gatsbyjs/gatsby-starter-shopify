@@ -1,0 +1,22 @@
+.navLink {
+  background-color: var(--primary);
+  border-bottom-right-radius: var(--radius-sm);
+  clip: rect(1px, 1px, 1px, 1px);
+  color: var(--text-color-inverted);
+  font-size: var(--text-sm);
+  font-weight: var(--medium);
+  left: 0;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  padding: var(--space-lg);
+  position: absolute;
+  top: 0;
+}
+
+.navLink:focus {
+  clip: auto;
+  height: auto;
+  width: auto;
+  z-index: 20;
+}

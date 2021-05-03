@@ -1,0 +1,39 @@
+.title {
+  font-size: var(--text-2xl);
+  font-weight: var(--semibold);
+  line-height: var(--solid);
+  padding-bottom: var(--space-md);
+}
+
+.variant {
+  font-size: var(--text-md);
+  text-transform: capitalize;
+  padding-bottom: var(--space-sm);
+}
+
+.remove button {
+  font-size: var(--text-md);
+
+  display: inline-flex;
+  align-items: center;
+}
+
+.remove button svg {
+  margin-right: var(--space-md);
+}
+
+.totals {
+  text-align: right;
+}
+
+.priceColumn,
+.totals {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .priceColumn,
+  .totals {
+    display: block;
+  }
+}

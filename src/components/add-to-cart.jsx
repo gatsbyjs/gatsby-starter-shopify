@@ -1,25 +1,24 @@
-import * as React from 'react'
-import { Button } from '@chakra-ui/react'
-import { StoreContext } from '../context/store-context'
-import { ChakraHelpersContext } from '../context/chakra-helpers-context'
+import * as React from "react"
+import { addToCart as addToCartStyle } from "./add-to-cart.module.css"
+import { StoreContext } from "../context/store-context"
 
-const AddToCart = ({ variantId, quantity, available, ...props }) => {
+export function AddToCart({ variantId, quantity, available, ...props }) {
   const { addVariantToCart, loading } = React.useContext(StoreContext)
-  const { primaryColorScheme } = React.useContext(ChakraHelpersContext)
+
+  function addToCart(e) {
+    e.preventDefault()
+    addVariantToCart(variantId, quantity)
+  }
 
   return (
-    <Button
-      colorScheme={primaryColorScheme}
-      onClick={(e) => {
-        e.preventDefault()
-        addVariantToCart(variantId, quantity)
-      }}
+    <button
+      type="submit"
+      className={addToCartStyle}
+      onClick={addToCart}
       disabled={!available || loading}
       {...props}
     >
-      {available ? 'Add to Cart' : 'Out of Stock'}
-    </Button>
+      {available ? "Add to Cart" : "Out of Stock"}
+    </button>
   )
 }
-
-export default AddToCart

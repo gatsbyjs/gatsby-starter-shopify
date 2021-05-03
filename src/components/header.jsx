@@ -1,26 +1,21 @@
-import * as React from 'react'
+import * as React from "react"
 import {
-  Box,
-  Container,
-  useColorModeValue,
-  useMediaQuery,
-} from '@chakra-ui/react'
-import { StoreContext } from '../context/store-context'
-import Logo from '../icons/logo'
-import Link from './link'
-import Spacer from './spacer'
-import Cart from './cart'
-import Navigation from './navigation'
-import MobileMenu from './mobile-menu'
-import CartButton from './cart-button'
+  header,
+  container,
+  logo as logoCss,
+  searchButton,
+  nav,
+} from "./header.module.css"
+import { Link } from "gatsby"
+import { StoreContext } from "../context/store-context"
+import Logo from "../icons/logo"
+import { Navigation } from "./navigation"
+import { CartButton } from "./cart-button"
+import SearchIcon from "../icons/search"
+import { Toast } from "./toast"
 
-const Header = () => {
-  const { isOpen, onClose, onOpen, checkout } = React.useContext(StoreContext)
-  const [isSmallerThan640] = useMediaQuery('(max-width: 640px)')
-  const bg = useColorModeValue(`bg`, `dark.bg`)
-  const logoColor = useColorModeValue(`primary`, `dark.primary`)
-  const linkColor = useColorModeValue(`headingColor`, `dark.headingColor`)
-  const btnRef = React.useRef()
+export function Header() {
+  const { checkout, loading, didJustAddToCart } = React.useContext(StoreContext)
 
   const items = checkout ? checkout.lineItems : []
 
@@ -29,53 +24,45 @@ const Header = () => {
   }, 0)
 
   return (
-    <>
-      <Cart isOpen={isOpen} onClose={onClose} btnRef={btnRef} />
-      <Box
-        w="100%"
-        margin={0}
-        as="header"
-        position="fixed"
-        zIndex="docked"
-        height="navigationHeight"
-        display="flex"
-        alignItems="center"
-        bg={bg}
-        sx={{ svg: { height: `24px`, width: `auto` } }}
-      >
-        <Container
-          display="grid"
-          gridTemplateColumns={['1fr 1fr', '1fr auto 1fr']}
-        >
-          <Link
-            to="/"
-            display="flex"
-            alignItems="center"
-            justifySelf="flex-start"
-            color={linkColor}
-            _hover={{
-              textDecoration: `none`,
-              color: logoColor,
-            }}
-          >
-            <Logo />{' '}
-            <Box ml={3} fontWeight="medium" fontSize="lg">
-              Hexagon
-            </Box>
-          </Link>
-          {isSmallerThan640 ? (
-            <MobileMenu quantity={quantity} btnRef={btnRef} onOpen={onOpen} />
-          ) : (
-            <>
-              <Navigation />
-              <CartButton quantity={quantity} onOpen={onOpen} btnRef={btnRef} />
-            </>
-          )}
-        </Container>
-      </Box>
-      <Spacer size="navigationHeight" axis="vertical" />
-    </>
+    <div className={container}>
+      <header className={header}>
+        <Link to="/" className={logoCss}>
+          <Logo />
+        </Link>
+        <Navigation className={nav} />
+        <Link to="/search" className={searchButton}>
+          <SearchIcon />
+        </Link>
+        <CartButton quantity={quantity} />
+      </header>
+      <Toast show={loading || didJustAddToCart}>
+        {!didJustAddToCart ? (
+          "Updating…"
+        ) : (
+          <>
+            Added to cart{" "}
+            <svg
+              width="14"
+              height="14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.019 10.492l-2.322-3.17A.796.796 0 013.91 6.304L6.628 9.14a1.056 1.056 0 11-1.61 1.351z"
+                fill="#fff"
+              />
+              <path
+                d="M5.209 10.693a1.11 1.11 0 01-.105-1.6l5.394-5.88a.757.757 0 011.159.973l-4.855 6.332a1.11 1.11 0 01-1.593.175z"
+                fill="#fff"
+              />
+              <path
+                d="M5.331 7.806c.272.326.471.543.815.163.345-.38-.108.96-.108.96l-1.123-.363.416-.76z"
+                fill="#fff"
+              />
+            </svg>
+          </>
+        )}
+      </Toast>
+    </div>
   )
 }
-
-export default Header

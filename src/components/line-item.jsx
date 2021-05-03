@@ -1,20 +1,20 @@
-import * as React from 'react'
+import * as React from "react"
 import {
-  Stack,
-  Box,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  NumberInput,
-  CloseButton,
-  useColorModeValue,
-} from '@chakra-ui/react'
-import debounce from 'lodash.debounce'
-import { StoreContext } from '../context/store-context'
-import formatPrice from '../utils/format-price'
+  title,
+  remove,
+  variant,
+  totals,
+  priceColumn,
+} from "./line-item.module.css"
+import debounce from "lodash.debounce"
+import { StoreContext } from "../context/store-context"
+import { formatPrice } from "../utils/format-price"
+import { GatsbyImage } from "gatsby-plugin-image"
+import { getShopifyImage } from "gatsby-source-shopify"
+import DeleteIcon from "../icons/delete"
+import { NumericInput } from "./numeric-input"
 
-const LineItem = ({ item }) => {
+export function LineItem({ item }) {
   const {
     removeLineItem,
     checkout,
@@ -22,13 +22,19 @@ const LineItem = ({ item }) => {
     loading,
   } = React.useContext(StoreContext)
   const [quantity, setQuantity] = React.useState(item.quantity)
-  const titleColor = useColorModeValue(`headingColor`, `dark.headingColor`)
-  const bgImage = useColorModeValue(`gray.100`, `gray.500`)
 
-  const variantImage = item.variant.image
+  const variantImage = {
+    ...item.variant.image,
+    originalSrc: item.variant.image.src,
+  }
   const price = formatPrice(
     item.variant.priceV2.currencyCode,
-    item.variant.price
+    Number(item.variant.priceV2.amount)
+  )
+
+  const subtotal = formatPrice(
+    item.variant.priceV2.currencyCode,
+    Number(item.variant.priceV2.amount) * quantity
   )
 
   const handleRemove = () => {
@@ -43,75 +49,71 @@ const LineItem = ({ item }) => {
   const debouncedUli = React.useCallback((value) => uli(value), [])
 
   const handleQuantityChange = (value) => {
-    if (loading) {
+    if (value !== "" && Number(value) < 1) {
       return
     }
-    const safeValue = Math.max(value, 1)
-
-    setQuantity(safeValue)
-    debouncedUli(safeValue)
+    setQuantity(value)
+    if (Number(value) >= 1) {
+      debouncedUli(value)
+    }
   }
 
-  const image = variantImage ? (
-    <img
-      src={variantImage.src}
-      alt={
-        variantImage.altText
-          ? variantImage.altText
-          : `Product image of ${item.title}`
-      }
-    />
-  ) : null
+  function doIncrement() {
+    handleQuantityChange(Number(quantity || 0) + 1)
+  }
+
+  function doDecrement() {
+    handleQuantityChange(Number(quantity || 0) - 1)
+  }
+
+  const image = React.useMemo(
+    () =>
+      getShopifyImage({
+        image: variantImage,
+        layout: "constrained",
+        crop: "contain",
+        width: 160,
+        height: 160,
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [variantImage.src]
+  )
 
   return (
-    <>
-      <Stack direction="row" spacing={6}>
-        <Box
-          minWidth="65px"
-          width="65px"
-          bg={bgImage}
-          p={1}
-          alignSelf="flex-start"
-        >
-          {image}
-        </Box>
-        <Stack direction="column" spacing={2}>
-          <Box fontSize="18px" fontWeight="medium" color={titleColor}>
-            {item.title}
-          </Box>
-          <Box>
-            {item.variant.title === 'Default Title'
-              ? ''
-              : `${item.variant.title},`}{' '}
-            {price}
-          </Box>
-        </Stack>
-      </Stack>
-      <Stack alignItems="flex-start">
-        <NumberInput
-          onChange={(_, value) => handleQuantityChange(value)}
+    <tr>
+      <td>
+        {image && (
+          <GatsbyImage
+            key={variantImage.src}
+            image={image}
+            alt={variantImage.altText ?? item.variant.title}
+          />
+        )}
+      </td>
+      <td>
+        <h4 className={title}>{item.title}</h4>
+        <div className={variant}>
+          {item.variant.title === "Default Title" ? "" : item.variant.title}
+        </div>
+        <div className={remove}>
+          <button onClick={handleRemove}>
+            <DeleteIcon /> Remove
+          </button>
+        </div>
+      </td>
+
+      <td className={priceColumn}>{price}</td>
+      <td>
+        <NumericInput
+          disabled={loading}
           value={quantity}
           aria-label="Quantity"
-          defaultValue={quantity}
-          min={1}
-          size="sm"
-          maxW="70px"
-        >
-          <NumberInputField />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-      </Stack>
-      <CloseButton
-        justifySelf="center"
-        alignSelf="flex-start"
-        aria-label="Remove"
-        onClick={handleRemove}
-      />
-    </>
+          onIncrement={doIncrement}
+          onDecrement={doDecrement}
+          onChange={(e) => handleQuantityChange(e.currentTarget.value)}
+        />
+      </td>
+      <td className={totals}>{subtotal}</td>
+    </tr>
   )
 }
-
-export default LineItem

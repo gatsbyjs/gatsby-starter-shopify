@@ -1,35 +1,50 @@
-import * as React from 'react'
-import { Grid, Container, Text, Stack, Link } from '@chakra-ui/react'
-import ThemeToggle from './theme-toggle'
+import * as React from "react"
+import {
+  footerStyle,
+  copyright,
+  links,
+  blurb,
+  logos,
+} from "./footer.module.css"
+import Logo from "../icons/logo"
 
-const Footer = () => {
+export function Footer() {
   return (
-    <Container as="footer" py={16}>
-      <Grid
-        gridTemplateColumns={['1fr', '1fr', '1fr auto 1fr']}
-        alignItems="center"
-        gap={[3, 3, 12]}
-      >
-        <Text textAlign={['center', 'center', 'left']}>
-          Copyright &copy; {new Date().getFullYear()}. All rights reserved.
-        </Text>
-        <Stack
-          direction="row"
-          spacing={3}
-          alignItems="center"
-          justifyContent={['center', 'center', 'flex-end']}
-        >
-          <span>Theme:</span> <ThemeToggle />
-        </Stack>
-        <Link
-          justifySelf={['center', 'center', 'flex-end']}
-          href="https://github.com/gatsbyjs/gatsby-starter-shopify"
-        >
-          Source Code
-        </Link>
-      </Grid>
-    </Container>
+    <footer className={footerStyle}>
+      <div className={blurb}>
+        <div className={logos}>
+          <Logo />
+        </div>
+        <strong>gatsby-starter-shopify</strong> change this by editing{" "}
+        <code>src/components/footer.jsx</code>
+      </div>
+      <nav className={links}>
+        <ul>
+          <li>
+            <a href="https://github.com/gatsbyjs/gatsby-starter-shopify">
+              Source Code and Docs
+            </a>
+          </li>
+          <li>
+            <a href="https://www.gatsbyjs.com/cloud/">About Gatsby Cloud</a>
+          </li>
+          {process.env.GATSBY_DEMO_STORE === "true" && (
+            <li>
+              <a href="https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-shopify">
+                <img
+                  src="https://www.gatsbyjs.com/deploynow.png"
+                  alt="Deploy to Gatsby Cloud"
+                  height="38"
+                  width="251"
+                />
+              </a>
+            </li>
+          )}
+        </ul>
+      </nav>
+      <div className={copyright}>
+        Copyright &copy; {new Date().getFullYear()} · All rights reserved
+      </div>
+    </footer>
   )
 }
-
-export default Footer

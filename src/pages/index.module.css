@@ -1,0 +1,27 @@
+.container {
+  margin-left: var(--size-gutter-raw);
+  margin-right: var(--size-gutter-raw);
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-3xl);
+  max-width: 56ch;
+}
+
+.intro {
+  padding-bottom: var(--space-lg);
+  line-height: var(--dense);
+  font-size: var(--text-display);
+  color: var(--text-color-secondary);
+}
+
+.callOut {
+  font-size: var(--text-display);
+  font-weight: var(--bold);
+  line-height: var(--dense);
+  line-height: var(--dense);
+  letter-spacing: var(--tight);
+  color: var(--text-color-secondary);
+}
+
+.callOut > strong {
+  text-decoration: underline;
+}

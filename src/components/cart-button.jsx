@@ -1,39 +1,17 @@
-import * as React from 'react'
-import { Badge, IconButton, Stack } from '@chakra-ui/react'
-import { FiShoppingCart } from 'react-icons/fi'
-import { ChakraHelpersContext } from '../context/chakra-helpers-context'
+import * as React from "react"
+import { cartButton, badge } from "./cart-button.module.css"
+import CartIcon from "../icons/cart"
+import { Link } from "gatsby"
 
-const CartButton = ({ quantity, btnRef, onOpen }) => {
-  const { primaryColorScheme } = React.useContext(ChakraHelpersContext)
-
+export function CartButton({ quantity }) {
   return (
-    <Stack
-      direction="row"
-      justifyContent="flex-end"
-      alignItems="center"
-      spacing={3}
+    <Link
+      aria-label={`Shopping Cart with ${quantity} items`}
+      to="/cart"
+      className={cartButton}
     >
-      <IconButton
-        aria-label={`Shopping Cart with ${quantity} items`}
-        icon={<FiShoppingCart />}
-        variant="ghost"
-        ref={btnRef}
-        onClick={onOpen}
-      />{' '}
-      <Badge
-        height="24px"
-        width="24px"
-        borderRadius="full"
-        p={0}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        colorScheme={primaryColorScheme}
-      >
-        {quantity}
-      </Badge>
-    </Stack>
+      <CartIcon />
+      {quantity > 0 && <div className={badge}>{quantity}</div>}
+    </Link>
   )
 }
-
-export default CartButton

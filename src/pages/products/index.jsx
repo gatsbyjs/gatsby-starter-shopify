@@ -1,34 +1,35 @@
-import * as React from 'react'
-import { Container, VisuallyHidden } from '@chakra-ui/react'
-import { graphql } from 'gatsby'
-import Layout from '../../components/layout'
-import ProductListing from '../../components/product-listing'
-import SEO from '../../components/seo'
+import * as React from "react"
+import { title } from "./index.module.css"
+import { graphql } from "gatsby"
+import { Layout } from "../../components/layout"
+import { ProductListing } from "../../components/product-listing"
+import { Seo } from "../../components/seo"
+import { MoreButton } from "../../components/more-button"
 
-const Products = ({ data: { products } }) => {
+export default function Products({ data: { products } }) {
   return (
     <Layout>
-      <SEO title="All Products in Hexagon Store" />
-      <VisuallyHidden as="h1">Products</VisuallyHidden>
-      <Container py={20}>
-        <ProductListing products={products} />
-      </Container>
+      <Seo title="All Products" />
+      <h1 className={title}>Products</h1>
+      <ProductListing products={products.nodes} />
+      {products.pageInfo.hasNextPage && (
+        <MoreButton to={`/search#more`}>More products</MoreButton>
+      )}
     </Layout>
   )
 }
 
-export default Products
-
-// To display all products here, remove the "filter" on the query
-
 export const query = graphql`
   {
     products: allShopifyProduct(
-      filter: { productType: { in: ["Shirt", "Stickers"] } }
       sort: { fields: publishedAt, order: ASC }
+      limit: 24
     ) {
       nodes {
         ...ProductCard
+      }
+      pageInfo {
+        hasNextPage
       }
     }
   }

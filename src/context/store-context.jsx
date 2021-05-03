@@ -1,7 +1,6 @@
-import fetch from 'isomorphic-fetch'
-import * as React from 'react'
-import Client from 'shopify-buy'
-import { useDisclosure } from '@chakra-ui/react'
+import * as React from "react"
+import fetch from "isomorphic-fetch"
+import Client from "shopify-buy"
 
 const client = Client.buildClient(
   {
@@ -32,9 +31,9 @@ const isBrowser = typeof window !== `undefined`
 const localStorageKey = `shopify_checkout_id`
 
 export const StoreProvider = ({ children }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const [checkout, setCheckout] = React.useState(defaultValues.checkout)
   const [loading, setLoading] = React.useState(false)
+  const [didJustAddToCart, setDidJustAddToCart] = React.useState(false)
 
   const setCheckoutItem = (checkout) => {
     if (isBrowser) {
@@ -73,6 +72,8 @@ export const StoreProvider = ({ children }) => {
 
   const addVariantToCart = (variantId, quantity) => {
     setLoading(true)
+    console.log(variantId)
+    console.log({ quantity })
 
     const checkoutID = checkout.id
 
@@ -88,6 +89,8 @@ export const StoreProvider = ({ children }) => {
       .then((res) => {
         setCheckout(res)
         setLoading(false)
+        setDidJustAddToCart(true)
+        setTimeout(() => setDidJustAddToCart(false), 3000)
       })
   }
 
@@ -126,9 +129,7 @@ export const StoreProvider = ({ children }) => {
         updateLineItem,
         checkout,
         loading,
-        isOpen,
-        onOpen,
-        onClose,
+        didJustAddToCart,
       }}
     >
       {children}

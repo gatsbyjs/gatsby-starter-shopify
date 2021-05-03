@@ -1,0 +1,47 @@
+.priceFilter {
+  display: grid;
+}
+
+.priceFilterStyle {
+  display: flex;
+}
+
+.priceFilterStyle label {
+  cursor: pointer;
+  margin-top: 2px;
+}
+
+.priceFilterStyle .summary {
+  cursor: pointer;
+  font-weight: var(--bold);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-md);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracked);
+}
+
+.priceFilterStyle summary::marker {
+  color: transparent;
+  display: none;
+}
+
+.priceFilterStyle summary {
+  list-style: none;
+}
+
+/* "Price" reset button */
+.clearButton {
+  color: var(--text-color-secondary);
+  font-size: var(--text-sm);
+  line-height: var(--solid);
+}
+
+.priceFields {
+  display: grid;
+  align-items: center;
+  justify-content: stretch;
+  gap: var(--space-sm);
+}

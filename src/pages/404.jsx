@@ -1,18 +1,16 @@
-import * as React from 'react'
-import { Container, Heading, Text } from '@chakra-ui/react'
-import Layout from '../components/layout'
+import * as React from "react"
+import { heading, paragraph, container } from "./404.module.css"
+import { Layout } from "../components/layout"
 
-const NotFoundPage = () => {
+export default function NotFoundPage() {
   return (
     <Layout>
-      <Container my={20}>
-        <Heading>Page Not Found</Heading>
-        <Text fontSize="lg" mt={6}>
+      <main className={container}>
+        <h2 className={heading}>Page Not Found</h2>
+        <p className={paragraph}>
           Sorry, we couldn't find what you were looking for
-        </Text>
-      </Container>
+        </p>
+      </main>
     </Layout>
   )
 }
-
-export default NotFoundPage
