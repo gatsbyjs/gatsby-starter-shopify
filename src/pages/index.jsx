@@ -22,29 +22,27 @@ export const query = graphql`
 export default function IndexPage({ data }) {
   return (
     <Layout>
-      <main id="#main">
-        <div className={container}>
-          <p className={intro}>Welcome to the GatsbyJS + Shopify Demo Store.</p>
-          <p className={callOut}>
-            It's a proof-of-concept in a box, with 10k products and 30k variants
-            to help you get to proof-of-concept{" "}
-            <strong>as soon as right now</strong>.
-          </p>
-          <p className={callToAction}>
-            Hook it up to your own Shopify store data and start customizing in
-            minutes by deploying it to Gatsby Cloud for free. Grab your Shopify
-            store credentials and
-            <a href="https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-shopify">
-              <img
-                src="https://www.gatsbyjs.com/deploynow.png"
-                alt="Deploy to Gatsby Cloud"
-                className={deployButton}
-              />
-            </a>
-          </p>
-        </div>
-        <ProductListing products={data.shopifyCollection.products} />
-      </main>
+      <div className={container}>
+        <h1 className={intro}>Welcome to the GatsbyJS + Shopify Demo Store.</h1>
+        <p className={callOut}>
+          It's a proof-of-concept in a box, with 10k products and 30k variants
+          to help you get to proof-of-concept{" "}
+          <strong>as soon as right now</strong>.
+        </p>
+        <p className={callToAction}>
+          Hook it up to your own Shopify store data and start customizing in
+          minutes by deploying it to Gatsby Cloud for free. Grab your Shopify
+          store credentials and
+          <a href="https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-shopify">
+            <img
+              src="https://www.gatsbyjs.com/deploynow.png"
+              alt="Deploy to Gatsby Cloud"
+              className={deployButton}
+            />
+          </a>
+        </p>
+      </div>
+      <ProductListing products={data.shopifyCollection.products} />
     </Layout>
   )
 }
