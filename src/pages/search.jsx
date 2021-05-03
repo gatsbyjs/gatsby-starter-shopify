@@ -289,7 +289,7 @@ function SearchPage({
             ))}
           </ul>
           {productList?.length && pageCount ? (
-            <nav className={pagination}>
+            <nav className={pagination} aria-label="pagination">
               <button
                 disabled={!hasPreviousPage}
                 onClick={previousPage}
