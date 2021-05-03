@@ -1,5 +1,11 @@
 import * as React from "react"
-import { container, intro, callOut } from "./index.module.css"
+import {
+  container,
+  intro,
+  callOut,
+  callToAction,
+  deployButton,
+} from "./index.module.css"
 import { Layout } from "../components/layout"
 import { graphql } from "gatsby"
 import { ProductListing } from "../components/product-listing"
@@ -18,13 +24,23 @@ export default function IndexPage({ data }) {
     <Layout>
       <main id="#main">
         <div className={container}>
-          <p className={intro}>
-            10k products and 25k variants.Shopify, Gatsby, Gatsby Cloud.
-            Instantly preview content, build in seconds.
-          </p>
+          <p className={intro}>Welcome to the GatsbyJS + Shopify Demo Store.</p>
           <p className={callOut}>
-            Gatsby E-Commerce Starter Kit — PoC in a day,{" "}
-            <strong>with your own products </strong>
+            It's a proof-of-concept in a box, with 10k products and 30k variants
+            to help you get to proof-of-concept{" "}
+            <strong>as soon as right now</strong>.
+          </p>
+          <p className={callToAction}>
+            Hook it up to your own Shopify store data and start customizing in
+            minutes by deploying it to Gatsby Cloud for free. Grab your Shopify
+            store credentials and
+            <a href="https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-shopify">
+              <img
+                src="https://www.gatsbyjs.com/deploynow.png"
+                alt="Deploy to Gatsby Cloud"
+                className={deployButton}
+              />
+            </a>
           </p>
         </div>
         <ProductListing products={data.shopifyCollection.products} />
