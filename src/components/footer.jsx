@@ -18,7 +18,7 @@ export function Footer() {
         <strong>gatsby-starter-shopify</strong> change this by editing{" "}
         <code>src/components/footer.jsx</code>
       </div>
-      <nav className={links}>
+      <nav className={links} aria-label="footer">
         <ul>
           <li>
             <a href="https://github.com/gatsbyjs/gatsby-starter-shopify">
