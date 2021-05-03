@@ -16,6 +16,7 @@ import {
   useSearchPagination,
 } from "../utils/hooks"
 import {
+  visuallyHidden,
   main,
   search,
   searchIcon,
@@ -175,6 +176,7 @@ function SearchPage({
 
   return (
     <Layout>
+      <h1 className={visuallyHidden}>Search Results</h1>
       <div className={main}>
         <div className={search} aria-hidden={modalOpen}>
           <form onSubmit={(e) => e.preventDefault()} className={searchForm}>
