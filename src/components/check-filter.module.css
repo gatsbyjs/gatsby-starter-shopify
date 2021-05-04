@@ -36,10 +36,19 @@
   color: transparent;
 }
 
+.filter summary::-webkit-details-marker {
+  display: none; /* hide the summary arrow on safari */
+}
+
 .summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.filter-options {
+  max-height: 200px;
+  overflow: scroll;
 }
 
 .clearButton {

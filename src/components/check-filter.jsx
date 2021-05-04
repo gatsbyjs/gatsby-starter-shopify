@@ -2,6 +2,7 @@ import * as React from "react"
 import {
   filter,
   summary,
+  filterOptions,
   clearButton,
   selectedLabel,
   checkbox,
@@ -48,21 +49,23 @@ export function CheckFilter({
           </div>
         </summary>
       )}
-      {items.map((item) => (
-        <label
-          className={selectedItems.includes(item) ? selectedLabel : undefined}
-          key={item}
-        >
-          <input
-            type="checkbox"
-            className={checkbox}
-            onChange={toggleItem}
-            value={item}
-            checked={selectedItems.includes(item)}
-          />{" "}
-          {item || "None"}
-        </label>
-      ))}
+      <div className={filterOptions}>
+        {items.map((item) => (
+          <label
+            className={selectedItems.includes(item) ? selectedLabel : undefined}
+            key={item}
+          >
+            <input
+              type="checkbox"
+              className={checkbox}
+              onChange={toggleItem}
+              value={item}
+              checked={selectedItems.includes(item)}
+            />{" "}
+            {item || "None"}
+          </label>
+        ))}
+      </div>
     </details>
   )
 }
