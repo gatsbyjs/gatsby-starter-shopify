@@ -2,6 +2,7 @@ import * as React from "react"
 import { useLocation } from "@reach/router"
 import { graphql } from "gatsby"
 import slugify from "@sindresorhus/slugify"
+import debounce from "debounce"
 import { CgChevronRight, CgChevronLeft } from "react-icons/cg"
 import { Layout } from "../components/layout"
 import CrossIcon from "../icons/cross"
@@ -176,27 +177,7 @@ function SearchPage({
     <Layout>
       <div className={main}>
         <div className={search} aria-hidden={modalOpen}>
-          <form onSubmit={(e) => e.preventDefault()} className={searchForm}>
-            <SearchIcon aria-hidden className={searchIcon} />
-            <input
-              type="text"
-              value={filters.term}
-              onChange={(e) =>
-                setFilters({ ...filters, term: e.currentTarget.value })
-              }
-              placeholder="Search..."
-            />
-            {filters.term ? (
-              <button
-                className={clearSearch}
-                type="reset"
-                onClick={() => setFilters({ ...filters, term: "" })}
-                aria-label="Clear search query"
-              >
-                <CrossIcon />
-              </button>
-            ) : undefined}
-          </form>
+          <SearchBar defaultTerm={filters.term} setFilters={setFilters} />
           <button
             className={[
               filterButton,
@@ -315,6 +296,41 @@ function SearchPage({
         </section>
       </div>
     </Layout>
+  )
+}
+
+function SearchBar({ defaultTerm, setFilters }) {
+  const [term, setTerm] = React.useState(defaultTerm)
+  const debouncedSetFilters = React.useCallback(debounce((value) => {
+    setFilters((filters) => ({ ...filters, term: value }))
+  }, 200), [setFilters]);
+
+  return (
+    <form onSubmit={(e) => e.preventDefault()} className={searchForm}>
+      <SearchIcon aria-hidden className={searchIcon} />
+      <input
+        type="text"
+        value={term}
+        onChange={(e) => {
+          setTerm(e.target.value)
+          debouncedSetFilters(e.target.value);
+        }}
+        placeholder="Search..."
+      />
+      {term ? (
+        <button
+          className={clearSearch}
+          type="reset"
+          onClick={() => {
+            setTerm('');
+            setFilters(filters => ({ ...filters, term: "" }))
+          }}
+          aria-label="Clear search query"
+        >
+          <CrossIcon />
+        </button>
+      ) : undefined}
+    </form>
   )
 }
 
