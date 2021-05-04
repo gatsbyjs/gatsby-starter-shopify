@@ -28,6 +28,10 @@
   display: none;
 }
 
+.priceFilterStyle summary::-webkit-details-marker {
+  display: none; /* hide the summary arrow on safari */
+}
+
 .priceFilterStyle summary {
   list-style: none;
 }
