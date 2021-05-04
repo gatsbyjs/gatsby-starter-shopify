@@ -1,4 +1,5 @@
 import * as React from "react"
+import Logo from "../icons/logo"
 import {
   footerStyle,
   copyright,
@@ -6,7 +7,6 @@ import {
   blurb,
   logos,
 } from "./footer.module.css"
-import Logo from "../icons/logo"
 
 export function Footer() {
   return (

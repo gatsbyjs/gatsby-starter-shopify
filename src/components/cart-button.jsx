@@ -1,7 +1,7 @@
 import * as React from "react"
-import { cartButton, badge } from "./cart-button.module.css"
-import CartIcon from "../icons/cart"
 import { Link } from "gatsby"
+import CartIcon from "../icons/cart"
+import { cartButton, badge } from "./cart-button.module.css"
 
 export function CartButton({ quantity }) {
   return (

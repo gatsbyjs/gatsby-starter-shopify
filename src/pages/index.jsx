@@ -1,4 +1,7 @@
 import * as React from "react"
+import { graphql } from "gatsby"
+import { Layout } from "../components/layout"
+import { ProductListing } from "../components/product-listing"
 import {
   container,
   intro,
@@ -6,9 +9,6 @@ import {
   callToAction,
   deployButton,
 } from "./index.module.css"
-import { Layout } from "../components/layout"
-import { graphql } from "gatsby"
-import { ProductListing } from "../components/product-listing"
 
 export const query = graphql`
   query {

@@ -20,9 +20,8 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
-    "@react-icons/all-files": "^4.1.0",
+    "react-icons": "^4.1.0",
     "@sindresorhus/slugify": "^1.1.0",
-    "babel-plugin-react-icons": "^0.1.1",
     "gatsby": "next",
     "gatsby-plugin-gatsby-cloud": "next",
     "gatsby-plugin-image": "next",
