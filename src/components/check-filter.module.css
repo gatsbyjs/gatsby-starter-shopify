@@ -36,6 +36,10 @@
   color: transparent;
 }
 
+.filter summary::-webkit-details-marker {
+  display: none;
+}
+
 .summary {
   display: flex;
   align-items: center;
