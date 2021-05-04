@@ -1,5 +1,4 @@
 .container {
-  margin: auto;
   padding-left: var(--size-gutter-raw);
   padding-right: var(--size-gutter-raw);
   padding-top: var(--space-lg);
