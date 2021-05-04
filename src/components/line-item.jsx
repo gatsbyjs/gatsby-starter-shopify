@@ -1,11 +1,4 @@
 import * as React from "react"
-import {
-  title,
-  remove,
-  variant,
-  totals,
-  priceColumn,
-} from "./line-item.module.css"
 import debounce from "lodash.debounce"
 import { StoreContext } from "../context/store-context"
 import { formatPrice } from "../utils/format-price"
@@ -13,6 +6,13 @@ import { GatsbyImage } from "gatsby-plugin-image"
 import { getShopifyImage } from "gatsby-source-shopify"
 import DeleteIcon from "../icons/delete"
 import { NumericInput } from "./numeric-input"
+import {
+  title,
+  remove,
+  variant,
+  totals,
+  priceColumn,
+} from "./line-item.module.css"
 
 export function LineItem({ item }) {
   const {
