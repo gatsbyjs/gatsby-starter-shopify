@@ -42,6 +42,11 @@
   justify-content: space-between;
 }
 
+.filter-options {
+  height: 200px;
+  overflow: scroll;
+}
+
 .clearButton {
   color: var(--text-color-secondary);
   font-size: var(--text-sm);
