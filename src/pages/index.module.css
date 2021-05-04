@@ -1,9 +1,10 @@
 .container {
-  margin-left: var(--size-gutter-raw);
-  margin-right: var(--size-gutter-raw);
+  margin: auto;
+  padding-left: var(--size-gutter-raw);
+  padding-right: var(--size-gutter-raw);
   padding-top: var(--space-lg);
   padding-bottom: var(--space-3xl);
-  max-width: 56ch;
+  max-width: 76ch;
 }
 
 .intro {
@@ -14,6 +15,7 @@
 }
 
 .callOut {
+  padding-bottom: var(--space-lg);
   font-size: var(--text-display);
   font-weight: var(--bold);
   line-height: var(--dense);
@@ -24,4 +26,16 @@
 
 .callOut > strong {
   text-decoration: underline;
+}
+
+.callToAction {
+  font-size: var(--text-prose);
+  line-height: var(--dense);
+  line-height: var(--dense);
+  letter-spacing: var(--tight);
+  color: var(--text-color-secondary);
+}
+
+.deployButton {
+  margin-top: var(--space-lg);
 }
