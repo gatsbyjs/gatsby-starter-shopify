@@ -26,8 +26,7 @@ export default function IndexPage({ data }) {
         <h1 className={intro}>Welcome to the GatsbyJS + Shopify Demo Store.</h1>
         <p className={callOut}>
           It's a proof-of-concept in a box, with 10k products and 30k variants
-          to help you get to proof-of-concept{" "}
-          <strong>as soon as right now</strong>.
+          to help you get to proof-of-concept as soon as right now.
         </p>
         <p className={callToAction}>
           Hook it up to your own Shopify store data and start customizing in
