@@ -3,18 +3,21 @@ import { useLocation } from "@reach/router"
 import { graphql } from "gatsby"
 import slugify from "@sindresorhus/slugify"
 import { CgChevronRight, CgChevronLeft } from "react-icons/cg"
+import { Layout } from "../components/layout"
 import CrossIcon from "../icons/cross"
 import SortIcon from "../icons/sort"
 import FilterIcon from "../icons/filter"
 import SearchIcon from "../icons/search"
-import { Layout } from "../components/layout"
 import { ProductCard } from "../components/product-card"
-
 import {
   getValuesFromQueryString,
   useProductSearch,
   useSearchPagination,
 } from "../utils/hooks"
+import { getCurrencySymbol } from "../utils/format-price"
+import { Spinner } from "../components/progress"
+import { Filters } from "../components/filters"
+import { SearchProvider } from "../context/search-provider"
 import {
   main,
   search,
@@ -37,10 +40,6 @@ import {
   activeFilters,
   filterWrap,
 } from "./search-page.module.css"
-import { getCurrencySymbol } from "../utils/format-price"
-import { Spinner } from "../components/progress"
-import { Filters } from "../components/filters"
-import { SearchProvider } from "../context/search-provider"
 
 export const query = graphql`
   query {

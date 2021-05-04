@@ -1,5 +1,14 @@
 import * as React from "react"
 import { graphql, Link } from "gatsby"
+import { Layout } from "../../../components/layout"
+import isEqual from "lodash.isequal"
+import { GatsbyImage, getSrc } from "gatsby-plugin-image"
+import { StoreContext } from "../../../context/store-context"
+import { AddToCart } from "../../../components/add-to-cart"
+import { NumericInput } from "../../../components/numeric-input"
+import { formatPrice } from "../../../utils/format-price"
+import { Seo } from "../../../components/seo"
+import { CgChevronRight as ChevronIcon } from "react-icons/cg"
 import {
   productBox,
   container,
@@ -17,15 +26,6 @@ import {
   metaSection,
   productDescription,
 } from "./product-page.module.css"
-import isEqual from "lodash.isequal"
-import { GatsbyImage, getSrc } from "gatsby-plugin-image"
-import { Layout } from "../../../components/layout"
-import { StoreContext } from "../../../context/store-context"
-import { AddToCart } from "../../../components/add-to-cart"
-import { NumericInput } from "../../../components/numeric-input"
-import { formatPrice } from "../../../utils/format-price"
-import { Seo } from "../../../components/seo"
-import { CgChevronRight as ChevronIcon } from "react-icons/cg"
 
 export default function Product({ data: { product, suggestions } }) {
   const {

@@ -1,7 +1,7 @@
 import { graphql, useStaticQuery, Link } from "gatsby"
 import * as React from "react"
-import { navStyle, navLink, activeLink } from "./navigation.module.css"
 import slugify from "@sindresorhus/slugify"
+import { navStyle, navLink, activeLink } from "./navigation.module.css"
 
 export function Navigation({ className }) {
   const {
