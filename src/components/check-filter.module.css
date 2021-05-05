@@ -48,7 +48,7 @@
 
 .filter-options {
   max-height: 200px;
-  overflow: scroll;
+  overflow-y: auto;
 }
 
 .clearButton {
