@@ -14,6 +14,8 @@ import {
   container,
   header,
   productImageWrapper,
+  productImageList,
+  productImageListItem,
   scrollForMore,
   noImagePreview,
   optionsWrapper,
@@ -118,9 +120,9 @@ export default function Product({ data: { product, suggestions } }) {
                   aria-describedby="instructions"
                 >
                   {hasImages ? (
-                    <ul>
+                    <ul className={productImageList}>
                       {images.map((image, index) => (
-                        <li key={`product-image-${index}`}>
+                        <li key={`product-image-${index}`} className={productImageListItem}>
                           <GatsbyImage
                             objectFit="contain"
                             alt={

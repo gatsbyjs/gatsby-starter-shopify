@@ -24,11 +24,12 @@
   padding-bottom: var(--space-2xl);
 }
 
-ul {
+.productImageList {
   display: flex;
+  overflow-x: scroll;
 }
 
-li {
+.productImageListItem {
   display: flex;
   flex: 0 0 100%;
   white-space: nowrap;
