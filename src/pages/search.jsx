@@ -15,6 +15,7 @@ import { Spinner } from "../components/progress"
 import { Filters } from "../components/filters"
 import { SearchProvider } from "../context/search-provider"
 import {
+  visuallyHidden,
   main,
   search,
   searchIcon,
@@ -156,6 +157,7 @@ function SearchPage({
 
   return (
     <Layout>
+      <h1 className={visuallyHidden}>Search Results</h1>
       <div className={main}>
         <div className={search} aria-hidden={modalOpen}>
           <SearchBar defaultTerm={filters.term} setFilters={setFilters} />
