@@ -78,7 +78,7 @@
 
 .optionsWrapper {
   display: grid;
-  grid-template-columns: var(--product-grproductImageWrapperd);
+  grid-template-columns: var(--product-grid);
   gap: var(--space-lg);
   padding-bottom: var(--space-lg);
 }
