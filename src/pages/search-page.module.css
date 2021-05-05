@@ -316,7 +316,7 @@
   gap: var(--space-md);
 }
 
-.pagination > button {
+.paginationButton {
   width: var(--size-input);
   height: var(--size-input);
   font-size: var(--text-md);
@@ -325,19 +325,17 @@
   place-items: center;
 }
 
-.pagination > button:hover {
+.paginationButton:hover {
   background-color: var(--black-fade-5);
 }
 
-.pagination > button.selectedItem {
-  background-color: var(--input-background);
-  color: var(--text-color);
-  font-weight: var(--semibold);
+.paginationButton:disabled {
+  cursor: default;
+  opacity: 0.5;
 }
 
-.pagination > button:disabled {
-  cursor: default;
-  opacity: 0;
+.paginationButton:disabled:hover {
+  background-color: inherit;
 }
 
 .priceFilterStyle {

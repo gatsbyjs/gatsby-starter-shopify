@@ -1,5 +1,4 @@
 import * as React from "react"
-import { useLocation } from "@reach/router"
 import { graphql } from "gatsby"
 import slugify from "@sindresorhus/slugify"
 import debounce from "debounce"
@@ -10,11 +9,7 @@ import SortIcon from "../icons/sort"
 import FilterIcon from "../icons/filter"
 import SearchIcon from "../icons/search"
 import { ProductCard } from "../components/product-card"
-import {
-  getValuesFromQueryString,
-  useProductSearch,
-  useSearchPagination,
-} from "../utils/hooks"
+import { getValuesFromQueryString, useProductSearch } from "../utils/hooks"
 import { getCurrencySymbol } from "../utils/format-price"
 import { Spinner } from "../components/progress"
 import { Filters } from "../components/filters"
@@ -29,7 +24,7 @@ import {
   productList as productListStyle,
   productListItem,
   pagination,
-  selectedItem,
+  paginationButton,
   progressStyle,
   resultsStyle,
   filterStyle,
@@ -82,35 +77,27 @@ function SearchPage({
     meta: { productTypes, vendors, tags },
     products,
   },
+  location,
 }) {
-  // get query params from URL if they exist, to populate default state
-  const location = useLocation()
-
   // These default values come from the page query string
   const queryParams = getValuesFromQueryString(location.search)
-
   const [filters, setFilters] = React.useState(queryParams)
-
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
+  // We clear the hash when searching, we want to make sure the next page will be fetched due the #more hash.
+  const shouldLoadNextPage = React.useRef(false);
 
   // This modal is only used on mobile
   const [showModal, setShowModal] = React.useState(false)
 
   const {
-    nextPage,
-    previousPage,
-    reset,
-    gotoPage,
-    cursor,
-    setData,
-    pageCount,
-    nextToken,
-    hasFoundLastPage,
+    data,
+    isFetching,
+    filterCount,
     hasNextPage,
     hasPreviousPage,
-  } = useSearchPagination()
-
-  const { data, fetching, isDefault, filterCount } = useProductSearch(
+    fetchNextPage,
+    fetchPreviousPage,
+  } = useProductSearch(
     filters,
     {
       allProductTypes: productTypes,
@@ -119,9 +106,13 @@ function SearchPage({
     },
     sortKey,
     false,
-    24, // Products per page
-    nextToken
+    24 // Products per page
   )
+
+  // If we're using the default filters, use the products from the Gatsby data layer.
+  // Otherwise, use the data from search.
+  const isDefault = !data
+  const productList = (isDefault ? products.edges : data?.products?.edges) ?? []
 
   // Scroll up when navigating
   React.useEffect(() => {
@@ -130,9 +121,10 @@ function SearchPage({
         top: 0,
         left: 0,
         behavior: "smooth",
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       })
     }
-  }, [cursor, showModal])
+  }, [productList, showModal])
 
   // Stop page from scrolling when modal is visible
   React.useEffect(() => {
@@ -143,36 +135,25 @@ function SearchPage({
     }
   }, [showModal])
 
-  const hash =
-    typeof window === "undefined" ? location.hash : window.location.hash
-
   // Automatically load the next page if "#more" is in the URL
   React.useEffect(() => {
-    if (hash === "#more" && pageCount > 1) {
-      nextPage()
-      const url = new URL(location.href)
-      url.hash = ""
-      window.history.replaceState({}, null, url.toString())
+    if (location.hash === "#more") {
+      // save state so we can fetch it when the first page got fetched to retrieve the cursor
+      shouldLoadNextPage.current = true;
     }
-  }, [hash, pageCount, location.href, nextPage])
+    
+    if (shouldLoadNextPage.current) {
+      if (hasNextPage) {
+        fetchNextPage()
+      }
 
-  // When data is updated, update the pagination
-  React.useEffect(() => {
-    setData(data?.products)
-  }, [data, setData])
-
-  // If the filters change then reset the pagination
-  React.useEffect(() => {
-    reset()
-  }, [filters, sortKey, reset])
+      shouldLoadNextPage.current = false;
+    }
+  }, [location.hash])
 
   const currencyCode = getCurrencySymbol(
-    products?.edges?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
+    products?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
   )
-
-  // If we're using the default filters, use the products from the Gatsby data layer.
-  // Otherwise, use the data from search.
-  const productList = (isDefault ? products.edges : data?.products?.edges) || []
 
   return (
     <Layout>
@@ -230,10 +211,10 @@ function SearchPage({
         </section>
         <section
           className={results}
-          aria-busy={fetching}
+          aria-busy={isFetching}
           aria-hidden={modalOpen}
         >
-          {fetching ? (
+          {isFetching ? (
             <p className={progressStyle}>
               <Spinner aria-valuetext="Searching" /> Searching
               {filters.term ? ` for "${filters.term}"…` : `…`}
@@ -249,51 +230,32 @@ function SearchPage({
             </p>
           )}
           <ul className={productListStyle}>
-            {productList.map(({ node }) => (
-              <li className={productListItem} key={node.id}>
-                <ProductCard
-                  product={{
-                    title: node.title,
-                    priceRangeV2: node.priceRangeV2,
-                    slug: `/products/${slugify(node.productType)}/${
-                      node.handle
-                    }`,
-                    // The search API and Gatsby data layer have slightly different images available.
-                    images: isDefault ? node.images : [],
-                    storefrontImages: !isDefault && node.images,
-                    vendor: node.vendor,
-                  }}
-                  key={node.id}
-                />
-              </li>
-            ))}
-          </ul>
-          {productList?.length && pageCount ? (
-            <nav className={pagination} aria-label="pagination">
-              <button
-                disabled={!hasPreviousPage}
-                onClick={previousPage}
-                aria-label="Previous page"
-              >
-                <CgChevronLeft />
-              </button>
-              {[...Array(pageCount)].map((_, index) => (
-                <button
-                  onClick={() => gotoPage(index)}
-                  className={index === cursor ? selectedItem : undefined}
-                  key={`search${index}`}
-                >
-                  {index === pageCount && !hasFoundLastPage ? "…" : index + 1}
-                </button>
+            {!isFetching &&
+              productList.map(({ node }) => (
+                <li className={productListItem} key={node.id}>
+                  <ProductCard
+                    product={{
+                      title: node.title,
+                      priceRangeV2: node.priceRangeV2,
+                      slug: `/products/${slugify(node.productType)}/${
+                        node.handle
+                      }`,
+                      // The search API and Gatsby data layer have slightly different images available.
+                      images: isDefault ? node.images : [],
+                      storefrontImages: !isDefault && node.images,
+                      vendor: node.vendor,
+                    }}
+                  />
+                </li>
               ))}
-              <button
-                disabled={!hasNextPage}
-                onClick={nextPage}
-                aria-label="Next page"
-              >
-                <CgChevronRight />
-              </button>
-            </nav>
+          </ul>
+          {hasPreviousPage || hasNextPage ? (
+            <Pagination
+              previousPage={fetchPreviousPage}
+              hasPreviousPage={hasPreviousPage}
+              nextPage={fetchNextPage}
+              hasNextPage={hasNextPage}
+            />
           ) : undefined}
         </section>
       </div>
@@ -333,6 +295,31 @@ function SearchBar({ defaultTerm, setFilters }) {
         </button>
       ) : undefined}
     </form>
+  )
+}
+/**
+ * Shopify only supports next & previous navigation
+ */
+function Pagination({ previousPage, hasPreviousPage, nextPage, hasNextPage }) {
+  return (
+    <nav className={pagination}>
+      <button
+        className={paginationButton}
+        disabled={!hasPreviousPage}
+        onClick={previousPage}
+        aria-label="Previous page"
+      >
+        <CgChevronLeft />
+      </button>
+      <button
+        className={paginationButton}
+        disabled={!hasNextPage}
+        onClick={nextPage}
+        aria-label="Next page"
+      >
+        <CgChevronRight />
+      </button>
+    </nav>
   )
 }
 

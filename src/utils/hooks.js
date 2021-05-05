@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useReducer, useState } from "react"
+import { useEffect, useState } from "react"
 import queryString from "query-string"
 import { useQuery } from "urql"
 
 const ProductsQuery = `
-query ($query: String!, $sortKey: ProductSortKeys, $count: Int!, $after: String, $before: String) {
+query ($query: String!, $sortKey: ProductSortKeys, $first: Int, $last: Int, $after: String, $before: String) {
   products(
     query: $query
     sortKey: $sortKey
-    first: $count
+    first: $first
+    last: $last
     after: $after
     before: $before
   ) {
@@ -109,17 +110,32 @@ export function useProductSearch(
   { allTags, allProductTypes, allVendors },
   sortKey,
   pause = false,
-  count = 20,
-  after,
-  before
+  count = 20
 ) {
   const [query, setQuery] = useState("")
+  const [cursors, setCursors] = useState({
+    before: null,
+    after: null,
+  })
+  const { term, tags, productTypes, minPrice, maxPrice, vendors } = filters
 
   // Relevance is non-deterministic if there is no query, so we default to "title" instead
   const initialSortKey = filters.term ? "RELEVANCE" : "TITLE"
 
+  const [result] = useQuery({
+    query: ProductsQuery,
+    variables: {
+      query,
+      sortKey: sortKey || initialSortKey,
+      first: !cursors.before ? count : null,
+      last: cursors.before ? count : null,
+      after: cursors.after,
+      before: cursors.before,
+    },
+    pause,
+  })
+
   useEffect(() => {
-    const { term, tags, productTypes, minPrice, maxPrice, vendors } = filters
     const parts = [
       term,
       makeFilter("tag", allTags, tags),
@@ -127,14 +143,17 @@ export function useProductSearch(
       makeFilter("vendor", allVendors, vendors),
       // Exclude empty filter values
     ].filter(Boolean)
-
     if (maxPrice) {
-      parts.push(`variants.price:<=${maxPrice}`)
+      parts.push(`variants.price:<="${maxPrice}"`)
     }
     if (minPrice) {
-      parts.push(`variants.price:>=${minPrice}`)
+      parts.push(`variants.price:>="${minPrice}"`)
     }
 
+    setQuery(parts.join(" "))
+  }, [filters, allTags, allProductTypes, allVendors, maxPrice, minPrice])
+
+  useEffect(() => {
     const qs = queryString.stringify({
       // Don't show if falsy
       q: term || undefined,
@@ -146,28 +165,33 @@ export function useProductSearch(
       p: makeQueryStringValue(allProductTypes, productTypes),
       v: makeQueryStringValue(allVendors, vendors),
       t: makeQueryStringValue(allTags, tags),
+      c: cursors.after || undefined,
     })
 
-    // Sorry IE, you can live without search persistence
-    if (window.location.search !== qs && "URL" in window) {
-      const url = new URL(window.location.href)
-      url.search = qs
-      window.history.replaceState({}, null, url.toString())
-    }
-    setQuery(parts.join(" "))
-  }, [filters, initialSortKey, allTags, allProductTypes, allVendors, sortKey])
+    const url = new URL(window.location.href)
+    url.search = qs
+    url.hash = ""
+    window.history.replaceState({}, null, url.toString())
+  }, [result.data])
 
-  const [result] = useQuery({
-    query: ProductsQuery,
-    variables: {
-      query,
-      sortKey: sortKey || initialSortKey,
-      count,
-      after,
-      before,
-    },
-    pause,
-  })
+  const fetchPreviousPage = () => {
+    const products = result.data.products
+    // when we go back we want all products before the first one of our array
+    const previousCursor = products.edges[0].cursor
+    setCursors({
+      before: previousCursor,
+      after: null,
+    })
+  }
+  const fetchNextPage = () => {
+    const products = result.data.products
+    // when we go forward we want all products after the first one of our array
+    const nextCursor = products.edges[products.edges.length - 1].cursor
+    setCursors({
+      before: null,
+      after: nextCursor,
+    })
+  }
 
   const filterCount =
     (filters.tags.length === allTags.length ? 0 : filters.tags.length) +
@@ -180,114 +204,27 @@ export function useProductSearch(
     (filters.minPrice ? 1 : 0) +
     (filters.maxPrice ? 1 : 0)
 
-  const isDefault = !filterCount && !filters.term && !sortKey && !after
+  const isDefault = !filterCount && !filters.term && !sortKey
 
-  return { ...result, isDefault, filterCount }
-}
+  let products
+  let hasPreviousPage
+  let hasNextPage
 
-const defaultState = {
-  pages: [],
-  cursor: -1,
-  hasNextPage: false,
-  hasFoundLastPage: false,
-}
-
-function reducer(state, action) {
-  console.log({ action, state })
-  const { pages, cursor } = state
-  switch (action.type) {
-    case "next": {
-      if (cursor >= pages.length - 1) {
-        return state
-      }
-      return { ...state, cursor: cursor + 1 }
-    }
-    case "prev": {
-      if (cursor < 0) {
-        return state
-      }
-      return { ...state, cursor: cursor - 1 }
-    }
-    case "reset": {
-      if (pages.length) {
-        return defaultState
-      }
-      return state
-    }
-    case "setData": {
-      const data = action.value
-      if (!data) {
-        return state
-      }
-
-      const { hasNextPage = false, hasPreviousPage = false } = data.pageInfo
-      let { hasFoundLastPage = false, pages } = state
-
-      if (data.pageInfo && !hasNextPage) {
-        hasFoundLastPage = true
-      }
-
-      if (cursor === pages.length - 1) {
-        pages = Array.from(
-          new Set([...pages, data.edges?.[data.edges.length - 1]?.cursor])
-        )
-      }
-      console.log("setting data to", {
-        ...state,
-        pages,
-        hasFoundLastPage,
-        hasNextPage,
-        hasPreviousPage,
-      })
-      return { ...state, pages, hasFoundLastPage, hasNextPage, hasPreviousPage }
-    }
-
-    case "goto": {
-      if (action.value < 0 || action.value > pages.length - 1) {
-        return state
-      }
-      return { ...state, cursor: action.value - 1 }
-    }
-
-    default:
-      throw new Error(action.type)
+  if (!isDefault && result && result.data) {
+    products = result.data.products.edges.map((edge) => edge.node)
+    hasPreviousPage = result.data.products.pageInfo.hasPreviousPage
+    hasNextPage = result.data.products.pageInfo.hasNextPage
   }
-}
-
-export function useSearchPagination() {
-  const [state, dispatch] = useReducer(reducer, defaultState)
-
-  const nextPage = useCallback(() => dispatch({ type: "next" }), [])
-  const previousPage = useCallback(() => dispatch({ type: "prev" }), [])
-  const reset = useCallback(() => dispatch({ type: "reset" }), [])
-  const gotoPage = useCallback(
-    (index) => dispatch({ type: "goto", value: index }),
-    []
-  )
-  const setData = useCallback(
-    (data) => dispatch({ type: "setData", value: data }),
-    []
-  )
-
-  const {
-    pages,
-    cursor,
-    hasFoundLastPage,
-    hasNextPage,
-    hasPreviousPage,
-  } = state
 
   return {
-    nextPage,
-    previousPage,
-    reset,
-    gotoPage,
-    cursor: cursor + 1,
-    hasFoundLastPage,
-    hasNextPage,
+    data: result.data,
+    isFetching: result.fetching,
     hasPreviousPage,
-    setData,
-    pageCount: pages.length + 1,
-    nextToken: cursor === -1 || !pages.length ? undefined : pages[cursor],
+    hasNextPage,
+    products,
+    isDefault,
+    filterCount,
+    fetchNextPage,
+    fetchPreviousPage,
   }
 }
