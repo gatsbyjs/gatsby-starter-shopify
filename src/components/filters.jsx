@@ -61,7 +61,6 @@ export function Filters({
         <div className={priceFields}>
           <CurrencyField
             {...currencyCode}
-            placeholder="Minimum price"
             aria-label="Minimum price"
             value={filters.minPrice}
             onChange={(event) =>
@@ -71,7 +70,6 @@ export function Filters({
           –{" "}
           <CurrencyField
             {...currencyCode}
-            placeholder="Maximum price"
             aria-label="Maximum price"
             value={filters.maxPrice}
             onChange={(event) =>
