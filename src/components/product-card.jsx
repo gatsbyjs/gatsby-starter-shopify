@@ -52,7 +52,7 @@ export function ProductCard({ product, eager }) {
         <GatsbyImage
           alt={firstImage?.altText ?? title}
           image={firstImage?.gatsbyImageData ?? storefrontImageData}
-          loading={eager ? 'eager' : 'lazy'}
+          loading={eager ? "eager" : "lazy"}
         />
       </div>
       <div className={productDetailsStyle}>

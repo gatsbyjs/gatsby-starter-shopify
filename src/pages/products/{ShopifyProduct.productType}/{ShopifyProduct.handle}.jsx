@@ -129,7 +129,7 @@ export default function Product({ data: { product, suggestions } }) {
                       >
                         <GatsbyImage
                           objectFit="contain"
-                          loading={index === 0 ? 'eager' : 'lazy'}
+                          loading={index === 0 ? "eager" : "lazy"}
                           alt={
                             image.altText
                               ? image.altText
@@ -149,7 +149,9 @@ export default function Product({ data: { product, suggestions } }) {
                 )}
               </div>
             )}
-            {!hasImages && <span className={noImagePreview}>No Preview image</span>}
+            {!hasImages && (
+              <span className={noImagePreview}>No Preview image</span>
+            )}
 
             <div>
               <div className={breadcrumb}>

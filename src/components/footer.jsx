@@ -7,7 +7,7 @@ import {
   blurb,
   logos,
   footerNavList,
-  footerNavListItem
+  footerNavListItem,
 } from "./footer.module.css"
 
 export function Footer() {
