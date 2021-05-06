@@ -24,6 +24,20 @@
   font-size: var(--text-xs);
 }
 
+.footerNavList {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-md);
+}
+
+.footerNavListItem {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 100%;
+  white-space: nowrap;
+}
+
 .links ul {
   flex-direction: column;
   font-size: var(--text-md);

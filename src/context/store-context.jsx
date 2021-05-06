@@ -14,11 +14,11 @@ const defaultValues = {
   cart: [],
   isOpen: false,
   loading: false,
-  onOpen: () => {},
-  onClose: () => {},
-  addVariantToCart: () => {},
-  removeLineItem: () => {},
-  updateLineItem: () => {},
+  onOpen: () => { },
+  onClose: () => { },
+  addVariantToCart: () => { },
+  removeLineItem: () => { },
+  updateLineItem: () => { },
   client,
   checkout: {
     lineItems: [],
@@ -72,8 +72,6 @@ export const StoreProvider = ({ children }) => {
 
   const addVariantToCart = (variantId, quantity) => {
     setLoading(true)
-    console.log(variantId)
-    console.log({ quantity })
 
     const checkoutID = checkout.id
 

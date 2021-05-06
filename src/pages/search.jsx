@@ -231,9 +231,10 @@ function SearchPage({
           )}
           <ul className={productListStyle}>
             {!isFetching &&
-              productList.map(({ node }) => (
+              productList.map(({ node }, index) => (
                 <li className={productListItem} key={node.id}>
                   <ProductCard
+                    eager={index === 0}
                     product={{
                       title: node.title,
                       priceRangeV2: node.priceRangeV2,

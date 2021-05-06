@@ -5,7 +5,7 @@
  * @returns
  */
 export const formatPrice = (currency, value) =>
-  Intl.NumberFormat(undefined, {
+  Intl.NumberFormat("en-US", {
     currency,
     minimumFractionDigits: 2,
     style: "currency",
@@ -15,6 +15,7 @@ export const getCurrencySymbol = (currency, locale = undefined) => {
   if (!currency) {
     return
   }
+
   const formatter = Intl.NumberFormat(locale, {
     currency,
     style: "currency",

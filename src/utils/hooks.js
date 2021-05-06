@@ -151,6 +151,7 @@ export function useProductSearch(
     }
 
     setQuery(parts.join(" "))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, allTags, allProductTypes, allVendors, maxPrice, minPrice])
 
   useEffect(() => {
@@ -172,6 +173,7 @@ export function useProductSearch(
     url.search = qs
     url.hash = ""
     window.history.replaceState({}, null, url.toString())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result.data])
 
   const fetchPreviousPage = () => {
