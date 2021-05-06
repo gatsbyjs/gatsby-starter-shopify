@@ -12,7 +12,7 @@ import {
   productPrice,
 } from "./product-card.module.css"
 
-export function ProductCard({ product }) {
+export function ProductCard({ product, eager }) {
   const {
     title,
     priceRangeV2,
@@ -52,6 +52,7 @@ export function ProductCard({ product }) {
         <GatsbyImage
           alt={firstImage?.altText ?? title}
           image={firstImage?.gatsbyImageData ?? storefrontImageData}
+          loading={eager ? "eager" : "lazy"}
         />
       </div>
       <div className={productDetailsStyle}>
@@ -73,6 +74,7 @@ export const query = graphql`
       filePath: "/products/{ShopifyProduct.productType}/{ShopifyProduct.handle}"
     )
     images {
+      id
       altText
       gatsbyImageData(aspectRatio: 1, width: 640)
     }

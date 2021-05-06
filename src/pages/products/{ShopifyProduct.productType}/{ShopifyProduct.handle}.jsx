@@ -100,15 +100,17 @@ export default function Product({ data: { product, suggestions } }) {
 
   const hasVariants = variants.length > 1
   const hasImages = images.length > 0
-  const hasMultipleImages = images.length > 1
+  const hasMultipleImages = true || images.length > 1
 
   return (
     <Layout>
-      <Seo
-        title={title}
-        description={description}
-        image={getSrc(firstImage.gatsbyImageData)}
-      />
+      {firstImage ? (
+        <Seo
+          title={title}
+          description={description}
+          image={getSrc(firstImage.gatsbyImageData)}
+        />
+      ) : undefined}
       <main>
         <div className={container}>
           <div className={productBox}>
@@ -119,25 +121,25 @@ export default function Product({ data: { product, suggestions } }) {
                   aria-label="gallery"
                   aria-describedby="instructions"
                 >
-                  {hasImages ? (
-                    <ul className={productImageList}>
-                      {images.map((image, index) => (
-                        <li key={`product-image-${index}`} className={productImageListItem}>
-                          <GatsbyImage
-                            objectFit="contain"
-                            alt={
-                              image.altText
-                                ? image.altText
-                                : `Product Image of ${title} #${index + 1}`
-                            }
-                            image={image.gatsbyImageData}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <span className={noImagePreview}>No Preview image</span>
-                  )}
+                  <ul className={productImageList}>
+                    {images.map((image, index) => (
+                      <li
+                        key={`product-image-${image.id}`}
+                        className={productImageListItem}
+                      >
+                        <GatsbyImage
+                          objectFit="contain"
+                          loading={index === 0 ? "eager" : "lazy"}
+                          alt={
+                            image.altText
+                              ? image.altText
+                              : `Product Image of ${title} #${index + 1}`
+                          }
+                          image={image.gatsbyImageData}
+                        />
+                      </li>
+                    ))}
+                  </ul>
                 </div>
                 {hasMultipleImages && (
                   <div className={scrollForMore}>
@@ -146,6 +148,9 @@ export default function Product({ data: { product, suggestions } }) {
                   </div>
                 )}
               </div>
+            )}
+            {!hasImages && (
+              <span className={noImagePreview}>No Preview image</span>
             )}
 
             <div>
@@ -161,11 +166,10 @@ export default function Product({ data: { product, suggestions } }) {
               <fieldset className={optionsWrapper}>
                 {hasVariants &&
                   options.map(({ id, name, values }, index) => (
-                    <div className={selectVariant}>
+                    <div className={selectVariant} key={id}>
                       <select
                         aria-label="Variants"
                         onChange={(event) => handleOptionChange(index, event)}
-                        key={id}
                       >
                         <option value="">{`Select ${name}`}</option>
                         {values.map((value) => (
@@ -239,6 +243,7 @@ export const query = graphql`
       storefrontId
       images {
         # altText
+        id
         gatsbyImageData(layout: CONSTRAINED, width: 640, aspectRatio: 1)
       }
       variants {

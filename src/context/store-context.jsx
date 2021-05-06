@@ -72,8 +72,6 @@ export const StoreProvider = ({ children }) => {
 
   const addVariantToCart = (variantId, quantity) => {
     setLoading(true)
-    console.log(variantId)
-    console.log({ quantity })
 
     const checkoutID = checkout.id
 

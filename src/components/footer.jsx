@@ -6,6 +6,8 @@ import {
   links,
   blurb,
   logos,
+  footerNavList,
+  footerNavListItem,
 } from "./footer.module.css"
 
 export function Footer() {
@@ -19,17 +21,17 @@ export function Footer() {
         <code>src/components/footer.jsx</code>
       </div>
       <nav className={links} aria-label="footer">
-        <ul>
-          <li>
+        <ul className={footerNavList}>
+          <li className={footerNavListItem}>
             <a href="https://github.com/gatsbyjs/gatsby-starter-shopify">
               Source Code and Docs
             </a>
           </li>
-          <li>
+          <li className={footerNavListItem}>
             <a href="https://www.gatsbyjs.com/cloud/">About Gatsby Cloud</a>
           </li>
           {process.env.GATSBY_DEMO_STORE === "true" && (
-            <li>
+            <li className={footerNavListItem}>
               <a href="https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-shopify&utm_campaign=shopify-starter">
                 <img
                   src="https://www.gatsbyjs.com/deploynow.png"

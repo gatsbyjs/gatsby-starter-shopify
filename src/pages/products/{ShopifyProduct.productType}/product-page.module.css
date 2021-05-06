@@ -26,7 +26,7 @@
 
 .productImageList {
   display: flex;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .productImageListItem {

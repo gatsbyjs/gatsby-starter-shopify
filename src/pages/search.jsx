@@ -84,7 +84,7 @@ function SearchPage({
   const [filters, setFilters] = React.useState(queryParams)
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
   // We clear the hash when searching, we want to make sure the next page will be fetched due the #more hash.
-  const shouldLoadNextPage = React.useRef(false);
+  const shouldLoadNextPage = React.useRef(false)
 
   // This modal is only used on mobile
   const [showModal, setShowModal] = React.useState(false)
@@ -139,15 +139,15 @@ function SearchPage({
   React.useEffect(() => {
     if (location.hash === "#more") {
       // save state so we can fetch it when the first page got fetched to retrieve the cursor
-      shouldLoadNextPage.current = true;
+      shouldLoadNextPage.current = true
     }
-    
+
     if (shouldLoadNextPage.current) {
       if (hasNextPage) {
         fetchNextPage()
       }
 
-      shouldLoadNextPage.current = false;
+      shouldLoadNextPage.current = false
     }
   }, [location.hash])
 
@@ -231,9 +231,10 @@ function SearchPage({
           )}
           <ul className={productListStyle}>
             {!isFetching &&
-              productList.map(({ node }) => (
+              productList.map(({ node }, index) => (
                 <li className={productListItem} key={node.id}>
                   <ProductCard
+                    eager={index === 0}
                     product={{
                       title: node.title,
                       priceRangeV2: node.priceRangeV2,
@@ -265,9 +266,12 @@ function SearchPage({
 
 function SearchBar({ defaultTerm, setFilters }) {
   const [term, setTerm] = React.useState(defaultTerm)
-  const debouncedSetFilters = React.useCallback(debounce((value) => {
-    setFilters((filters) => ({ ...filters, term: value }))
-  }, 200), [setFilters]);
+  const debouncedSetFilters = React.useCallback(
+    debounce((value) => {
+      setFilters((filters) => ({ ...filters, term: value }))
+    }, 200),
+    [setFilters]
+  )
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className={searchForm}>
@@ -277,7 +281,7 @@ function SearchBar({ defaultTerm, setFilters }) {
         value={term}
         onChange={(e) => {
           setTerm(e.target.value)
-          debouncedSetFilters(e.target.value);
+          debouncedSetFilters(e.target.value)
         }}
         placeholder="Search..."
       />
@@ -286,8 +290,8 @@ function SearchBar({ defaultTerm, setFilters }) {
           className={clearSearch}
           type="reset"
           onClick={() => {
-            setTerm('');
-            setFilters(filters => ({ ...filters, term: "" }))
+            setTerm("")
+            setFilters((filters) => ({ ...filters, term: "" }))
           }}
           aria-label="Clear search query"
         >
