@@ -91,7 +91,7 @@ export function LineItem({ item }) {
         )}
       </td>
       <td>
-        <h4 className={title}>{item.title}</h4>
+        <h2 className={title}>{item.title}</h2>
         <div className={variant}>
           {item.variant.title === "Default Title" ? "" : item.variant.title}
         </div>
@@ -101,7 +101,6 @@ export function LineItem({ item }) {
           </button>
         </div>
       </td>
-
       <td className={priceColumn}>{price}</td>
       <td>
         <NumericInput
