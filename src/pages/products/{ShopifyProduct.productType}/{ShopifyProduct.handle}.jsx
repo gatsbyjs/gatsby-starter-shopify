@@ -141,7 +141,7 @@ export default function Product({ data: { product, suggestions } }) {
                 </ul>
               </div>
               {hasMultipleImages && (
-                <div className={scrollForMore}>
+                <div className={scrollForMore} id="instructions">
                   <span aria-hidden="true">←</span> scroll for more{" "}
                   <span aria-hidden="true">→</span>
                 </div>
