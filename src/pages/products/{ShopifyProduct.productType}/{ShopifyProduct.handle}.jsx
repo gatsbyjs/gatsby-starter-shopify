@@ -111,111 +111,105 @@ export default function Product({ data: { product, suggestions } }) {
           image={getSrc(firstImage.gatsbyImageData)}
         />
       ) : undefined}
-      <main>
-        <div className={container}>
-          <div className={productBox}>
-            {hasImages && (
-              <div className={productImageWrapper}>
-                <div
-                  role="group"
-                  aria-label="gallery"
-                  aria-describedby="instructions"
-                >
-                  <ul className={productImageList}>
-                    {images.map((image, index) => (
-                      <li
-                        key={`product-image-${image.id}`}
-                        className={productImageListItem}
-                      >
-                        <GatsbyImage
-                          objectFit="contain"
-                          loading={index === 0 ? "eager" : "lazy"}
-                          alt={
-                            image.altText
-                              ? image.altText
-                              : `Product Image of ${title} #${index + 1}`
-                          }
-                          image={image.gatsbyImageData}
-                        />
-                      </li>
-                    ))}
-                  </ul>
+      <div className={container}>
+        <div className={productBox}>
+          {hasImages && (
+            <div className={productImageWrapper}>
+              <div
+                role="group"
+                aria-label="gallery"
+                aria-describedby="instructions"
+              >
+                <ul className={productImageList}>
+                  {images.map((image, index) => (
+                    <li
+                      key={`product-image-${image.id}`}
+                      className={productImageListItem}
+                    >
+                      <GatsbyImage
+                        objectFit="contain"
+                        loading={index === 0 ? "eager" : "lazy"}
+                        alt={
+                          image.altText
+                            ? image.altText
+                            : `Product Image of ${title} #${index + 1}`
+                        }
+                        image={image.gatsbyImageData}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {hasMultipleImages && (
+                <div className={scrollForMore} id="instructions">
+                  <span aria-hidden="true">←</span> scroll for more{" "}
+                  <span aria-hidden="true">→</span>
                 </div>
-                {hasMultipleImages && (
-                  <div className={scrollForMore}>
-                    <span aria-hidden="true">←</span> scroll for more{" "}
-                    <span aria-hidden="true">→</span>
+              )}
+            </div>
+          )}
+          {!hasImages && (
+            <span className={noImagePreview}>No Preview image</span>
+          )}
+          <div>
+            <div className={breadcrumb}>
+              <Link to={product.productTypeSlug}>{product.productType}</Link>
+              <ChevronIcon size={12} />
+            </div>
+            <h1 className={header}>{title}</h1>
+            <p className={productDescription}>{description}</p>
+            <h2 className={priceValue}>
+              <span>{price}</span>
+            </h2>
+            <fieldset className={optionsWrapper}>
+              {hasVariants &&
+                options.map(({ id, name, values }, index) => (
+                  <div className={selectVariant} key={id}>
+                    <select
+                      aria-label="Variants"
+                      onChange={(event) => handleOptionChange(index, event)}
+                    >
+                      <option value="">{`Select ${name}`}</option>
+                      {values.map((value) => (
+                        <option value={value} key={`${name}-${value}`}>
+                          {value}
+                        </option>
+                      ))}
+                    </select>
                   </div>
-                )}
-              </div>
-            )}
-            {!hasImages && (
-              <span className={noImagePreview}>No Preview image</span>
-            )}
-
-            <div>
-              <div className={breadcrumb}>
+                ))}
+            </fieldset>
+            <div className={addToCartStyle}>
+              <NumericInput
+                aria-label="Quantity"
+                onIncrement={() => setQuantity((q) => Math.min(q + 1, 20))}
+                onDecrement={() => setQuantity((q) => Math.max(1, q - 1))}
+                onChange={(event) => setQuantity(event.currentTarget.value)}
+                value={quantity}
+                min="1"
+                max="20"
+              />
+              <AddToCart
+                variantId={productVariant.storefrontId}
+                quantity={quantity}
+                available={available}
+              />
+            </div>
+            <div className={metaSection}>
+              <span className={labelFont}>Type</span>
+              <span className={tagList}>
                 <Link to={product.productTypeSlug}>{product.productType}</Link>
-                <ChevronIcon size={12} />
-              </div>
-              <h1 className={header}>{title}</h1>
-              <p className={productDescription}>{description}</p>
-              <h2 className={priceValue}>
-                <span>{price}</span>
-              </h2>
-              <fieldset className={optionsWrapper}>
-                {hasVariants &&
-                  options.map(({ id, name, values }, index) => (
-                    <div className={selectVariant} key={id}>
-                      <select
-                        aria-label="Variants"
-                        onChange={(event) => handleOptionChange(index, event)}
-                      >
-                        <option value="">{`Select ${name}`}</option>
-                        {values.map((value) => (
-                          <option value={value} key={`${name}-${value}`}>
-                            {value}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  ))}
-              </fieldset>
-              <div className={addToCartStyle}>
-                <NumericInput
-                  aria-label="Quantity"
-                  onIncrement={() => setQuantity((q) => Math.min(q + 1, 20))}
-                  onDecrement={() => setQuantity((q) => Math.max(1, q - 1))}
-                  onChange={(event) => setQuantity(event.currentTarget.value)}
-                  value={quantity}
-                  min="1"
-                  max="20"
-                />
-                <AddToCart
-                  variantId={productVariant.storefrontId}
-                  quantity={quantity}
-                  available={available}
-                />
-              </div>
-              <div className={metaSection}>
-                <span className={labelFont}>Type</span>
-                <span className={tagList}>
-                  <Link to={product.productTypeSlug}>
-                    {product.productType}
-                  </Link>
-                </span>
-
-                <span className={labelFont}>Tags</span>
-                <span className={tagList}>
-                  {product.tags.map((tag) => (
-                    <Link to={`/search?t=${tag}`}>{tag}</Link>
-                  ))}
-                </span>
-              </div>
+              </span>
+              <span className={labelFont}>Tags</span>
+              <span className={tagList}>
+                {product.tags.map((tag) => (
+                  <Link to={`/search?t=${tag}`}>{tag}</Link>
+                ))}
+              </span>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </Layout>
   )
 }
