@@ -83,6 +83,13 @@ export function Seo({
         sizes="180x180"
         href="/apple-touch-icon.png"
       />
+      {/* This line can be removed */}
+      {!!process.env.GATSBY_DEMO_STORE && (
+        <meta
+          name="robots"
+          content="noindex, nofollow"
+        />
+      )}
       {children}
     </Helmet>
   )
