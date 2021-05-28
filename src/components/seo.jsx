@@ -83,7 +83,7 @@ export function Seo({
         sizes="180x180"
         href="/apple-touch-icon.png"
       />
-      {/* This line can be removed */}
+      {/* The following meta tag is for demonstration only and can be removed */}
       {!!process.env.GATSBY_DEMO_STORE && (
         <meta
           name="robots"
