@@ -27,6 +27,8 @@ export function ProductCard({ product, eager }) {
     priceRangeV2.minVariantPrice.amount
   )
 
+  const defaultImageHeight = 200
+  const defaultImageWidth = 200
   let storefrontImageData = {}
   if (storefrontImages) {
     const storefrontImage = storefrontImages.edges[0].node
@@ -34,13 +36,15 @@ export function ProductCard({ product, eager }) {
       storefrontImageData = getShopifyImage({
         image: storefrontImage,
         layout: "fixed",
-        width: 200,
-        height: 200,
+        width: defaultImageWidth,
+        height: defaultImageHeight,
       })
     } catch (e) {
       console.error(e)
     }
   }
+
+  const hasImage = firstImage || Object.getOwnPropertyNames(storefrontImageData || {}).length
 
   return (
     <Link
@@ -48,13 +52,19 @@ export function ProductCard({ product, eager }) {
       to={slug}
       aria-label={`View ${title} product page`}
     >
-      <div className={productImageStyle} data-name="product-image-box">
-        <GatsbyImage
-          alt={firstImage?.altText ?? title}
-          image={firstImage?.gatsbyImageData ?? storefrontImageData}
-          loading={eager ? "eager" : "lazy"}
-        />
-      </div>
+      {hasImage
+        ? (
+          <div className={productImageStyle} data-name="product-image-box">
+            <GatsbyImage
+              alt={firstImage?.altText ?? title}
+              image={firstImage?.gatsbyImageData ?? storefrontImageData}
+              loading={eager ? "eager" : "lazy"}
+            />
+          </div>
+        ) : (
+          <div style={{ height: defaultImageHeight, width: defaultImageWidth }} />
+        )
+      }
       <div className={productDetailsStyle}>
         <div className={productVendorStyle}>{vendor}</div>
         <h2 as="h2" className={productHeadingStyle}>

@@ -41,7 +41,7 @@ export default function IndexPage({ data }) {
           </a>
         </p>
       </div>
-      <ProductListing products={data.shopifyCollection.products} />
+      <ProductListing products={data?.shopifyCollection?.products} />
     </Layout>
   )
 }
