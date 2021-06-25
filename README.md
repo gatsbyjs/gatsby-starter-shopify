@@ -28,7 +28,7 @@ Check out the [demo site](https://shopify-demo.gatsbyjs.com) showcasing a proof-
 
 2.  **Link to your store**
 
-    Follow these instructions here to [link your Shopify store](https://github.com/gatsbyjs/gatsby-source-shopify#retrieving-api-information-from-shopify). If you want to try with a development store, see [the sample data and instructions here](example/).
+    Follow these instructions here to [link your Shopify store](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-source-shopify#readme). If you want to try with a development store, see [the sample data and instructions here](example/).
 
 3.  **Start developing.**
 
