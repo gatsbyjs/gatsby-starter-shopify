@@ -12,6 +12,12 @@ This folder includes sample products that you can use with your development stor
 
    In your development store, navigate to "Products", and then click "Import" in the top right of the page. Choose the sample `products.csv` file, then click "Upload and continue". For a files with small number of products, such as `products.csv` in this folder, the import process should just take a few moments. However if you are using a larger dataset, such as the 30000 SKU file, then it may take several hours to import. You can safely close the window or navigate away, and you will be notified via email when the import is complete.
 
+3. **Activate products' status**
+
+   Once you have your products imported and your private app (as described [https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-source-shopify#readme](here)) up running and  communicating with your Shopify store, don't forget to activate your products' status within your app context. More info how to achieve that available [https://help.shopify.com/en/manual/products/details](here) in the section "Product availability"
+
+   *CAVEAT* Without the above step completed, you won't be able to add the products to the cart and perform the checkout!
+
 ## More data
 
 If you need to test your site at scale, there is [another dataset available with 30,000 SKUs](https://github.com/gatsby-inc/shopify-csv-generator/tree/main/examples). Bear in mind that it takes several hours to import into a development site, and a cold build of the Gatbsy site will take over 10 minutes. Generally we would recommend doing your development with a site that has around 100-500 SKUs.
