@@ -151,7 +151,7 @@ export function useProductSearch(
     }
     setQuery(parts.join(" "))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, allTags, allProductTypes, allVendors, maxPrice, minPrice)
+  }, [filters, allTags, allProductTypes, allVendors, maxPrice, minPrice])
 
   useEffect(() => {
     const qs = queryString.stringify({
