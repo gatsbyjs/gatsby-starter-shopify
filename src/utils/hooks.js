@@ -149,13 +149,9 @@ export function useProductSearch(
     if (minPrice) {
       parts.push(`variants.price:>="${minPrice}"`)
     }
-    setCursors({
-      before: null,
-      after: null,
-    })
     setQuery(parts.join(" "))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, allTags, allProductTypes, allVendors, maxPrice, minPrice, sortKey])
+  }, [filters, allTags, allProductTypes, allVendors, maxPrice, minPrice)
 
   useEffect(() => {
     const qs = queryString.stringify({
