@@ -13,6 +13,7 @@ module.exports = {
   },
   flags: {
     FAST_DEV: true,
+    PARALLEL_QUERY_RUNNING: true,
   },
   plugins: [
     {
