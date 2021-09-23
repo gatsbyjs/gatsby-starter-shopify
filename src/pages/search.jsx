@@ -112,7 +112,9 @@ function SearchPage({
   // If we're using the default filters, use the products from the Gatsby data layer.
   // Otherwise, use the data from search.
   const isDefault = !data
-  const productList = (isDefault ? products.edges : data?.products?.edges) ?? []
+  const productList = React.useMemo(() => {
+    return (isDefault ? products.edges : data?.products?.edges) ?? []
+  }, [data, products, isDefault])
 
   // Scroll up when navigating
   React.useEffect(() => {
@@ -149,7 +151,7 @@ function SearchPage({
 
       shouldLoadNextPage.current = false
     }
-  }, [location.hash])
+  }, [location.hash, hasNextPage, fetchNextPage])
 
   const currencyCode = getCurrencySymbol(
     products?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
