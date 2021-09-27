@@ -84,7 +84,8 @@ function arrayify(value) {
  * Extracts default search values from the query string
  * @param {string} query
  */
-export function getValuesFromQueryString(query) {
+export function getValuesFromQuery(query) {
+  const isClient = typeof query === 'string'
   const {
     q: term,
     s: sortKey,
@@ -93,7 +94,9 @@ export function getValuesFromQueryString(query) {
     p,
     t,
     v,
-  } = queryString.parse(query)
+  } = isClient
+    ? queryString.parse(query)
+    : query
   return {
     term,
     sortKey,

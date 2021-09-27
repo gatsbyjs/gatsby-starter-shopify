@@ -9,7 +9,7 @@ import SortIcon from "../icons/sort"
 import FilterIcon from "../icons/filter"
 import SearchIcon from "../icons/search"
 import { ProductCard } from "../components/product-card"
-import { getValuesFromQueryString, useProductSearch } from "../utils/hooks"
+import { getValuesFromQuery, useProductSearch } from "../utils/hooks"
 import { getCurrencySymbol } from "../utils/format-price"
 import { Spinner } from "../components/progress"
 import { Filters } from "../components/filters"
@@ -37,6 +37,14 @@ import {
   activeFilters,
   filterWrap,
 } from "./search-page.module.css"
+
+export async function getServerData ({ query }) {
+  return {
+    props: {
+      query,
+    }
+  }
+}
 
 export const query = graphql`
   query {
@@ -72,15 +80,18 @@ export const query = graphql`
   }
 `
 
-function SearchPage({
-  data: {
-    meta: { productTypes, vendors, tags },
-    products,
-  },
-  location,
-}) {
+function SearchPage(props) {
+  const {
+    data: {
+      meta: { productTypes, vendors, tags },
+      products,
+    },
+    location,
+  } = props
+
   // These default values come from the page query string
-  const queryParams = getValuesFromQueryString(location.search)
+  const queryParams = getValuesFromQuery(location.search || props.serverData.query)
+
   const [filters, setFilters] = React.useState(queryParams)
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
   // We clear the hash when searching, we want to make sure the next page will be fetched due the #more hash.
@@ -268,12 +279,13 @@ function SearchPage({
 
 function SearchBar({ defaultTerm, setFilters }) {
   const [term, setTerm] = React.useState(defaultTerm)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSetFilters = React.useCallback(
     debounce((value) => {
       setFilters((filters) => ({ ...filters, term: value }))
     }, 200),
-    [setFilters]
-  )
+    [setFilters])
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className={searchForm}>
