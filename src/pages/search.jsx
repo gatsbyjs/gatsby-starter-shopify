@@ -40,8 +40,7 @@ import {
 
 export async function getServerData ({ query, ...rest }) {
   const { getSearchResults } = require('../utils/search')
-
-  const products = await getSearchResults({ query })
+  const products = await getSearchResults({ query, count: 24 })
 
   return {
     props: {
@@ -58,30 +57,6 @@ export const query = graphql`
       tags: distinct(field: tags)
       vendors: distinct(field: vendor)
     }
-    products: allShopifyProduct(limit: 24, sort: { fields: title }) {
-      edges {
-        node {
-          title
-          vendor
-          productType
-          handle
-          priceRangeV2 {
-            minVariantPrice {
-              currencyCode
-              amount
-            }
-            maxVariantPrice {
-              currencyCode
-              amount
-            }
-          }
-          id
-          images {
-            gatsbyImageData(aspectRatio: 1, width: 200, layout: FIXED)
-          }
-        }
-      }
-    }
   }
 `
 
@@ -89,15 +64,18 @@ function SearchPage(props) {
   const {
     serverData,
     data: {
-      meta: { productTypes, vendors, tags },
-      products,
+      meta: {
+        productTypes,
+        vendors,
+        tags
+      },
     },
     location,
   } = props
 
   // These default values come from the page query string
   // TODO: does props.location pass through SSR query?
-  const queryParams = getValuesFromQuery(location.search || props.serverData.query)
+  const queryParams = getValuesFromQuery(location.search || serverData.query)
 
   const [filters, setFilters] = React.useState(queryParams)
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
@@ -109,12 +87,10 @@ function SearchPage(props) {
 
   // TODO: consider alternatives to determine SSR
   const [initialRender, setInitialRender] = React.useState(true)
-  React.useEffect(() => {
-    setInitialRender(false)
-  }, [])
 
   const {
     data,
+    products,
     isFetching,
     filterCount,
     hasNextPage,
@@ -129,20 +105,19 @@ function SearchPage(props) {
       allTags: tags,
     },
     sortKey,
-    false,
-    24 // Products per page
+    initialRender, // pause query on initialRender
+    24, // Products per page
+    serverData.products,
   )
 
-  // If we're using the default filters, use the products from the Gatsby data layer.
-  // Otherwise, use the data from search.
-  const isDefault = !data && !serverData.products.length
   const productList = React.useMemo(() => {
-    // return SSR results on first render
-    if (serverData.products.length) {
-      return serverData.products
-    }
-    return (isDefault ? products.edges : data?.products?.edges) ?? []
-  }, [data, serverData, products, isDefault])
+    if (initialRender) return serverData.products
+    return data?.products?.edges || []
+  }, [ initialRender, data ])
+
+  React.useEffect(() => {
+    setInitialRender(false)
+  }, [])
 
   // Scroll up when navigating
   React.useEffect(() => {
@@ -154,7 +129,7 @@ function SearchPage(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
       })
     }
-  }, [productList, showModal])
+  }, [products, showModal])
 
   // Stop page from scrolling when modal is visible
   React.useEffect(() => {
@@ -182,7 +157,7 @@ function SearchPage(props) {
   }, [location.hash, hasNextPage, fetchNextPage])
 
   const currencyCode = getCurrencySymbol(
-    products?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
+    serverData.products?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
   )
 
   return (
@@ -261,7 +236,7 @@ function SearchPage(props) {
           )}
           <ul className={productListStyle}>
             {(initialRender || !isFetching) &&
-              productList.map(({ node }, index) => (
+              products.map(({ node }, index) => (
                 <li className={productListItem} key={node.id}>
                   <ProductCard
                     eager={index === 0}
@@ -272,8 +247,8 @@ function SearchPage(props) {
                         node.handle
                       }`,
                       // The search API and Gatsby data layer have slightly different images available.
-                      images: isDefault ? node.images : [],
-                      storefrontImages: !isDefault && node.images,
+                      images: [],
+                      storefrontImages: node.images,
                       vendor: node.vendor,
                     }}
                   />

@@ -63,12 +63,7 @@ function makeFilter(field, selectedItems) {
 
 export async function getSearchResults({
   query,
-  count = 20,
-  // TODO: this comes from Gatsby gql,
-  // but filters might work based on the existence of query params
-  // allTags,
-  // allProductTypes,
-  // allVendors,
+  count = 24,
 }) {
   const { term, tags, productTypes, minPrice, maxPrice, vendors } = getValuesFromQuery(query)
 
@@ -104,3 +99,4 @@ export async function getSearchResults({
 
   return products
 }
+

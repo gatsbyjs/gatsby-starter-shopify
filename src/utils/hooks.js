@@ -48,7 +48,6 @@ query ($query: String!, $sortKey: ProductSortKeys, $first: Int, $last: Int, $aft
     }
   }
 }
-
 `
 
 function makeFilter(field, allItems, selectedItems) {
@@ -81,8 +80,8 @@ function arrayify(value) {
 }
 
 /**
- * Extracts default search values from the query string
- * @param {string} query
+ * Extracts default search values from the query string or object
+ * @param {string|object} query
  */
 export function getValuesFromQuery(query) {
   const isClient = typeof query === 'string'
@@ -113,7 +112,8 @@ export function useProductSearch(
   { allTags, allProductTypes, allVendors },
   sortKey,
   pause = false,
-  count = 20
+  count = 20,
+  initialData = [],
 ) {
   const [query, setQuery] = useState("")
   const [cursors, setCursors] = useState({
@@ -209,14 +209,12 @@ export function useProductSearch(
     (filters.minPrice ? 1 : 0) +
     (filters.maxPrice ? 1 : 0)
 
-  const isDefault = !filterCount && !filters.term && !sortKey
-
-  let products
+  let products = initialData
   let hasPreviousPage
   let hasNextPage
 
-  if (!isDefault && result && result.data) {
-    products = result.data.products.edges.map((edge) => edge.node)
+  if (result && result.data) {
+    products = result.data.products.edges
     hasPreviousPage = result.data.products.pageInfo.hasPreviousPage
     hasNextPage = result.data.products.pageInfo.hasNextPage
   }
@@ -227,7 +225,6 @@ export function useProductSearch(
     hasPreviousPage,
     hasNextPage,
     products,
-    isDefault,
     filterCount,
     fetchNextPage,
     fetchPreviousPage,
