@@ -38,10 +38,15 @@ import {
   filterWrap,
 } from "./search-page.module.css"
 
-export async function getServerData ({ query }) {
+export async function getServerData ({ query, ...rest }) {
+  const { getSearchResults } = require('../utils/search')
+
+  const products = await getSearchResults({ query })
+
   return {
     props: {
       query,
+      products,
     }
   }
 }
@@ -82,6 +87,7 @@ export const query = graphql`
 
 function SearchPage(props) {
   const {
+    serverData,
     data: {
       meta: { productTypes, vendors, tags },
       products,
@@ -90,6 +96,7 @@ function SearchPage(props) {
   } = props
 
   // These default values come from the page query string
+  // TODO: does props.location pass through SSR query?
   const queryParams = getValuesFromQuery(location.search || props.serverData.query)
 
   const [filters, setFilters] = React.useState(queryParams)
@@ -99,6 +106,12 @@ function SearchPage(props) {
 
   // This modal is only used on mobile
   const [showModal, setShowModal] = React.useState(false)
+
+  // TODO: consider alternatives to determine SSR
+  const [initialRender, setInitialRender] = React.useState(true)
+  React.useEffect(() => {
+    setInitialRender(false)
+  }, [])
 
   const {
     data,
@@ -122,10 +135,14 @@ function SearchPage(props) {
 
   // If we're using the default filters, use the products from the Gatsby data layer.
   // Otherwise, use the data from search.
-  const isDefault = !data
+  const isDefault = !data && !serverData.products.length
   const productList = React.useMemo(() => {
+    // return SSR results on first render
+    if (serverData.products.length) {
+      return serverData.products
+    }
     return (isDefault ? products.edges : data?.products?.edges) ?? []
-  }, [data, products, isDefault])
+  }, [data, serverData, products, isDefault])
 
   // Scroll up when navigating
   React.useEffect(() => {
@@ -227,7 +244,7 @@ function SearchPage(props) {
           aria-busy={isFetching}
           aria-hidden={modalOpen}
         >
-          {isFetching ? (
+          {!initialRender && isFetching ? (
             <p className={progressStyle}>
               <Spinner aria-valuetext="Searching" /> Searching
               {filters.term ? ` for "${filters.term}"…` : `…`}
@@ -243,7 +260,7 @@ function SearchPage(props) {
             </p>
           )}
           <ul className={productListStyle}>
-            {!isFetching &&
+            {(initialRender || !isFetching) &&
               productList.map(({ node }, index) => (
                 <li className={productListItem} key={node.id}>
                   <ProductCard
