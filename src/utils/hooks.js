@@ -1,35 +1,13 @@
 import { useEffect, useState, useMemo } from "react"
 import queryString from "query-string"
 import { useQuery } from "urql"
-import {
-  ProductsQuery,
-  makeFilter,
-} from './search'
+import { ProductsQuery, createQuery } from './search'
 
 function makeQueryStringValue(allItems, selectedItems) {
   if (allItems.length === selectedItems.length) {
     return []
   }
   return selectedItems
-}
-
-function createQuery (filters) {
-  const { term, tags, productTypes, minPrice, maxPrice, vendors } = filters
-  const parts = [
-    term,
-    makeFilter("tag", tags),
-    makeFilter("product_type", productTypes),
-    makeFilter("vendor", vendors),
-    // Exclude empty filter values
-  ].filter(Boolean)
-  if (maxPrice) {
-    parts.push(`variants.price:<="${maxPrice}"`)
-  }
-  if (minPrice) {
-    parts.push(`variants.price:>="${minPrice}"`)
-  }
-
-  return parts.join(" ")
 }
 
 export function useProductSearch(
@@ -89,7 +67,7 @@ export function useProductSearch(
     window.history.replaceState({}, null, url.toString())
     setQuery(createQuery(filters))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters])
+  }, [filters, cursors, sortKey])
 
   const fetchPreviousPage = () => {
     // when we go back we want all products before the first one of our array
@@ -101,7 +79,8 @@ export function useProductSearch(
   }
   const fetchNextPage = () => {
     // when we go forward we want all products after the first one of our array
-    const nextCursor = result.data.products.edges[products.edges.length - 1].cursor
+    const prods = result.data.products
+    const nextCursor = prods.edges[prods.edges.length - 1].cursor
     setCursors({
       before: null,
       after: nextCursor,

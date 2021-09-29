@@ -37,6 +37,7 @@ import {
   modalOpen,
   activeFilters,
   filterWrap,
+  emptyState,
 } from "./search-page.module.css"
 
 export async function getServerData ({ query, ...rest }) {
@@ -151,8 +152,6 @@ function SearchPage(props) {
     serverData.products?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
   )
 
-  console.log('SearchPage render')
-
   return (
     <Layout>
       <h1 className={visuallyHidden}>Search Results</h1>
@@ -248,6 +247,11 @@ function SearchPage(props) {
                 </li>
               ))}
           </ul>
+          {(!isFetching && products.length === 0) && (
+            <div className={emptyState}>
+              No results found
+            </div>
+          )}
           {hasPreviousPage || hasNextPage ? (
             <Pagination
               previousPage={fetchPreviousPage}
@@ -265,7 +269,6 @@ function SearchPage(props) {
 function SearchBar({ defaultTerm, setFilters }) {
   const [term, setTerm] = React.useState(defaultTerm)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSetFilters = React.useCallback(
     debounce((value) => {
       setFilters((filters) => ({ ...filters, term: value }))

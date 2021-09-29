@@ -58,14 +58,33 @@ function arrayify(value) {
   return value
 }
 
-export function makeFilter(field, selectedItems) {
-  if (!selectedItems || !selectedItems.length) return
+function makeFilter(field, selectedItems) {
+  if (!selectedItems?.length) return
   if (selectedItems && !Array.isArray(selectedItems)) {
     selectedItems = [selectedItems]
   }
   return `(${selectedItems
     .map((item) => `${field}:${JSON.stringify(item)}`)
     .join(" OR ")})`
+}
+
+export function createQuery (filters) {
+  const { term, tags, productTypes, minPrice, maxPrice, vendors } = filters
+  const parts = [
+    term,
+    makeFilter("tag", tags),
+    makeFilter("product_type", productTypes),
+    makeFilter("vendor", vendors),
+    // Exclude empty filter values
+  ].filter(Boolean)
+  if (maxPrice) {
+    parts.push(`variants.price:<="${maxPrice}"`)
+  }
+  if (minPrice) {
+    parts.push(`variants.price:>="${minPrice}"`)
+  }
+
+  return parts.join(" ")
 }
 
 /**
@@ -100,33 +119,19 @@ export async function getSearchResults({
   query,
   count = 24,
 }) {
-  const { term, tags, productTypes, minPrice, maxPrice, vendors } = getValuesFromQuery(query)
+  const filters = getValuesFromQuery(query)
 
   // Relevance is non-deterministic if there is no query, so we default to "title" instead
-  const initialSortKey = term ? "RELEVANCE" : "TITLE"
+  const initialSortKey = filters.term ? "RELEVANCE" : "TITLE"
 
-  const parts = [
-    term,
-    makeFilter("tag", tags),
-    makeFilter("product_type", productTypes),
-    makeFilter("vendor", vendors),
-    // Exclude empty filter values
-  ].filter(Boolean)
-  if (maxPrice) {
-    parts.push(`variants.price:<="${maxPrice}"`)
-  }
-  if (minPrice) {
-    parts.push(`variants.price:>="${minPrice}"`)
-  }
-  const urqlQuery = parts.join(" ")
+  const urqlQuery = createQuery(filters)
 
   const results = await urqlClient
     .query(ProductsQuery, {
       query: urqlQuery,
-      // TODO: does not support pagination yet
+      // this does not support paginated results
       first: count,
-      // sortKey: sortKey || initialSortKey,
-      sortKey: initialSortKey,
+      sortKey: filters.sortKey || initialSortKey,
     })
     .toPromise()
 

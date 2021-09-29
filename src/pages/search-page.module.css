@@ -390,3 +390,12 @@
 .resultsStyle span {
   font-weight: var(--bold);
 }
+
+.emptyState {
+  width: 100%;
+  padding: var(--space-xl);
+  align-items: center;
+  text-align: center;
+  color: var(--grey-50);
+  font-weight: var(--bold);
+}
