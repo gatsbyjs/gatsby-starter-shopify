@@ -31,7 +31,7 @@ export function useProductSearch(
   const initialSortKey = filters.term ? "RELEVANCE" : "TITLE"
 
   // only fetch after the filters have changed
-  const shouldPause = useMemo(() => (query === createQuery(initialFilters)) || pause, [query, pause])
+  const shouldPause = useMemo(() => (query === createQuery(initialFilters)) || pause, [query, pause, initialFilters])
 
   const [result] = useQuery({
     query: ProductsQuery,
@@ -107,7 +107,8 @@ export function useProductSearch(
     }
     if (result.data && initialRender) setInitialRender(false)
     return result.data?.products?.edges || []
-  }, [query, result.data])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, result.data, initialData, initialFilters])
 
   if (result && result.data) {
     hasPreviousPage = result.data.products.pageInfo.hasPreviousPage

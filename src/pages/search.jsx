@@ -80,6 +80,7 @@ function SearchPage(props) {
   const queryParams = getValuesFromQuery(location.search || serverData.query)
 
   const [filters, setFilters] = React.useState(queryParams)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const initialFilters = React.useMemo(() => queryParams, [])
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
   // We clear the hash when searching, we want to make sure the next page will be fetched due the #more hash.
@@ -89,7 +90,6 @@ function SearchPage(props) {
   const [showModal, setShowModal] = React.useState(false)
 
   const {
-    data,
     products,
     isFetching,
     filterCount,
@@ -269,6 +269,7 @@ function SearchPage(props) {
 function SearchBar({ defaultTerm, setFilters }) {
   const [term, setTerm] = React.useState(defaultTerm)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSetFilters = React.useCallback(
     debounce((value) => {
       setFilters((filters) => ({ ...filters, term: value }))
