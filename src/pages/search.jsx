@@ -9,7 +9,8 @@ import SortIcon from "../icons/sort"
 import FilterIcon from "../icons/filter"
 import SearchIcon from "../icons/search"
 import { ProductCard } from "../components/product-card"
-import { getValuesFromQuery, useProductSearch } from "../utils/hooks"
+import { useProductSearch } from "../utils/hooks"
+import { getValuesFromQuery } from "../utils/search"
 import { getCurrencySymbol } from "../utils/format-price"
 import { Spinner } from "../components/progress"
 import { Filters } from "../components/filters"
@@ -74,19 +75,17 @@ function SearchPage(props) {
   } = props
 
   // These default values come from the page query string
-  // TODO: does props.location pass through SSR query?
+  // TODO: will props.location eventually pass through SSR args?
   const queryParams = getValuesFromQuery(location.search || serverData.query)
 
   const [filters, setFilters] = React.useState(queryParams)
+  const initialFilters = React.useMemo(() => queryParams, [])
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
   // We clear the hash when searching, we want to make sure the next page will be fetched due the #more hash.
   const shouldLoadNextPage = React.useRef(false)
 
   // This modal is only used on mobile
   const [showModal, setShowModal] = React.useState(false)
-
-  // TODO: consider alternatives to determine SSR
-  const [initialRender, setInitialRender] = React.useState(true)
 
   const {
     data,
@@ -105,19 +104,11 @@ function SearchPage(props) {
       allTags: tags,
     },
     sortKey,
-    initialRender, // pause query on initialRender
+    false,
     24, // Products per page
     serverData.products,
+    initialFilters,
   )
-
-  const productList = React.useMemo(() => {
-    if (initialRender) return serverData.products
-    return data?.products?.edges || []
-  }, [ initialRender, data ])
-
-  React.useEffect(() => {
-    setInitialRender(false)
-  }, [])
 
   // Scroll up when navigating
   React.useEffect(() => {
@@ -219,7 +210,7 @@ function SearchPage(props) {
           aria-busy={isFetching}
           aria-hidden={modalOpen}
         >
-          {!initialRender && isFetching ? (
+          {isFetching ? (
             <p className={progressStyle}>
               <Spinner aria-valuetext="Searching" /> Searching
               {filters.term ? ` for "${filters.term}"…` : `…`}
@@ -235,7 +226,7 @@ function SearchPage(props) {
             </p>
           )}
           <ul className={productListStyle}>
-            {(initialRender || !isFetching) &&
+            {(!isFetching) &&
               products.map(({ node }, index) => (
                 <li className={productListItem} key={node.id}>
                   <ProductCard

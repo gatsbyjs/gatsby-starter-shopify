@@ -1,9 +1,7 @@
-// server-side search utils
+import queryString from 'query-string'
 import { urqlClient } from '../context/search-provider'
-import { getValuesFromQuery } from './hooks'
 
-// TODO: DRY this up
-const ProductsQuery = `
+export const ProductsQuery = `
 query ($query: String!, $sortKey: ProductSortKeys, $first: Int, $last: Int, $after: String, $before: String) {
   products(
     query: $query
@@ -50,15 +48,52 @@ query ($query: String!, $sortKey: ProductSortKeys, $first: Int, $last: Int, $aft
   }
 }
 `
+function arrayify(value) {
+  if (!value) {
+    return []
+  }
+  if (!Array.isArray(value)) {
+    return [value]
+  }
+  return value
+}
 
-function makeFilter(field, selectedItems) {
-  if (!selectedItems) return
+export function makeFilter(field, selectedItems) {
+  if (!selectedItems || !selectedItems.length) return
   if (selectedItems && !Array.isArray(selectedItems)) {
     selectedItems = [selectedItems]
   }
   return `(${selectedItems
     .map((item) => `${field}:${JSON.stringify(item)}`)
     .join(" OR ")})`
+}
+
+/**
+ * Extracts default search values from the query string or object
+ * @param {string|object} query
+ */
+export function getValuesFromQuery(query) {
+  const isClient = typeof query === 'string'
+  const {
+    q: term,
+    s: sortKey,
+    x: maxPrice,
+    n: minPrice,
+    p,
+    t,
+    v,
+  } = isClient
+    ? queryString.parse(query)
+    : query
+  return {
+    term,
+    sortKey,
+    maxPrice,
+    minPrice,
+    productTypes: arrayify(p),
+    tags: arrayify(t),
+    vendors: arrayify(v),
+  }
 }
 
 export async function getSearchResults({
@@ -99,4 +134,3 @@ export async function getSearchResults({
 
   return products
 }
-
