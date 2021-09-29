@@ -47,7 +47,6 @@ export function useProductSearch(
     after: null,
   })
   const [initialRender, setInitialRender] = useState(true)
-  // const [products, setProducts] = useState(initialData)
   const { term, tags, productTypes, minPrice, maxPrice, vendors } = filters
 
   // Relevance is non-deterministic if there is no query, so we default to "title" instead
@@ -91,7 +90,6 @@ export function useProductSearch(
     setQuery(createQuery(filters))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters])
-  // }, [result.data])
 
   const fetchPreviousPage = () => {
     // when we go back we want all products before the first one of our array
@@ -121,14 +119,18 @@ export function useProductSearch(
     (filters.minPrice ? 1 : 0) +
     (filters.maxPrice ? 1 : 0)
 
-  let products = initialData
   let hasPreviousPage
   let hasNextPage
 
+  const products = useMemo(() => {
+    if (query === createQuery(initialFilters)) {
+      return initialData
+    }
+    if (result.data && initialRender) setInitialRender(false)
+    return result.data?.products?.edges || []
+  }, [query, result.data])
+
   if (result && result.data) {
-    if (initialRender) setInitialRender(false)
-    products = result.data.products.edges
-    // setProducts(result.data.products.edges)
     hasPreviousPage = result.data.products.pageInfo.hasPreviousPage
     hasNextPage = result.data.products.pageInfo.hasNextPage
   }

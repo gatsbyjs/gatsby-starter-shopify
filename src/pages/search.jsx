@@ -151,6 +151,8 @@ function SearchPage(props) {
     serverData.products?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
   )
 
+  console.log('SearchPage render')
+
   return (
     <Layout>
       <h1 className={visuallyHidden}>Search Results</h1>
