@@ -99,14 +99,14 @@ The whole logic for how the site looks and behaves is inside `src`.
 
 6.  **`/utils`**: Utility functions, e.g. formatting the price correctly, plus custom hooks used for handling search and pagination.
 
-### SSR Search Page
-
-- TK
-- [ ] isFetching vs serverData case
-
 ### 🎨 Styling
 
 The site uses [CSS Modules](https://github.com/css-modules/css-modules) for styling, which allows you to use regular CSS, scoped to the individual component. Theme values such as fonts, colors and spacing are set in `src/styles/variables.css`.
+
+### SSR Search Page
+
+The `/search` page uses server-side rendering to show a list of products based on filters and search terms in the URL query parameters.
+
 
 ## 🎓 Learning Gatsby
 
