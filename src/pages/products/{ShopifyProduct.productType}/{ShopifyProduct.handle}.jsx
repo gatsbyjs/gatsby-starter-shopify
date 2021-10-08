@@ -203,7 +203,7 @@ export default function Product({ data: { product, suggestions } }) {
               <span className={labelFont}>Tags</span>
               <span className={tagList}>
                 {product.tags.map((tag) => (
-                  <Link to={`/search?t=${tag}`}>{tag}</Link>
+                  <Link to={`/search?t=${tag}`} key={tag}>{tag}</Link>
                 ))}
               </span>
             </div>
