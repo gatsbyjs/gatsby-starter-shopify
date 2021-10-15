@@ -76,7 +76,6 @@ function SearchPage(props) {
   } = props
 
   // These default values come from the page query string
-  // TODO: will props.location eventually pass through SSR args?
   const queryParams = getValuesFromQuery(location.search || serverData.query)
 
   const [filters, setFilters] = React.useState(queryParams)
