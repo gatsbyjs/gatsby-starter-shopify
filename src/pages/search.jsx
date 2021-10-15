@@ -226,9 +226,9 @@ function SearchPage(props) {
               )}
             </p>
           )}
-          <ul className={productListStyle}>
-            {(!isFetching) &&
-              products.map(({ node }, index) => (
+          {!isFetching && (
+            <ul className={productListStyle}>
+              {products.map(({ node }, index) => (
                 <li className={productListItem} key={node.id}>
                   <ProductCard
                     eager={index === 0}
@@ -236,8 +236,8 @@ function SearchPage(props) {
                       title: node.title,
                       priceRangeV2: node.priceRangeV2,
                       slug: `/products/${slugify(node.productType)}/${
-                        node.handle
-                      }`,
+                            node.handle
+                          }`,
                       // The search API and Gatsby data layer have slightly different images available.
                       images: [],
                       storefrontImages: node.images,
@@ -246,8 +246,9 @@ function SearchPage(props) {
                   />
                 </li>
               ))}
-          </ul>
-          {(!isFetching && products.length === 0) && (
+            </ul>
+          )}
+          {!isFetching && products.length === 0 && (
             <div className={emptyState}>
               No results found
             </div>
