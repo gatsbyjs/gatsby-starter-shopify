@@ -135,7 +135,5 @@ export async function getSearchResults({
     })
     .toPromise()
 
-  const products = results.data?.products?.edges
-
-  return products
+  return results.data?.products?.edges
 }
