@@ -23,12 +23,12 @@ Check out the [demo site](https://shopify-demo.gatsbyjs.com) showcasing a proof-
 
     ```shell
     # create a new Gatsby site using the Shopify starter
-    gatsby new my-shopify-store https://github.com/gatsbyjs/gatsby-starter-shopify
+    npx gatsby new my-shopify-store https://github.com/gatsbyjs/gatsby-starter-shopify
     ```
 
 2.  **Link to your store**
 
-    Follow these instructions here to [link your Shopify store](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-source-shopify#readme). If you want to try with a development store, see [the sample data and instructions here](example/).
+    Follow these instructions here to [link your Shopify store](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-source-shopify#readme). Create a `.env` file with your Shopify store URL, password, and Storefront access token, using the `.env.example` file as an example. If you want to try with a development store, see [the sample data and instructions here](example/).
 
 3.  **Start developing.**
 
@@ -36,7 +36,7 @@ Check out the [demo site](https://shopify-demo.gatsbyjs.com) showcasing a proof-
 
     ```shell
     cd my-shopify-starter/
-    gatsby develop
+    npm start
     ```
 
 4.  **Open the source code and start editing!**
