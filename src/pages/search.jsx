@@ -1,6 +1,5 @@
 import * as React from "react"
 import { graphql } from "gatsby"
-import slugify from "@sindresorhus/slugify"
 import debounce from "debounce"
 import { CgChevronRight, CgChevronLeft } from "react-icons/cg"
 import { Layout } from "../components/layout"
@@ -77,10 +76,11 @@ function SearchPage({
     meta: { productTypes, vendors, tags },
     products,
   },
+  serverData,
   location,
 }) {
   // These default values come from the page query string
-  const queryParams = getValuesFromQueryString(location.search)
+  const queryParams = getValuesFromQueryString(location.search || serverData?.search)
   const [filters, setFilters] = React.useState(queryParams)
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
   // We clear the hash when searching, we want to make sure the next page will be fetched due the #more hash.
@@ -238,9 +238,8 @@ function SearchPage({
                     product={{
                       title: node.title,
                       priceRangeV2: node.priceRangeV2,
-                      slug: `/products/${slugify(node.productType)}/${
-                        node.handle
-                      }`,
+                      handle: node.handle,
+                      productType: node.productType,
                       // The search API and Gatsby data layer have slightly different images available.
                       images: isDefault ? node.images : [],
                       storefrontImages: !isDefault && node.images,
@@ -333,4 +332,18 @@ export default function SearchPageTemplate(props) {
       <SearchPage {...props} />
     </SearchProvider>
   )
+}
+
+export function getServerData({ query }) {
+  const term = query?.q;
+
+  if (term.includes('drop-table')) {
+    throw new Error('This is an ssr error');
+  }
+
+  return {
+    props: {
+      search: term ? `q=${term}` : '',
+    },
+  }
 }
