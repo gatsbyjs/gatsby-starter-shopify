@@ -40,15 +40,20 @@ import {
   emptyState,
 } from "./search-page.module.css"
 
-export async function getServerData ({ query, ...rest }) {
-  const { getSearchResults } = require('../utils/search')
-  const products = await getSearchResults({ query, count: 24 })
+const DEFAULT_PRODUCTS_PER_PAGE = 24
+
+export async function getServerData({ query, ...rest }) {
+  const { getSearchResults } = require("../utils/search")
+  const products = await getSearchResults({
+    query,
+    count: DEFAULT_PRODUCTS_PER_PAGE,
+  })
 
   return {
     props: {
       query,
       products,
-    }
+    },
   }
 }
 
@@ -62,19 +67,13 @@ export const query = graphql`
   }
 `
 
-function SearchPage(props) {
-  const {
-    serverData,
-    data: {
-      meta: {
-        productTypes,
-        vendors,
-        tags
-      },
-    },
-    location,
-  } = props
-
+function SearchPage({
+  serverData,
+  data: {
+    meta: { productTypes, vendors, tags },
+  },
+  location,
+}) {
   // These default values come from the page query string
   const queryParams = getValuesFromQuery(location.search || serverData.query)
 
@@ -105,9 +104,9 @@ function SearchPage(props) {
     },
     sortKey,
     false,
-    24, // Products per page
+    DEFAULT_PRODUCTS_PER_PAGE,
     serverData.products,
-    initialFilters,
+    initialFilters
   )
 
   // Scroll up when navigating
@@ -235,8 +234,8 @@ function SearchPage(props) {
                       title: node.title,
                       priceRangeV2: node.priceRangeV2,
                       slug: `/products/${slugify(node.productType)}/${
-                            node.handle
-                          }`,
+                        node.handle
+                      }`,
                       // The search API and Gatsby data layer have slightly different images available.
                       images: [],
                       storefrontImages: node.images,
@@ -248,9 +247,7 @@ function SearchPage(props) {
             </ul>
           )}
           {!isFetching && products.length === 0 && (
-            <div className={emptyState}>
-              No results found
-            </div>
+            <div className={emptyState}>No results found</div>
           )}
           {hasPreviousPage || hasNextPage ? (
             <Pagination
@@ -274,7 +271,8 @@ function SearchBar({ defaultTerm, setFilters }) {
     debounce((value) => {
       setFilters((filters) => ({ ...filters, term: value }))
     }, 200),
-    [setFilters])
+    [setFilters]
+  )
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className={searchForm}>
