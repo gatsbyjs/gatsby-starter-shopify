@@ -2,6 +2,7 @@ import * as React from "react"
 import { graphql, Link } from "gatsby"
 import { GatsbyImage } from "gatsby-plugin-image"
 import { getShopifyImage } from "gatsby-source-shopify"
+import slugify from "@sindresorhus/slugify"
 import { formatPrice } from "../utils/format-price"
 import {
   productCardStyle,
@@ -16,7 +17,8 @@ export function ProductCard({ product, eager }) {
   const {
     title,
     priceRangeV2,
-    slug,
+    productType,
+    handle,
     images: [firstImage],
     vendor,
     storefrontImages,
@@ -49,7 +51,7 @@ export function ProductCard({ product, eager }) {
   return (
     <Link
       className={productCardStyle}
-      to={slug}
+      to={`/products/${slugify(productType)}/${slugify(handle)}/`}
       aria-label={`View ${title} product page`}
     >
       {hasImage
@@ -80,9 +82,8 @@ export const query = graphql`
   fragment ProductCard on ShopifyProduct {
     id
     title
-    slug: gatsbyPath(
-      filePath: "/products/{ShopifyProduct.productType}/{ShopifyProduct.handle}"
-    )
+    productType
+    handle
     images {
       id
       altText

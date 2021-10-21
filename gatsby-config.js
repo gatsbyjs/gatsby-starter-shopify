@@ -12,7 +12,7 @@ module.exports = {
     twitter: "@gatsbyjs",
   },
   flags: {
-    FAST_DEV: true,
+    FAST_DEV: false,
   },
   plugins: [
     {

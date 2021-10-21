@@ -1,13 +1,14 @@
 import * as React from "react"
 import { graphql, Link } from "gatsby"
-import { Layout } from "../../../components/layout"
+import slugify from "@sindresorhus/slugify"
+import { Layout } from "../components/layout"
 import isEqual from "lodash.isequal"
 import { GatsbyImage, getSrc } from "gatsby-plugin-image"
-import { StoreContext } from "../../../context/store-context"
-import { AddToCart } from "../../../components/add-to-cart"
-import { NumericInput } from "../../../components/numeric-input"
-import { formatPrice } from "../../../utils/format-price"
-import { Seo } from "../../../components/seo"
+import { StoreContext } from "../context/store-context"
+import { AddToCart } from "../components/add-to-cart"
+import { NumericInput } from "../components/numeric-input"
+import { formatPrice } from "../utils/format-price"
+import { Seo } from "../components/seo"
 import { CgChevronRight as ChevronIcon } from "react-icons/cg"
 import {
   productBox,
@@ -153,7 +154,7 @@ export default function Product({ data: { product, suggestions } }) {
           )}
           <div>
             <div className={breadcrumb}>
-              <Link to={product.productTypeSlug}>{product.productType}</Link>
+              <Link to={`/products/${slugify(product.productType)}/`}>{product.productType}</Link>
               <ChevronIcon size={12} />
             </div>
             <h1 className={header}>{title}</h1>
@@ -220,9 +221,6 @@ export const query = graphql`
       title
       description
       productType
-      productTypeSlug: gatsbyPath(
-        filePath: "/products/{ShopifyProduct.productType}"
-      )
       tags
       priceRangeV2 {
         maxVariantPrice {
