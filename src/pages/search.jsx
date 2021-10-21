@@ -9,7 +9,8 @@ import SortIcon from "../icons/sort"
 import FilterIcon from "../icons/filter"
 import SearchIcon from "../icons/search"
 import { ProductCard } from "../components/product-card"
-import { getValuesFromQueryString, useProductSearch } from "../utils/hooks"
+import { useProductSearch } from "../utils/hooks"
+import { getValuesFromQuery } from "../utils/search"
 import { getCurrencySymbol } from "../utils/format-price"
 import { Spinner } from "../components/progress"
 import { Filters } from "../components/filters"
@@ -36,7 +37,25 @@ import {
   modalOpen,
   activeFilters,
   filterWrap,
+  emptyState,
 } from "./search-page.module.css"
+
+const DEFAULT_PRODUCTS_PER_PAGE = 24
+
+export async function getServerData({ query, ...rest }) {
+  const { getSearchResults } = require("../utils/search")
+  const products = await getSearchResults({
+    query,
+    count: DEFAULT_PRODUCTS_PER_PAGE,
+  })
+
+  return {
+    props: {
+      query,
+      products,
+    },
+  }
+}
 
 export const query = graphql`
   query {
@@ -45,43 +64,22 @@ export const query = graphql`
       tags: distinct(field: tags)
       vendors: distinct(field: vendor)
     }
-    products: allShopifyProduct(limit: 24, sort: { fields: title }) {
-      edges {
-        node {
-          title
-          vendor
-          productType
-          handle
-          priceRangeV2 {
-            minVariantPrice {
-              currencyCode
-              amount
-            }
-            maxVariantPrice {
-              currencyCode
-              amount
-            }
-          }
-          id
-          images {
-            gatsbyImageData(aspectRatio: 1, width: 200, layout: FIXED)
-          }
-        }
-      }
-    }
   }
 `
 
 function SearchPage({
+  serverData,
   data: {
     meta: { productTypes, vendors, tags },
-    products,
   },
   location,
 }) {
   // These default values come from the page query string
-  const queryParams = getValuesFromQueryString(location.search)
+  const queryParams = getValuesFromQuery(location.search || serverData.query)
+
   const [filters, setFilters] = React.useState(queryParams)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const initialFilters = React.useMemo(() => queryParams, [])
   const [sortKey, setSortKey] = React.useState(queryParams.sortKey)
   // We clear the hash when searching, we want to make sure the next page will be fetched due the #more hash.
   const shouldLoadNextPage = React.useRef(false)
@@ -90,7 +88,7 @@ function SearchPage({
   const [showModal, setShowModal] = React.useState(false)
 
   const {
-    data,
+    products,
     isFetching,
     filterCount,
     hasNextPage,
@@ -106,13 +104,10 @@ function SearchPage({
     },
     sortKey,
     false,
-    24 // Products per page
+    DEFAULT_PRODUCTS_PER_PAGE,
+    serverData.products,
+    initialFilters
   )
-
-  // If we're using the default filters, use the products from the Gatsby data layer.
-  // Otherwise, use the data from search.
-  const isDefault = !data
-  const productList = (isDefault ? products.edges : data?.products?.edges) ?? []
 
   // Scroll up when navigating
   React.useEffect(() => {
@@ -124,7 +119,7 @@ function SearchPage({
         // eslint-disable-next-line react-hooks/exhaustive-deps
       })
     }
-  }, [productList, showModal])
+  }, [products, showModal])
 
   // Stop page from scrolling when modal is visible
   React.useEffect(() => {
@@ -149,10 +144,10 @@ function SearchPage({
 
       shouldLoadNextPage.current = false
     }
-  }, [location.hash])
+  }, [location.hash, hasNextPage, fetchNextPage])
 
   const currencyCode = getCurrencySymbol(
-    products?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
+    serverData.products?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
   )
 
   return (
@@ -229,9 +224,9 @@ function SearchPage({
               )}
             </p>
           )}
-          <ul className={productListStyle}>
-            {!isFetching &&
-              productList.map(({ node }, index) => (
+          {!isFetching && (
+            <ul className={productListStyle}>
+              {products.map(({ node }, index) => (
                 <li className={productListItem} key={node.id}>
                   <ProductCard
                     eager={index === 0}
@@ -242,14 +237,18 @@ function SearchPage({
                         node.handle
                       }`,
                       // The search API and Gatsby data layer have slightly different images available.
-                      images: isDefault ? node.images : [],
-                      storefrontImages: !isDefault && node.images,
+                      images: [],
+                      storefrontImages: node.images,
                       vendor: node.vendor,
                     }}
                   />
                 </li>
               ))}
-          </ul>
+            </ul>
+          )}
+          {!isFetching && products.length === 0 && (
+            <div className={emptyState}>No results found</div>
+          )}
           {hasPreviousPage || hasNextPage ? (
             <Pagination
               previousPage={fetchPreviousPage}
@@ -266,6 +265,8 @@ function SearchPage({
 
 function SearchBar({ defaultTerm, setFilters }) {
   const [term, setTerm] = React.useState(defaultTerm)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSetFilters = React.useCallback(
     debounce((value) => {
       setFilters((filters) => ({ ...filters, term: value }))

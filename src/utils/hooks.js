@@ -1,67 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import queryString from "query-string"
 import { useQuery } from "urql"
-
-const ProductsQuery = `
-query ($query: String!, $sortKey: ProductSortKeys, $first: Int, $last: Int, $after: String, $before: String) {
-  products(
-    query: $query
-    sortKey: $sortKey
-    first: $first
-    last: $last
-    after: $after
-    before: $before
-  ) {
-    pageInfo {
-      hasNextPage
-      hasPreviousPage
-    }
-    edges {
-      cursor
-      node {
-        title
-        vendor
-        productType
-        handle
-        priceRangeV2: priceRange {
-          minVariantPrice {
-            currencyCode
-            amount
-          }
-          maxVariantPrice {
-            currencyCode
-            amount
-          }
-        }
-        id
-        images(first: 1) {
-          edges {
-            node {
-              originalSrc
-              width
-              height
-              altText
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-`
-
-function makeFilter(field, allItems, selectedItems) {
-  if (selectedItems && !Array.isArray(selectedItems)) {
-    selectedItems = [selectedItems]
-  }
-  if (allItems.length === selectedItems.length || !selectedItems?.length) {
-    return
-  }
-  return `(${selectedItems
-    .map((item) => `${field}:${JSON.stringify(item)}`)
-    .join(" OR ")})`
-}
+import { ProductsQuery, createQuery } from './search'
 
 function makeQueryStringValue(allItems, selectedItems) {
   if (allItems.length === selectedItems.length) {
@@ -70,57 +10,28 @@ function makeQueryStringValue(allItems, selectedItems) {
   return selectedItems
 }
 
-function arrayify(value) {
-  if (!value) {
-    return []
-  }
-  if (!Array.isArray(value)) {
-    return [value]
-  }
-  return value
-}
-
-/**
- * Extracts default search values from the query string
- * @param {string} query
- */
-export function getValuesFromQueryString(query) {
-  const {
-    q: term,
-    s: sortKey,
-    x: maxPrice,
-    n: minPrice,
-    p,
-    t,
-    v,
-  } = queryString.parse(query)
-  return {
-    term,
-    sortKey,
-    maxPrice,
-    minPrice,
-    productTypes: arrayify(p),
-    tags: arrayify(t),
-    vendors: arrayify(v),
-  }
-}
-
 export function useProductSearch(
   filters,
   { allTags, allProductTypes, allVendors },
   sortKey,
   pause = false,
-  count = 20
+  count = 20,
+  initialData = [],
+  initialFilters,
 ) {
-  const [query, setQuery] = useState("")
+  const [query, setQuery] = useState(createQuery(filters))
   const [cursors, setCursors] = useState({
     before: null,
     after: null,
   })
+  const [initialRender, setInitialRender] = useState(true)
   const { term, tags, productTypes, minPrice, maxPrice, vendors } = filters
 
   // Relevance is non-deterministic if there is no query, so we default to "title" instead
   const initialSortKey = filters.term ? "RELEVANCE" : "TITLE"
+
+  // only fetch after the filters have changed
+  const shouldPause = useMemo(() => (query === createQuery(initialFilters)) || pause, [query, pause, initialFilters])
 
   const [result] = useQuery({
     query: ProductsQuery,
@@ -132,27 +43,8 @@ export function useProductSearch(
       after: cursors.after,
       before: cursors.before,
     },
-    pause,
+    pause: shouldPause,
   })
-
-  useEffect(() => {
-    const parts = [
-      term,
-      makeFilter("tag", allTags, tags),
-      makeFilter("product_type", allProductTypes, productTypes),
-      makeFilter("vendor", allVendors, vendors),
-      // Exclude empty filter values
-    ].filter(Boolean)
-    if (maxPrice) {
-      parts.push(`variants.price:<="${maxPrice}"`)
-    }
-    if (minPrice) {
-      parts.push(`variants.price:>="${minPrice}"`)
-    }
-
-    setQuery(parts.join(" "))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, allTags, allProductTypes, allVendors, maxPrice, minPrice])
 
   useEffect(() => {
     const qs = queryString.stringify({
@@ -173,22 +65,22 @@ export function useProductSearch(
     url.search = qs
     url.hash = ""
     window.history.replaceState({}, null, url.toString())
+    setQuery(createQuery(filters))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result.data])
+  }, [filters, cursors, sortKey])
 
   const fetchPreviousPage = () => {
-    const products = result.data.products
     // when we go back we want all products before the first one of our array
-    const previousCursor = products.edges[0].cursor
+    const previousCursor = result.data.products.edges[0].cursor
     setCursors({
       before: previousCursor,
       after: null,
     })
   }
   const fetchNextPage = () => {
-    const products = result.data.products
     // when we go forward we want all products after the first one of our array
-    const nextCursor = products.edges[products.edges.length - 1].cursor
+    const prods = result.data.products
+    const nextCursor = prods.edges[prods.edges.length - 1].cursor
     setCursors({
       before: null,
       after: nextCursor,
@@ -206,25 +98,31 @@ export function useProductSearch(
     (filters.minPrice ? 1 : 0) +
     (filters.maxPrice ? 1 : 0)
 
-  const isDefault = !filterCount && !filters.term && !sortKey
-
-  let products
   let hasPreviousPage
   let hasNextPage
 
-  if (!isDefault && result && result.data) {
-    products = result.data.products.edges.map((edge) => edge.node)
+  const products = useMemo(() => {
+    if (query === createQuery(initialFilters)) {
+      return initialData
+    }
+    if (result.data && initialRender) setInitialRender(false)
+    return result.data?.products?.edges || []
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query, result.data, initialData, initialFilters])
+
+  if (result && result.data) {
     hasPreviousPage = result.data.products.pageInfo.hasPreviousPage
     hasNextPage = result.data.products.pageInfo.hasNextPage
   }
 
+  const isFetching = !initialRender && result.fetching
+
   return {
     data: result.data,
-    isFetching: result.fetching,
+    isFetching,
     hasPreviousPage,
     hasNextPage,
     products,
-    isDefault,
     filterCount,
     fetchNextPage,
     fetchPreviousPage,
