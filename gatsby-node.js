@@ -24,6 +24,7 @@ exports.createPages = async function createPages({ actions, graphql }) {
         id: node.id,
         productType: node.productType,
       },
+      defer: true,
     })
   })
 }
