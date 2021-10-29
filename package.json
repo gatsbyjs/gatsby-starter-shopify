@@ -23,7 +23,7 @@
     "@sindresorhus/slugify": "^1.1.0",
     "debounce": "^1.2.1",
     "dotenv": "^10.0.0",
-    "gatsby": "^4.0.0",
+    "gatsby": "^4.0.2",
     "gatsby-plugin-gatsby-cloud": "^4.0.0",
     "gatsby-plugin-google-analytics": "^4.0.0",
     "gatsby-plugin-image": "^2.0.0",
