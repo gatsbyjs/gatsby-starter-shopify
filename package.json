@@ -43,5 +43,8 @@
     "react-icons": "^4.1.0",
     "shopify-buy": "^2.11.0",
     "urql": "^2.0.2"
+  },
+  "devDependencies": {
+    "@shopify/shopify-api": "^2.0.0"
   }
 }
