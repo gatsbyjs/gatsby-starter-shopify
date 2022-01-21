@@ -37,8 +37,8 @@ export default function Product({ data: { product, suggestions } }) {
     priceRangeV2,
     title,
     description,
-    images,
-    images: [firstImage],
+    media: images,
+    media: [firstImage],
   } = product
   const { client } = React.useContext(StoreContext)
 
@@ -108,7 +108,7 @@ export default function Product({ data: { product, suggestions } }) {
         <Seo
           title={title}
           description={description}
-          image={getSrc(firstImage.gatsbyImageData)}
+          image={getSrc(firstImage.image.gatsbyImageData)}
         />
       ) : undefined}
       <div className={container}>
@@ -134,7 +134,7 @@ export default function Product({ data: { product, suggestions } }) {
                             ? image.altText
                             : `Product Image of ${title} #${index + 1}`
                         }
-                        image={image.gatsbyImageData}
+                        image={image.image.gatsbyImageData}
                       />
                     </li>
                   ))}
@@ -235,10 +235,14 @@ export const query = graphql`
         }
       }
       storefrontId
-      images {
-        # altText
-        id
-        gatsbyImageData(layout: CONSTRAINED, width: 640, aspectRatio: 1)
+      media {
+        ... on ShopifyMediaImage {
+          id
+          alt
+          image {
+            gatsbyImageData(layout: CONSTRAINED, width: 640, aspectRatio: 1) 
+          }
+        }
       }
       variants {
         availableForSale

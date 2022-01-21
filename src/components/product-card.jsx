@@ -17,7 +17,7 @@ export function ProductCard({ product, eager }) {
     title,
     priceRangeV2,
     slug,
-    images: [firstImage],
+    media: [firstImage],
     vendor,
     storefrontImages,
   } = product
@@ -57,7 +57,7 @@ export function ProductCard({ product, eager }) {
           <div className={productImageStyle} data-name="product-image-box">
             <GatsbyImage
               alt={firstImage?.altText ?? title}
-              image={firstImage?.gatsbyImageData ?? storefrontImageData}
+              image={firstImage?.image.gatsbyImageData ?? storefrontImageData}
               loading={eager ? "eager" : "lazy"}
             />
           </div>
@@ -83,10 +83,14 @@ export const query = graphql`
     slug: gatsbyPath(
       filePath: "/products/{ShopifyProduct.productType}/{ShopifyProduct.handle}"
     )
-    images {
-      id
-      altText
-      gatsbyImageData(aspectRatio: 1, width: 640)
+    media {
+      ... on ShopifyMediaImage {
+        id
+        alt
+        image {
+          gatsbyImageData(aspectRatio: 1, width: 640)
+        }
+      }
     }
     priceRangeV2 {
       minVariantPrice {
