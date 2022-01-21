@@ -31,7 +31,7 @@
     "gatsby-plugin-sharp": "^4.0.0",
     "gatsby-plugin-sitemap": "^5.0.0",
     "gatsby-source-filesystem": "^4.0.0",
-    "gatsby-source-shopify": "^6.0.0",
+    "gatsby-source-shopify": "^6.2.0-alpha-atomic-shopify-source.25",
     "gatsby-transformer-sharp": "^4.0.0",
     "isomorphic-fetch": "^3.0.0",
     "lodash.debounce": "^4.0.8",
