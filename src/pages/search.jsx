@@ -39,6 +39,7 @@ import {
   filterWrap,
   emptyState,
 } from "./search-page.module.css"
+import { Seo } from "../components/seo"
 
 const DEFAULT_PRODUCTS_PER_PAGE = 24
 
@@ -335,3 +336,5 @@ export default function SearchPageTemplate(props) {
     </SearchProvider>
   )
 }
+
+export const Head = () => <Seo/>

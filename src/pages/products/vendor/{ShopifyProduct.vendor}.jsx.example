@@ -13,7 +13,6 @@ export default function Products({
 }) {
   return (
     <Layout>
-      <Seo title={`${vendor} products`} />
       <h1 className={title}>{vendor}</h1>
       <ProductListing products={products.nodes} />
       {products.pageInfo.hasNextPage && (
@@ -22,6 +21,12 @@ export default function Products({
         </MoreButton>
       )}
     </Layout>
+  )
+}
+
+export const Head = ({ pageContext: { vendor } }) => {
+  return (
+    <Seo title={`${vendor} products`} />
   )
 }
 

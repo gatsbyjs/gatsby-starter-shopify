@@ -13,7 +13,6 @@ export default function ProductTypeIndex({
 }) {
   return (
     <Layout>
-      <Seo title={`Category: ${productType}`} />
       <h1 className={title}>{productType}</h1>
       <ProductListing products={products.nodes} />
       {products.pageInfo.hasNextPage && (
@@ -24,6 +23,10 @@ export default function ProductTypeIndex({
     </Layout>
   )
 }
+
+export const Head = ({ pageContext: { productType } }) => (
+  <Seo title={`Category: ${productType}`} />
+)
 
 export const query = graphql`
   query($productType: String!) {

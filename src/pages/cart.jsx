@@ -20,6 +20,7 @@ import {
   emptyStateLink,
   title,
 } from "./cart.module.css"
+import { Seo } from "../components/seo"
 
 export default function CartPage() {
   const { checkout, loading } = React.useContext(StoreContext)
@@ -119,3 +120,5 @@ export default function CartPage() {
     </Layout>
   )
 }
+
+export const Head = () => <Seo />

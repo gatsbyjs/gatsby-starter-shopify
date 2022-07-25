@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Layout } from "../components/layout"
 import { heading, paragraph, container } from "./404.module.css"
+import { Seo } from "../components/seo"
 
 export default function NotFoundPage() {
   return (
@@ -14,3 +15,5 @@ export default function NotFoundPage() {
     </Layout>
   )
 }
+
+export const Head = () => <Seo />
