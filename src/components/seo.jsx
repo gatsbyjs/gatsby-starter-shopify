@@ -1,5 +1,4 @@
 import * as React from "react"
-import { Helmet } from "react-helmet"
 import { useStaticQuery, graphql } from "gatsby"
 import { useLocation } from "@reach/router"
 
@@ -20,7 +19,6 @@ export function Seo({
           siteTitle
           siteTitleDefault
           siteUrl
-          hrefLang
           siteDescription
           siteImage
           twitter
@@ -35,7 +33,6 @@ export function Seo({
     siteUrl,
     siteDescription,
     siteImage,
-    hrefLang,
     twitter,
   } = siteMetadata
 
@@ -47,12 +44,8 @@ export function Seo({
   }
 
   return (
-    <Helmet
-      title={title}
-      defaultTitle={siteTitleDefault}
-      titleTemplate={`%s | ${siteTitle}`}
-    >
-      <html lang={hrefLang} />
+    <>
+      <title> {title ? `${title} | ${siteTitle}`: siteTitleDefault}</title>
       <meta name="description" content={seo.description} />
       <meta name="image" content={seo.image} />
       <meta property="og:title" content={seo.title} />
@@ -91,6 +84,6 @@ export function Seo({
         />
       )}
       {children}
-    </Helmet>
+    </>
   )
 }

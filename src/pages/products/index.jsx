@@ -9,7 +9,6 @@ import { title } from "./index.module.css"
 export default function Products({ data: { products } }) {
   return (
     <Layout>
-      <Seo title="All Products" />
       <h1 className={title}>Products</h1>
       <ProductListing products={products.nodes} />
       {products.pageInfo.hasNextPage && (
@@ -18,6 +17,8 @@ export default function Products({ data: { products } }) {
     </Layout>
   )
 }
+
+export const Head = () => <Seo title="All Products" />
 
 export const query = graphql`
   {

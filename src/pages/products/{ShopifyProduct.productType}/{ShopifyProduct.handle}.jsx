@@ -38,7 +38,6 @@ export default function Product({ data: { product, suggestions } }) {
     title,
     description,
     images,
-    images: [firstImage],
   } = product
   const { client } = React.useContext(StoreContext)
 
@@ -104,13 +103,6 @@ export default function Product({ data: { product, suggestions } }) {
 
   return (
     <Layout>
-      {firstImage ? (
-        <Seo
-          title={title}
-          description={description}
-          image={getSrc(firstImage.gatsbyImageData)}
-        />
-      ) : undefined}
       <div className={container}>
         <div className={productBox}>
           {hasImages && (
@@ -211,6 +203,26 @@ export default function Product({ data: { product, suggestions } }) {
         </div>
       </div>
     </Layout>
+  )
+}
+
+export const Head = ({ data: { product } }) => {
+  const {
+    title,
+    description,
+    images: [firstImage],
+  } = product
+
+  return (
+    <>
+      {firstImage ? (
+        <Seo
+          title={title}
+          description={description}
+          image={getSrc(firstImage.gatsbyImageData)}
+        />
+      ) : undefined}
+    </>
   )
 }
 
