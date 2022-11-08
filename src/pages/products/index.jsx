@@ -20,13 +20,15 @@ export default function Products({ data: { products } }) {
 
 export const Head = () => <Seo title="All Products" />
 
-export const query = graphql`{
-  products: allShopifyProduct(sort: {publishedAt: ASC}, limit: 24) {
-    nodes {
-      ...ProductCard
-    }
-    pageInfo {
-      hasNextPage
+export const query = graphql`
+  {
+    products: allShopifyProduct(sort: { publishedAt: ASC }, limit: 24) {
+      nodes {
+        ...ProductCard
+      }
+      pageInfo {
+        hasNextPage
+      }
     }
   }
-}`
+`

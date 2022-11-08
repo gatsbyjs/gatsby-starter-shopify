@@ -58,13 +58,15 @@ export async function getServerData({ query, ...rest }) {
   }
 }
 
-export const query = graphql`{
-  meta: allShopifyProduct {
-    productTypes: distinct(field: {productType: SELECT})
-    tags: distinct(field: {tags: SELECT})
-    vendors: distinct(field: {vendor: SELECT})
+export const query = graphql`
+  query {
+    meta: allShopifyProduct {
+      productTypes: distinct(field: { productType: SELECT })
+      tags: distinct(field: { tags: SELECT })
+      vendors: distinct(field: { vendor: SELECT })
+    }
   }
-}`
+`
 
 function SearchPage({
   serverData,
@@ -335,4 +337,4 @@ export default function SearchPageTemplate(props) {
   )
 }
 
-export const Head = () => <Seo/>
+export const Head = () => <Seo />
