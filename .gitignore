@@ -6,5 +6,4 @@ public
 .DS_Store
 .env
 *.log
-yarn.lock
 gatsby-node.old.js
