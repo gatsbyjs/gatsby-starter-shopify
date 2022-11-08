@@ -28,17 +28,19 @@ export const Head = ({ pageContext: { productType } }) => (
   <Seo title={`Category: ${productType}`} />
 )
 
-export const query = graphql`query ($productType: String!) {
-  products: allShopifyProduct(
-    filter: {productType: {eq: $productType}}
-    sort: {publishedAt: ASC}
-    limit: 24
-  ) {
-    nodes {
-      ...ProductCard
-    }
-    pageInfo {
-      hasNextPage
+export const query = graphql`
+  query($productType: String!) {
+    products: allShopifyProduct(
+      filter: { productType: { eq: $productType } }
+      sort: { fields: publishedAt, order: ASC }
+      limit: 24
+    ) {
+      nodes {
+        ...ProductCard
+      }
+      pageInfo {
+        hasNextPage
+      }
     }
   }
-}`
+`
