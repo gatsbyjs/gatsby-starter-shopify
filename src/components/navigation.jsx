@@ -6,13 +6,11 @@ import { navStyle, navLink, activeLink } from "./navigation.module.css"
 export function Navigation({ className }) {
   const {
     allShopifyProduct: { productTypes },
-  } = useStaticQuery(graphql`
-    query {
-      allShopifyProduct {
-        productTypes: distinct(field: { productType: SELECT })
-      }
-    }
-  `)
+  } = useStaticQuery(graphql`{
+  allShopifyProduct {
+    productTypes: distinct(field: {productType: SELECT})
+  }
+}`)
 
   return (
     <nav className={[navStyle, className].join(" ")}>
