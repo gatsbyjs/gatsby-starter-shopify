@@ -43,7 +43,20 @@ import { Seo } from "../components/seo"
 
 const DEFAULT_PRODUCTS_PER_PAGE = 24
 
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+
 export async function getServerData({ query, ...rest }) {
+  if(isEmpty(query)) {
+    return {
+      props: {
+        query: { q: "" },
+        products: [],
+      }
+    };
+  }
+
   const { getSearchResults } = require("../utils/search")
   const products = await getSearchResults({
     query,
@@ -76,7 +89,7 @@ function SearchPage({
   location,
 }) {
   // These default values come from the page query string
-  const queryParams = getValuesFromQuery(location.search || serverData.query)
+  const queryParams = getValuesFromQuery(location.search || serverData?.query || "");
 
   const [filters, setFilters] = React.useState(queryParams)
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -106,7 +119,7 @@ function SearchPage({
     sortKey,
     false,
     DEFAULT_PRODUCTS_PER_PAGE,
-    serverData.products,
+    serverData && serverData.products.length ? serverData.products : [],
     initialFilters
   )
 
@@ -147,9 +160,10 @@ function SearchPage({
     }
   }, [location.hash, hasNextPage, fetchNextPage])
 
-  const currencyCode = getCurrencySymbol(
-    serverData.products?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
-  )
+  const currencySymbol = serverData && serverData.products.length
+    ? serverData.products?.[0]?.node?.priceRangeV2?.minVariantPrice?.currencyCode
+    : "GBP"; // set in .env?
+  const currencyCode = getCurrencySymbol(currencySymbol);
 
   return (
     <Layout>
