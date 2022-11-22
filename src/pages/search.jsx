@@ -234,7 +234,7 @@ function SearchPage({
                     product={{
                       title: node.title,
                       priceRangeV2: node.priceRangeV2,
-                      slug: `/products/${slugify(node.productType)}/${
+                      slug: `/products${node.productType ? '/' + slugify(node.productType) : ''}/${
                         node.handle
                       }`,
                       // The search API and Gatsby data layer have slightly different images available.
