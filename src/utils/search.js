@@ -32,7 +32,14 @@ query ($query: String!, $sortKey: ProductSortKeys, $first: Int, $last: Int, $aft
             amount
           }
         }
-        
+        id
+        images(first: 1) {
+          edges {
+            node {
+              originalSrc
+              width
+              height
+              altText
             }
           }
         }

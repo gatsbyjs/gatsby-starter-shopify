@@ -2,7 +2,6 @@ import * as React from "react"
 import debounce from "lodash.debounce"
 import { StoreContext } from "../context/store-context"
 import { formatPrice } from "../utils/format-price"
-import { GatsbyImage } from "gatsby-plugin-image"
 import { getShopifyImage } from "gatsby-source-shopify"
 import DeleteIcon from "../icons/delete"
 import { NumericInput } from "./numeric-input"
@@ -23,7 +22,10 @@ export function LineItem({ item }) {
   } = React.useContext(StoreContext)
   const [quantity, setQuantity] = React.useState(item.quantity)
 
-
+  const variantImage = {
+    ...item.variant.image,
+    originalSrc: item.variant.image.src,
+  }
   const price = formatPrice(
     item.variant.priceV2.currencyCode,
     Number(item.variant.priceV2.amount)
@@ -63,7 +65,53 @@ export function LineItem({ item }) {
     handleQuantityChange(Number(quantity || 0) - 1)
   }
 
-  
+  const image = React.useMemo(
+    () =>
+      getShopifyImage({
+        image: variantImage,
+        layout: "constrained",
+        crop: "contain",
+        width: 160,
+        height: 160,
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [variantImage.src]
+  )
 
-  
+  return (
+    <tr>
+      <td>
+        {image && (
+          <GatsbyImage
+            key={variantImage.src}
+            image={image}
+            alt={variantImage.altText ?? item.variant.title}
+          />
+        )}
+      </td>
+      <td>
+        <h2 className={title}>{item.title}</h2>
+        <div className={variant}>
+          {item.variant.title === "Default Title" ? "" : item.variant.title}
+        </div>
+        <div className={remove}>
+          <button onClick={handleRemove}>
+            <DeleteIcon /> Remove
+          </button>
+        </div>
+      </td>
+      <td className={priceColumn}>{price}</td>
+      <td>
+        <NumericInput
+          disabled={loading}
+          value={quantity}
+          aria-label="Quantity"
+          onIncrement={doIncrement}
+          onDecrement={doDecrement}
+          onChange={(e) => handleQuantityChange(e.currentTarget.value)}
+        />
+      </td>
+      <td className={totals}>{subtotal}</td>
+    </tr>
+  )
 }
