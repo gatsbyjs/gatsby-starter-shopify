@@ -22,7 +22,7 @@ module.exports = {
         shopifyConnections: ["collections"],
       },
     },
-    
+    "gatsby-plugin-image",
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
     "gatsby-plugin-sitemap",
