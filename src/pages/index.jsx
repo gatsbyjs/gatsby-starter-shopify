@@ -23,12 +23,11 @@ export const query = graphql`
 function Hero (props) {
   return (
     <div className={container}>
-      <h1 className={intro}>Welcome to the GatsbyJS + Shopify Demo Store.</h1>
+      <h1 className={intro}>Gatsby Shopify Starter on Pantheon</h1>
       {!!process.env.GATSBY_DEMO_STORE && (
         <>
           <p className={callOut}>
-            It's a proof-of-concept in a box, with 10k products and 30k variants
-            to help you get to proof-of-concept as soon as right now.
+            You can add a Gatsby Shopify starter site on Pantheon. No CMS required!
           </p>
           <p className={callToAction}>
             Hook it up to your own Shopify store data and start customizing in
